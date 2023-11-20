@@ -12,5 +12,6 @@ app.listen(port, () => {
 
 app.get('/login', (req, res) => {
     // res.render('Hello World!')
+    res.send('naklik jay login')
 })
 // i commit die

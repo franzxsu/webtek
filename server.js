@@ -8,8 +8,9 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
+  console.log(`http://localhost:${port}/`)
 })  
 
 app.get('/login', (req, res) => {
-    // res.render('Hello World!')
+    res.send('naklik jay login')
   })

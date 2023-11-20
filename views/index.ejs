@@ -1,24 +1,17 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-   <meta charset="UTF-8">
-   <title>Random Title</title>
-
-   <!-- CSS link (loading Semantic UI from a CDN) -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <style>
-     body { padding:50px; }
-   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 </head>
-<body class="container">
+<body>
 
-<header>
-   <div class="ui inverted menu">
-       <a class="item" href="/">
-         Home
-       </a>
-       <a class="item" href="/magic">
-         Magic
-       </a>
-   </div>
-</header>
+<%- include('partials/header') %>
+
+<!-- Main content of the page goes here -->
+
+<!-- Include Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

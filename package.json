@@ -2,9 +2,10 @@
   "name": "webtech",
   "version": "1.0.0",
   "description": "team5",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "author": "team 5",
   "license": "ISC",

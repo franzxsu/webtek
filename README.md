@@ -4,4 +4,4 @@
 
 2. `npm install nodemon`
 
-3. :)
+3. `npm install ejs`

@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Log-in</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body { 
+            display: flex;
+            padding: 50px; 
+            align-items: center;
+            justify-content: center;
+        }
+        div, p {
+            text-align: center;
+        }
 
-    <!-- CSS link (loading Semantic UI from a CDN) -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <style>
-     body { 
-        display: flex;
-        padding:50px; 
-        align-items: center;
-        justify-content: center;
-    }
-     div, p {
-        text-align: center;
-    }
-
-    .width {
-        width: 30%;
-    }
-   </style>
+        .width {
+            width: 30%;
+        }
+    </style>
 </head>
 
 <body>
     <div class="ui form segment width">
         <p> Log-in </p>
-        <div class="field">
-            <label> Username </label>
-            <input placeholder="Enter username here..." name="username" type="text">
-        </div>
-        <div class="field">
-            <label> Password </label>
-            <input type="password" placeholder="Enter password here..." name="password" id="passwordInput">
-            <button class="ui icon button" id="showPass">
-                <i class="eye icon"></i>
-            </button>
-        </div>
-        <div class="ui primary submit button">Submit</div>
+        <form action="login.php" method="post">
+            <div class="field">
+                <label> Username </label>
+                <input placeholder="Enter username here..." name="username" type="text">
+            </div>
+            <div class="field">
+                <label> Password </label>
+                <input type="password" placeholder="Enter password here..." name="password" id="passwordInput">
+                <button class="ui icon button" id="showPass">
+                    <i class="eye icon"></i>
+                </button>
+            </div>
+            <!-- Use an <input> element with type="submit" to submit the form -->
+            <input type="submit" class="ui primary submit button" value="Submit">
+        </form>
     </div>
-
     <script src="/scripts/login.js"></script>
 </body>
 </html>

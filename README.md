@@ -5,3 +5,5 @@
 2. `npm install nodemon`
 
 3. `npm install ejs`
+
+4. `npm install bootstrap`

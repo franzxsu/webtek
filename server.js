@@ -25,7 +25,7 @@ app.set('view engine', 'ejs')
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')))
 
 app.get('/', (req, res) => {
-  res.render("../client/login.php")
+  res.render("../admin/login.ejs")
 })
 
 app.listen(port, () => {
@@ -34,7 +34,7 @@ app.listen(port, () => {
 })  
 
 app.get('/login', (req, res) => {
-    res.render('../admin/login.php')
+    res.render('../admin/login.ejs')
     res.send('naklik jay login')
   })
 
@@ -53,7 +53,7 @@ app.get('/login', (req, res) => {
 
         if (results.length > 0) {
           // yes user
-          res.status(200).send(`<h1>Hello, ${username}! Welcome!</h1>`);
+          res.status(200).send('<h1>Hello, ${username}! Welcome!</h1>');
         } else {
           // non user
           res.status(401).send('<h1>Invalid username or password</h1>');

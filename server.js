@@ -25,7 +25,7 @@ app.set('view engine', 'ejs')
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')))
 
 app.get('/', (req, res) => {
-  res.render("../admin/login.php")
+  res.render("../client/login.php")
 })
 
 app.listen(port, () => {

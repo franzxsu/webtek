@@ -1,12 +1,43 @@
 <?php
-   ob_start();
-   session_start();
+    ob_start();
+    session_start();
+
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "wibtik";
+
+    $conn = new mysqli($server ,$username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if(isset($_POST['email']) && isset($_POST['password'])) {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
+            $stmt->bind_param("ss", $email, $password);
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            //check if may nareturn na row, then it is logged in
+            if ($result->num_rows === 1) {
+                $_SESSION['loggedin'] = true;
+                header("Location: index.html");
+                exit;
+            } else {
+                $error = "Invalid username or password";
+            }
+
+            $stmt->close();
+        }
+    }
 ?>
 
-<?
-   // error_reporting(E_ALL);
-   // ini_set("display_errors", 1);
-?>
 
 <!DOCTYPE html>
 <html>
@@ -34,7 +65,7 @@
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Log In</h4>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" method="post">
                                         <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div>
                                         <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
                                         <div class="mb-3">

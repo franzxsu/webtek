@@ -10,7 +10,7 @@
     $server = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "wibtik";
+    $dbname = "events";
 
     $conn = new mysqli($server ,$username, $password, $dbname);
 

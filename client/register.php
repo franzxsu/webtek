@@ -5,7 +5,7 @@
     $server = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "wibtik";
+    $dbname = "events";
 
     $conn = new mysqli($server ,$username, $password, $dbname);
 
@@ -26,10 +26,13 @@
             !empty($_POST['password_repeat'])){
 
                 $email = $_POST['email'];
+                $firstName = $_POST['first_name'];
+                $lastName = $_POST['last_name'];
                 $password = $_POST['password'];
+                
 
-                $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-                $stmt->bind_param("ss", $email, $password);
+                $stmt = $conn->prepare("INSERT INTO users (email, FirstName, LastName, password) VALUES (?, ?, ?, ?);");
+                $stmt->bind_param("ssss", $email, $firstName, $lastName, $password);
 
                 $stmt->execute();
                 $result = $stmt->get_result();

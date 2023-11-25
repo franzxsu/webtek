@@ -1,6 +1,8 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
 <?php
+include('database_handler.php');
+echo get_users();
 
 session_start();
     echo $_SESSION['first_name']; 

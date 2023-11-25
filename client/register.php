@@ -1,3 +1,24 @@
+<?php
+    ob_start();
+    session_start();
+
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "wibtik";
+
+    $conn = new mysqli($server ,$username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo !empty($_POST['first_name']) && 
+            !empty($_POST['last_name']);
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -21,10 +42,10 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Sign In</h4>
                             </div>
-                            <form class="user">
+                            <form class="user" method="post">
                                 <div class="row mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="First Name" name="first_name"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Last Name" name="last_name"></div>
+                                    <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleLastName" placeholder="Last Name" name="last_name"></div>
                                 </div>
                                 <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div>
                                 <div class="row mb-3">

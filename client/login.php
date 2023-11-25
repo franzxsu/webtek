@@ -1,3 +1,8 @@
+<!-- http://localhost/webtek/client/login.php -->
+
+<!-- VALID CREDENTIALS FOR TESTING: 
+    , 123 -->
+
 <?php
     ob_start();
     session_start();
@@ -27,10 +32,11 @@
             //check if may nareturn na row, then it is logged in
             if ($result->num_rows === 1) {
                 $_SESSION['loggedin'] = true;
+                // $_SESSION['user_id'] = $result;
                 header("Location: index.html");
                 exit;
             } else {
-                $error = "Invalid username or password";
+                $login_error = "Invalid email or password";
             }
 
             $stmt->close();
@@ -68,6 +74,12 @@
                                     <form class="user" method="post">
                                         <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div>
                                         <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
+                                        <?php 
+                                                if(isset($login_error)) {
+                                                    // error message
+                                                    echo '<small class="text-danger">' . htmlspecialchars($login_error) . '</small>';
+                                                }
+                                            ?>
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox small">
                                                 <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>

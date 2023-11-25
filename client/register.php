@@ -38,6 +38,9 @@
                 $result = $stmt->get_result();
 
                 echo $result;
+
+                header("Location: login.php");
+                exit;
             } else {
                 echo "INVALID";
             }

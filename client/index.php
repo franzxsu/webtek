@@ -1,5 +1,13 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
+<?php
+
+session_start();
+    echo $_SESSION['first_name']; 
+    echo $_SESSION['last_name'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -31,9 +31,16 @@
 
             //check if may nareturn na row, then it is logged in
             if ($result->num_rows === 1) {
+                $row = $result->fetch_assoc();
                 $_SESSION['loggedin'] = true;
                 // $_SESSION['user_id'] = $result;
-                header("Location: index.html");
+
+                $_SESSION['user_id'] = $row['userId'];
+                $_SESSION['first_name'] = $row['FirstName'];
+                $_SESSION['last_name'] = $row['LastName']; 
+                $_SESSION['email'] = $row['email'];
+                
+                header("Location: index.php");
                 exit;
             } else {
                 $login_error = "Invalid email or password";

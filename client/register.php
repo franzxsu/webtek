@@ -13,9 +13,33 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    // INSERT INTO `users`(email, password) VALUES ("asd", "asd");
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo !empty($_POST['first_name']) && 
-            !empty($_POST['last_name']);
+        
+
+        //check kung nalagyan ng shit sa lahat ng fields, todo add more validators
+        if(!empty($_POST['first_name']) && 
+            !empty($_POST['last_name']) && 
+            !empty($_POST['email']) && 
+            !empty($_POST['password']) && 
+            !empty($_POST['password_repeat'])){
+
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+
+                $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+                $stmt->bind_param("ss", $email, $password);
+
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                echo $result;
+            } else {
+                echo "INVALID";
+            }
+            
+
     }
 ?>
 

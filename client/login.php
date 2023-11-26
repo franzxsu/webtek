@@ -46,6 +46,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 </head>
 
+<style>
+    /* body {
+  background: url('../client/assets/img/logos/slu-campus.jpg');
+  background-attachment: fixed;
+}
+body.bg-gradient-primary {
+    background-image: url('../client/assets/img/logos/slu-campus.jpg') !important;
+    background-color: rgba(0,0,0,0.5) !important; 
+}
+
+.bg-image-overlay {
+  position: relative; 
+}
+
+.bg-image-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;  
+  background-color: rgba(0,0,0,0.5) !important; 
+} */
+</style>
+
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">

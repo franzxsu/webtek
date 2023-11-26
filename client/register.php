@@ -1,22 +1,13 @@
 <?php
+include("database_handler.php");
+
     ob_start();
     session_start();
 
-    $server = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "events";
-
-    $conn = new mysqli($server ,$username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
 
     // INSERT INTO `users`(email, password) VALUES ("asd", "asd");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
 
         //check kung nalagyan ng shit sa lahat ng fields, todo add more validators
         if(!empty($_POST['first_name']) && 
@@ -29,18 +20,18 @@
                 $firstName = $_POST['first_name'];
                 $lastName = $_POST['last_name'];
                 $password = $_POST['password'];
+
+                $result = add_user($email, $firstName, $lastName, $password);
+
+                if($result !== true){
+                    echo "error: " . $result;  
+                  } else {
+                    //REGISTRATION SUCCESSFUL, GO TO LOGIN
+                    header("Location: login.php");
+                    exit;
+                  }
+
                 
-
-                $stmt = $conn->prepare("INSERT INTO users (email, FirstName, LastName, password) VALUES (?, ?, ?, ?);");
-                $stmt->bind_param("ssss", $email, $firstName, $lastName, $password);
-
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                echo $result;
-
-                header("Location: login.php");
-                exit;
             } else {
                 echo "INVALID";
             }

@@ -35,6 +35,38 @@ function check_login($email, $password) {
 }
 
 function add_user($email, $firstName, $lastName, $password){
-  
+  global $conn;   
+  $stmt = $conn->prepare("INSERT INTO users (email, FirstName, LastName, password) VALUES (?, ?, ?, ?);");
+  $stmt->bind_param("ssss", $email, $firstName, $lastName, $password);
+
+  // if(email_exists($email)) {
+  //   return "Email already taken"; 
+  // }
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  // //RETURN SQL ERROR IF THERES AN ERROR, OTHERWISE, RETURN TRUE (napush sa database)
+  // if(!$stmt->execute()){
+  //   return mysqli_error($conn); 
+  // }  
+
+  return true;
+}
+
+// check if email exists
+function email_exists($email) {
+  // global $conn;   
+  // $stmt = $conn->prepare("SELECT * FROM ");
+}
+
+function register_to_event($userID, $EventID){
+  global $conn;
+  //will populate registrations table
+}
+
+function remove_registration($registrationID){
+  global $conn;
+  //will remove registration from registration table
 }
 ?>

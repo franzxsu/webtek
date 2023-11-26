@@ -2,11 +2,14 @@
 
 <?php
 include('database_handler.php');
-echo get_users();
+echo test();
 
 session_start();
-    echo $_SESSION['first_name']; 
-    echo $_SESSION['last_name'];
+    echo "NAME: " . $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+
+    echo "USER ID: " . $_SESSION['user_id'];
+
+    echo "EMAIL: " . $_SESSION['email']; 
 ?>
 
 

@@ -4,48 +4,32 @@
     , 123 -->
 
 <?php
+
+    include('database_handler.php');
+
     ob_start();
     session_start();
-
-    $server = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "events";
-
-    $conn = new mysqli($server ,$username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(isset($_POST['email']) && isset($_POST['password'])) {
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
-            $stmt->bind_param("ss", $email, $password);
-
-            $stmt->execute();
-            $result = $stmt->get_result();
+            $user = check_login($email, $password);
 
             //check if may nareturn na row, then it is logged in
-            if ($result->num_rows === 1) {
-                $row = $result->fetch_assoc();
-                $_SESSION['loggedin'] = true;
-                // $_SESSION['user_id'] = $result;
-
-                $_SESSION['user_id'] = $row['userId'];
-                $_SESSION['first_name'] = $row['FirstName'];
-                $_SESSION['last_name'] = $row['LastName']; 
-                $_SESSION['email'] = $row['email'];
+            if($user) {
                 
-                header("Location: index.php");
-                exit;
-            } else {
-                $login_error = "Invalid email or password";
-            }
-            $stmt->close();
+                //SET SESSION DATA
+                $_SESSION['user_id'] = $user['userId'];
+                $_SESSION['first_name'] = $user['FirstName'];
+                $_SESSION['last_name'] = $user['LastName'];
+                $_SESSION['email'] = $user['email'];
+              
+                header("Location: index.php"); 
+              } else {
+                $login_error = "Invalid login"; 
+              }
         }
     }
 ?>

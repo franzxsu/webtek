@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log-in</title>
+    <title>Admin Log-in</title>
+    <!-- TODO: REPLACE WITH BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body { 
@@ -28,10 +29,10 @@
 <body>
     <div class="ui form segment width">
         <p> Log-in </p>
-        <form action="verify" method="GET" target="_blank">
+        <form action="verify" method="GET" id="loginForm" target="_blank">
             <div class="field">
                 <label> Username 
-                    <input placeholder="Enter username here..." name="username" type="text">
+                    <input placeholder="Enter username here..." name="username" type="text" id="usernameInput">
                 </label>
             </div>
             <div class="field">
@@ -42,10 +43,9 @@
                     </button>
                 </label>
             </div>
-            <!-- Use an <input> element with type="submit" to submit the form -->
             <input type="submit" class="ui primary submit button" value="Submit">
         </form>
     </div>
-    <script src="../admin/scripts/login.js"></script>
+    <script src="/admin/scripts/login.js"></script>
 </body>
 </html>

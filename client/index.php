@@ -13,6 +13,8 @@ session_start();
         echo "USER ID: " . $_SESSION['user_id'];
     
         echo "EMAIL: " . $_SESSION['email']; 
+
+        echo "COURSE: " . get_user_course_id($_SESSION['email']);
     }
 
     else{

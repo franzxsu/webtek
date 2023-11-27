@@ -92,7 +92,7 @@ function get_all_events(){
       $event['endDate'] = $row["EventDateEnd"];
       
       $events[] = $event;
-        
+
     }
   
   }
@@ -104,6 +104,19 @@ function get_all_events(){
 //giveen email of the user, return his/her course id, return null if none
 function get_user_course_id($email){
   global $conn;
+
+  $stmt = $conn->prepare("SELECT courseID from enrolledcourse WHERE email = ?;");
+  $stmt->bind_param("s", $email);
+
+  // if(email_exists($email)) {
+  //   return "Email already taken"; 
+  // }
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+  
+  $row = $result->fetch_assoc();
+  return $row['courseID'];
 }
 //giveen email of the user, return his/her organizations as list, return null if none
 function get_user_organizations($email){

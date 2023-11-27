@@ -15,7 +15,19 @@ session_start();
         echo "EMAIL: " . $_SESSION['email']; 
 
         echo "COURSE: " . get_user_course_id($_SESSION['email']);
+
+        $userOrgs = get_user_organizations($_SESSION['user_id']);
+
+        if($userOrgs) {
+
+        echo "ORGS OF USER: ";
+        foreach ($userOrgs as $orgId) {
+            echo $orgId . " "; 
+        }
     }
+    }
+
+    
 
     else{
         echo "YOU ARE NOT LOGGED IN!  ";

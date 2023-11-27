@@ -114,13 +114,32 @@ function get_user_course_id($email){
 
   $stmt->execute();
   $result = $stmt->get_result();
-  
+
   $row = $result->fetch_assoc();
   return $row['courseID'];
 }
 //giveen email of the user, return his/her organizations as list, return null if none
-function get_user_organizations($email){
+function get_user_organizations($userID){
+
   global $conn;
+
+  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE userID = ?");
+  $stmt->bind_param("i", $userID); 
+  $stmt->execute();
+  
+  $result = $stmt->get_result();
+  $orgs = [];
+  
+  while($row = $result->fetch_assoc()) {
+    $orgs[] = $row['organizationID']; 
+  }
+  
+  if(empty($orgs)) {
+    return null;
+  }
+  
+  return $orgs;
+
 }
 function add_user_to_org($email, $organizationID){
 

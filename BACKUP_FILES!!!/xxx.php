@@ -18,9 +18,6 @@ session_start();
     else{
         echo "YOU ARE NOT LOGGED IN!  ";
     }
-
-    // $allEvents = get_all_events();
-    // print_r($allEvents);
    
 ?>
 
@@ -131,67 +128,114 @@ session_start();
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Upcoming Events</h3>
+                    <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#">
+                        <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
+                            </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px; text-align: center;">
-                                Sample Event Name 2023 extra extra
-                              </h5>
-                              <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem;">
-                              <div class="card-body" style="padding: 0px;">
-                                <p class="card-text" style="margin: 0px; text-align: center;">DATE: Oct. 23 - Oct. 25</p>
-                                <p class="card-text" style="margin: 0px; text-align: center;">VENUE: SLU AVR Room</p>
-                              </div>
-                              <div class="card-body" style="max-height: 500px; overflow-y: auto;">
-                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-                                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                                    ullamco laboris nisi ut aliquip ex ea.</p>
-                              </div>
-                              <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
                             </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px;">
-                                Sample Event Name 2023
-                              </h5>
-                              <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat2.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem;">
-                              <div class="card-body" style="max-height: 500px; overflow-y: auto;">
-                                <p class="card-text" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
                             </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center">christmas event</h5>
-                              <img class="card-img-top" src="../client/assets/img/sample_pubmat2.jpg" alt="Card image cap" style="height: 14rem;">
-                              <div class="card-body ">
-                                <p class="card-text text-truncate" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
                             </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center">Summer Sounds Festival 2023</h5>
-                              <img class="card-img-top" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="height: 14rem;">
-                              <div class="card-body ">
-                                <p class="card-text text-truncate" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
                             </div>
-                          </div>
-                          
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
+                            </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
+                            </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
+                            </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card">
+                            <h5 class="card-title text-center" style="padding: 15px;">Sample Event Name 2023 extra extra</h5>
+                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">DATE: Oct. 23 - Oct. 25</p>
+                                <p class="card-text text-center">VENUE: SLU AVR Room</p>
+                            </div>
+                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                        </div>
                     </div>
                 </div>
+            </div>
+
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">

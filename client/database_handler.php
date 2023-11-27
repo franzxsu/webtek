@@ -69,4 +69,50 @@ function remove_registration($registrationID){
   global $conn;
   //will remove registration from registration table
 }
+
+function get_all_events(){
+
+  global $conn;
+
+  $query = "SELECT * FROM events";
+  $result = mysqli_query($conn, $query);
+  
+  $events = array();
+  
+  if(mysqli_num_rows($result) > 0){
+  
+    while($row = mysqli_fetch_assoc($result)){
+      
+      $event = array();  
+
+      $event['eventID'] = $row["eventID"];
+      $event['organizerID'] = $row["OrganizerId"];
+      $event['eventName'] = $row["EventName"];
+      $event['startDate'] = $row["EventDateStart"];
+      $event['endDate'] = $row["EventDateEnd"];
+      
+      $events[] = $event;
+        
+    }
+  
+  }
+  
+  return $events;
+
+}
+
+//giveen email of the user, return his/her course id, return null if none
+function get_user_course_id($email){
+  global $conn;
+}
+//giveen email of the user, return his/her organizations as list, return null if none
+function get_user_organizations($email){
+  global $conn;
+}
+function add_user_to_org($email, $organizationID){
+
+}
+function remove_user_to_org($email, $organizationID){
+
+}
 ?>

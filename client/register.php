@@ -84,6 +84,10 @@ include("database_handler.php");
                                     echo '<div class="text-center">
                                             <p class="text-danger fw-bold">Please fill in all fields.</p>
                                          </div>';
+                                } else if (strpos($fullUrl, "signup=invalidemail")) {
+                                    echo '<div class="text-center">
+                                            <p class="text-danger fw-bold">Invalid e-mail.</p>
+                                        </div>';
                                 }
                             ?>
 

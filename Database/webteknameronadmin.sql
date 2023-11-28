@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2023 at 08:15 AM
+-- Generation Time: Nov 28, 2023 at 12:10 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -132,7 +132,9 @@ INSERT INTO `eventorganizers` (`OrganizerID`, `OrganizationName`, `Email`, `Pass
 (6, 'kasama', 'kasama@slu.edu.ph', 'kasama'),
 (7, 'sluadmin', 'admin@slu.edu.ph', 'admin'),
 (8, 'nazis', 'nazis@slu.edu.ph', 'nazis'),
-(9, 'homies', 'homies@slu.edu.ph', 'homies');
+(9, 'homies', 'homies@slu.edu.ph', 'homies'),
+(1001, 'TITE', 'tite@slu.edu.ph', 'tite'),
+(1002, 'REAL', 'real@slu.edu.ph', 'real');
 
 -- --------------------------------------------------------
 
@@ -365,7 +367,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `eventorganizers`
 --
 ALTER TABLE `eventorganizers`
-  MODIFY `OrganizerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `OrganizerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1003;
 
 --
 -- AUTO_INCREMENT for table `events`

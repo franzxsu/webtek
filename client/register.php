@@ -31,14 +31,14 @@ include("database_handler.php");
                     exit();
                 }
             }     
-        } else (empty($_POST['first_name']) && 
-                empty($_POST['last_name']) && 
-                empty($_POST['email']) && 
-                empty($_POST['password']) && 
+        } elseif (empty($_POST['first_name']) || 
+                empty($_POST['last_name']) || 
+                empty($_POST['email']) || 
+                empty($_POST['password']) || 
                 empty($_POST['password_repeat'])) {
-            header('Location: register.php?signup=empty')
+            header('Location: register.php?signup=empty');
         }
-    
+    }
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ include("database_handler.php");
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Sign In</h4>
                             </div>
-                            <form class="user" action="reg_error_hand.php" method="post">
+                            <form class="user" method="post">
                                 <div class="row mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="First Name" name="first_name"></div>
                                     <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleLastName" placeholder="Last Name" name="last_name"></div>

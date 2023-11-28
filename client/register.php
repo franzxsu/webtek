@@ -78,10 +78,12 @@ include("database_handler.php");
                             </form>
 
                             <?php
-                                $fullUrl = "http://$_SERVER[HTTP_POST]$_SERVER[REQUEST_URI]";
+                                $fullUrl = "https://$_SERVER[REQUEST_METHOD]$_SERVER[REQUEST_URI]";
 
                                 if (strpos($fullUrl, "signup=empty") == true) {
-                                    echo "<p>Please fill in all fields.</p>";
+                                    echo '<div class="text-center">
+                                            <p class="text-danger fw-bold">Please fill in all fields.</p>
+                                         </div>';
                                 }
                             ?>
 

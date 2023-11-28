@@ -26,8 +26,8 @@ include("database_handler.php");
                 if($result !== true){
                     echo "error: " . $result;  
                 } else {
-                    //REGISTRATION SUCCESSFUL, GO TO LOGIN
-                    header("Location: login.php");
+                    // REGISTRATION SUCCESSFUL
+                    header("Location: register.php?signup=success");
                     exit();
                 }
             }     
@@ -77,6 +77,9 @@ include("database_handler.php");
                                 <hr>
                             </form>
 
+                            <div class="text-center"></div>
+                            <div class="text-center"><a class="small" href="login.php">Already have an account? Login!</a></div>
+                            <br>
                             <?php
                                 $fullUrl = "https://$_SERVER[REQUEST_METHOD]$_SERVER[REQUEST_URI]";
 
@@ -84,15 +87,18 @@ include("database_handler.php");
                                     echo '<div class="text-center">
                                             <p class="text-danger fw-bold">Please fill in all fields.</p>
                                          </div>';
-                                } else if (strpos($fullUrl, "signup=invalidemail")) {
+                                    exit();
+                                } else if (strpos($fullUrl, "signup=invalidemail") == true) {
                                     echo '<div class="text-center">
                                             <p class="text-danger fw-bold">Invalid e-mail.</p>
                                         </div>';
+                                    exit();
+                                } else if (strpos($fullUrl, 'signup=success') == true) {
+                                    echo '<div class="text-center">
+                                            <p class="text-success fw-bold">Sign up success.</p>
+                                        </div>';
                                 }
                             ?>
-
-                            <div class="text-center"></div>
-                            <div class="text-center"><a class="small" href="login.php">Already have an account? Login!</a></div>
                         </div>
                     </div>
                 </div>

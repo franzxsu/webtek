@@ -8,7 +8,14 @@ function verifyLogin() {
     fetch(`/verify?username=${usernameValue}&password=${passwordValue}`)
     .then(response => {
         if (response.ok) {
-            window.location.href = '/dashboard';
+            if (response.url.includes('/admin_dashboard')) {
+                window.location.href = '/admin_dashboard';
+            } else if (response.url.includes('/eo_dashboard')) {
+                window.location.href = '/eo_dashboard';
+            } else {
+                // default reditect lang
+                window.location.href = '/admin_dashboard';
+            }
         } else {
             return response.json().then(data => {
                 throw new Error(data.message); 

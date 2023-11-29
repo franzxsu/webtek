@@ -47,7 +47,7 @@
 </head>
 
 <style>
-    /* body {
+     body {
   background: url('../client/assets/img/logos/slu-campus.jpg');
   background-attachment: fixed;
 }
@@ -68,7 +68,7 @@ body.bg-gradient-primary {
   left: 0;
   right: 0;  
   background-color: rgba(0,0,0,0.5) !important; 
-} */
+} 
 </style>
 
 <body class="bg-gradient-primary">
@@ -102,6 +102,7 @@ body.bg-gradient-primary {
                                         </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
                                         <hr>
                                     </form>
+                                    <div class="text-center"><a class="small" href="index.php">Continue as Guest</a></div>
                                     <div class="text-center"><a class="small" href="register.php">Create an Account!</a></div>
                                 </div>
                             </div>

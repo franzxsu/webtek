@@ -107,7 +107,7 @@ include 'includes/user_info.php';
                         <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                     </div>
                     <div class="row">
-                        <?php include 'event_container_gen.php' ?>
+                        <?php include 'includes/event_container_gen.php' ?>
                     </div>
                 </div>
             </div>

@@ -8,9 +8,9 @@ $conn = mysqli_connect("localhost","root","","events");
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-else{
-  echo "database ok!";
-}
+//else{
+//  echo "database ok!";
+//}
 
 function test() {
   return "test";

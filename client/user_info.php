@@ -1,4 +1,8 @@
 <?php
+include('database_handler.php');
+echo test();
+
+session_start();
 
 if (isset($_SESSION['user_id'])) {
     echo "YOU ARE LOGGED IN!  ";

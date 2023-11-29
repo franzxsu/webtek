@@ -1,7 +1,7 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
 <?php
-include 'user_info.php';
+include 'includes/user_info.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ include 'user_info.php';
 </head>
 
 <?php
-    include_once 'sidebar.php';
+    include_once 'includes/sidebar.php';
 ?>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -112,5 +112,5 @@ include 'user_info.php';
                 </div>
             </div>
 <?php
-    include_once 'footer.php';
+    include_once 'includes/footer.php';
 ?>

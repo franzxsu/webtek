@@ -6,36 +6,32 @@ echo test();
 
 session_start();
 
-    if (isset($_SESSION['user_id'])){
-        echo "YOU ARE LOGGED IN!  ";
-        echo "NAME: " . $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+if (isset($_SESSION['user_id'])) {
+    echo "YOU ARE LOGGED IN!  ";
+    echo "NAME: " . $_SESSION['first_name'] . " " . $_SESSION['last_name'];
 
-        echo "USER ID: " . $_SESSION['user_id'];
-    
-        echo "EMAIL: " . $_SESSION['email']; 
+    echo "USER ID: " . $_SESSION['user_id'];
 
-        echo "COURSE: " . get_user_course_id($_SESSION['email']);
+    echo "EMAIL: " . $_SESSION['email'];
 
-        $userOrgs = get_user_organizations($_SESSION['user_id']);
+    echo "COURSE: " . get_user_course_id($_SESSION['email']);
 
-        if($userOrgs) {
+    $userOrgs = get_user_organizations($_SESSION['user_id']);
+
+    if ($userOrgs) {
 
         echo "ORGS OF USER: ";
         foreach ($userOrgs as $orgId) {
-            echo $orgId . " "; 
+            echo $orgId . " ";
         }
     }
-    }
+} else {
+    echo "YOU ARE NOT LOGGED IN!  ";
+}
 
-    
+// $allEvents = get_all_events();
+// print_r($allEvents);
 
-    else{
-        echo "YOU ARE NOT LOGGED IN!  ";
-    }
-
-    // $allEvents = get_all_events();
-    // print_r($allEvents);
-   
 ?>
 
 
@@ -118,37 +114,36 @@ session_start();
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow">
-                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                                    <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                        <span class="d-none d-lg-inline me-2 text-gray-600 small">
+                                            <?php
+                                            if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
+                                                // echo $_SESSION['last_name'] . ", " . $_SESSION['first_name'];
+                                                echo $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+                                            } else {
+                                                echo "GUEST";
+                                            }
+                                            ?>
+                                        </span>
+                                        <img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg">
+                                    </a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider"></div>
                                         <?php
-                                        if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
-                                            // echo $_SESSION['last_name'] . ", " . $_SESSION['first_name'];
-                                            echo $_SESSION['first_name'] . " " . $_SESSION['last_name'];
-                                        } else {
-                                            echo "GUEST";
-                                        }
-                                        ?>
-                                    </span>
-                                    <img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg">
-                                </a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                    <div class="dropdown-divider"></div>
-                                    <?php
-                                        if (isset($_SESSION['user_id'])){
+                                        if (isset($_SESSION['user_id'])) {
                                             echo '<a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Log out</a>';
-                                        }
-                                        else {
+                                        } else {
                                             echo '<a class="dropdown-item" href="login.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Log in</a>';
                                         }
-                                    ?>
-                                    
+                                        ?>
+
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -157,61 +152,38 @@ session_start();
                         <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px; text-align: center;">
-                                Sample Event Name 2023 extra extra
-                              </h5>
-                              <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem;">
-                              <div class="card-body" style="padding: 0px;">
-                                <p class="card-text" style="margin: 0px; text-align: center;">DATE: Oct. 23 - Oct. 25</p>
-                                <p class="card-text" style="margin: 0px; text-align: center;">VENUE: SLU AVR Room</p>
-                              </div>
-                              <div class="card-body" style="max-height: 500px; overflow-y: auto;">
-                                <p class="card-text" style="max-width: 100%; padding: 0px;">Lorem ipsum dolor sit amet, 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
-                                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                                    ullamco laboris nisi ut aliquip ex ea.</p>
-                              </div>
-                              <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
-                            </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px;">
-                                Sample Event Name 2023
-                              </h5>
-                              <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat2.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem;">
-                              <div class="card-body" style="max-height: 500px; overflow-y: auto;">
-                                <p class="card-text" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center">christmas event</h5>
-                              <img class="card-img-top" src="../client/assets/img/sample_pubmat2.jpg" alt="Card image cap" style="height: 14rem;">
-                              <div class="card-body ">
-                                <p class="card-text text-truncate" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card" style="width: 18rem; height: 28rem;">
-                              <h5 class="card-title d-flex justify-content-center">Summer Sounds Festival 2023</h5>
-                              <img class="card-img-top" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="height: 14rem;">
-                              <div class="card-body ">
-                                <p class="card-text text-truncate" style="max-width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.</p>
-                                <a href="#" class="btn btn-primary">Register</a>
-                              </div>
-                            </div>
-                          </div>
-                          
+                        <?php
+                        $sql = "SELECT * FROM events";
+                        $result = $conn->query($sql);
+                        
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $eventName = $row["EventName"];
+                                $eventDateStart = $row["EventDateStart"];
+                                $eventDateEnd = $row["EventDateEnd"];
+                                $eventLocation = $row["EventLocation"];
+                                $eventInfo = $row["EventInfo"];
+                        
+                                echo '<div class="col-md-6 col-xl-3 mb-4">
+                                        <div class="card" style="width: 18rem; height: 35rem;">
+                                            <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px; text-align: center;">
+                                                ' . $eventName . '
+                                            </h5>
+                                            <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem; object-fit: cover;">
+                                            <div class="card-body" style="padding: 0px;">
+                                                <p class="card-text" style="margin: 0px; text-align: center;">DATE: ' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
+                                                <p class="card-text" style="margin: 0px; text-align: center;">VENUE: ' . $eventLocation . '</p>
+                                            </div>
+                                            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                                <p class="card-text" style="max-width: 100%; padding: 0px;">' . $eventInfo . '</p>
+                                            </div>
+                                            <a href="#" class="btn btn-primary" style="border-radius: 0px;">Register</a>
+                                        </div>
+                                    </div>';
+                            }
+                        }
+                        ?>
+
                     </div>
                 </div>
             </div>

@@ -1,44 +1,48 @@
 <?php
 include("database_handler.php");
 
-    ob_start();
-    session_start();
+ob_start();
+session_start();
 
 
-    // INSERT INTO `users`(email, password) VALUES ("asd", "asd");
+// INSERT INTO `users`(email, password) VALUES ("asd", "asd");
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        //check kung nalagyan ng shit sa lahat ng fields, todo add more validators
-        if(!empty($_POST['first_name']) && 
-            !empty($_POST['last_name']) && 
-            !empty($_POST['email']) && 
-            !empty($_POST['password']) && 
-            !empty($_POST['password_repeat'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //check kung nalagyan ng shit sa lahat ng fields, todo add more validators
+    if (
+        !empty($_POST['first_name']) &&
+        !empty($_POST['last_name']) &&
+        !empty($_POST['email']) &&
+        !empty($_POST['password']) &&
+        !empty($_POST['password_repeat'])
+    ) {
 
-            if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                header("Location: register.php?signup=invalidemail");
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            header("Location: register.php?signup=invalidemail");
+        } else {
+            $email = $_POST['email'];
+            $firstName = $_POST['first_name'];
+            $lastName = $_POST['last_name'];
+            $password = $_POST['password'];
+            $result = add_user($email, $firstName, $lastName, $password);
+            if ($result !== true) {
+                echo "error: " . $result;
             } else {
-                $email = $_POST['email'];
-                $firstName = $_POST['first_name'];
-                $lastName = $_POST['last_name'];
-                $password = $_POST['password'];
-                $result = add_user($email, $firstName, $lastName, $password);
-                if($result !== true){
-                    echo "error: " . $result;  
-                } else {
-                    // REGISTRATION SUCCESSFUL
-                    header("Location: register.php?signup=success");
-                    exit();
-                }
-            }     
-        } elseif (empty($_POST['first_name']) || 
-                empty($_POST['last_name']) || 
-                empty($_POST['email']) || 
-                empty($_POST['password']) || 
-                empty($_POST['password_repeat'])) {
-            header('Location: register.php?signup=empty');
+                // REGISTRATION SUCCESSFUL
+                header("Location: register.php?signup=success");
+                exit();
+            }
         }
+    } elseif (
+        empty($_POST['first_name']) ||
+        empty($_POST['last_name']) ||
+        empty($_POST['email']) ||
+        empty($_POST['password']) ||
+        empty($_POST['password_repeat'])
+    ) {
+        header('Location: register.php?signup=empty');
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +55,7 @@ include("database_handler.php");
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 </head>
+
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="card shadow-lg o-hidden border-0 my-5">
@@ -81,23 +86,23 @@ include("database_handler.php");
                             <div class="text-center"><a class="small" href="login.php">Already have an account? Login!</a></div>
                             <br>
                             <?php
-                                $fullUrl = "https://$_SERVER[REQUEST_METHOD]$_SERVER[REQUEST_URI]";
+                            $fullUrl = "https://$_SERVER[REQUEST_METHOD]$_SERVER[REQUEST_URI]";
 
-                                if (strpos($fullUrl, "signup=empty") == true) {
-                                    echo '<div class="text-center">
+                            if (strpos($fullUrl, "signup=empty") == true) {
+                                echo '<div class="text-center">
                                             <p class="text-danger fw-bold">Please fill in all fields.</p>
                                          </div>';
-                                    exit();
-                                } else if (strpos($fullUrl, "signup=invalidemail") == true) {
-                                    echo '<div class="text-center">
+                                exit();
+                            } else if (strpos($fullUrl, "signup=invalidemail") == true) {
+                                echo '<div class="text-center">
                                             <p class="text-danger fw-bold">Invalid e-mail.</p>
                                         </div>';
-                                    exit();
-                                } else if (strpos($fullUrl, 'signup=success') == true) {
-                                    echo '<div class="text-center">
+                                exit();
+                            } else if (strpos($fullUrl, 'signup=success') == true) {
+                                echo '<div class="text-center">
                                             <p class="text-success fw-bold">Sign up success.</p>
                                         </div>';
-                                }
+                            }
                             ?>
                         </div>
                     </div>

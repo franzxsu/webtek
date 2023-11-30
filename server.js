@@ -1,8 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const cookieMonster = require('cookie-parser');
-// todo: unique session handling
-const MySQLSeshStorage = require('express-mysql-session')(session);
 const { request } = require('http');
 const path = require('path');
 const mysql = require('mysql');
@@ -17,22 +15,6 @@ const connection = mysql.createConnection({
   password: 'password',
   database: 'webteknameronadmin'
 });
-
-const seshonStorage = new MySQLSeshStorage({
-  clearExpired: true,
-  checkExpirationInterval: 900000,
-  expiration: 1800000,
-  createDatabaseTable: true,
-  connection: connection,
-  schema: {
-    tableName: 'seshonroad',
-    columnNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  }
-})
 
 connection.connect((err) => {
   if(err) {

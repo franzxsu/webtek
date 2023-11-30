@@ -55,6 +55,10 @@ include 'includes/registration_handler.php';
                                             <p class="text-danger fw-bold">Invalid e-mail.</p>
                                         </div>';
                                 exit();
+                            } else if (strpos($fullUrl, 'signup=accountexists')) {
+                                echo '<div class="text-center">
+                                            <p class="text-danger fw-bold">Account already exists.</p>
+                                        </div>';
                             } else if (strpos($fullUrl, 'signup=success') == true) {
                                 echo '<div class="text-center">
                                             <p class="text-success fw-bold">Sign up success.</p>

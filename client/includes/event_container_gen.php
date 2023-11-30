@@ -5,8 +5,8 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $eventName = $row["EventName"];
-        $eventDateStart = $row["EventDateStart"];
-        $eventDateEnd = $row["EventDateEnd"];
+        $eventDateStart = date_format(date_create($row["EventDateStart"]), "F j, Y");
+        $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j, Y");
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
 
@@ -17,7 +17,7 @@ if ($result->num_rows > 0) {
                                             </h5>
                                             <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem; object-fit: cover;">
                                             <div class="card-body" style="padding: 0px;">
-                                                <p class="card-text" style="margin: 0px; text-align: center;">DATE: ' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
+                                                <p class="card-text" style="margin: 0px; text-align: center;">' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
                                                 <p class="card-text" style="margin: 0px; text-align: center;">VENUE: ' . $eventLocation . '</p>
                                             </div>
                                             <div class="card-body" style="max-height: 500px; overflow-y: auto;">

@@ -85,16 +85,35 @@ function email_exists($email)
   // $stmt = $conn->prepare("SELECT * FROM ");
 }
 
-function register_to_event($userID, $EventID)
-{
-  global $conn;
-  //will populate registrations table
-}
+//return true if successful, k
+function register_to_event($userID, $eventID) {
 
-function remove_registration($registrationID)
-{
   global $conn;
-  //will remove registration from registration table
+
+  $stmt = $conn->prepare("INSERT INTO registrations (userId, eventId) VALUES (?, ?)"); 
+  $stmt->bind_param("ii", $userID, $eventID);
+    
+  if(!$stmt->execute()) {
+    echo "fail";
+  }
+
+  return true;
+
+}
+function remove_registration($userID, $eventID) {
+
+  global $conn;
+
+  $stmt = $conn->prepare("DELETE FROM registrations WHERE userId = ? AND eventId = ?");
+  $stmt->bind_param("ii", $userID, $eventID);
+
+  if(!$stmt->execute()) {
+    echo "fail";
+    return false;
+  }
+
+  return true; 
+
 }
 
 function get_all_events()
@@ -172,4 +191,13 @@ function add_user_to_org($email, $organizationID)
 }
 function remove_user_to_org($email, $organizationID)
 {
+}
+function show_events_for_me($organizations, $course){
+
+}
+function get_registered_events(){
+
+}
+function get_attendance_list(){
+
 }

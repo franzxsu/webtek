@@ -76,7 +76,7 @@ body.bg-gradient-primary {
                                         <hr>
                                     </form>
                                     <div class="text-center"><a class="small" href="index.php">Continue as Guest</a></div>
-                                    <div class="text-center"><a class="small" href="register.php">Create an Account!</a></div>
+                                    <div class="text-center"><a class="small" href="signup.php">Create an Account!</a></div>
                                 </div>
                             </div>
                         </div>

@@ -132,7 +132,7 @@ app.get('/verify', (req, res) => {
 
 
 app.get('/admin_dashboard', (req, res) => {
-  if (req.session.username) {
+  if (req.session.adminId) {
     res.render('../admin/admin_dashboard.ejs');
   } else {
     res.redirect('/login');
@@ -140,7 +140,7 @@ app.get('/admin_dashboard', (req, res) => {
 });
 
 app.get('/eo_dashboard', (req, res) => {
-  if (req.session.username) {
+  if (req.session.eventOrgId) {
     res.render('../admin/eo_dashboard.ejs');
   } else {
     res.redirect('/login');

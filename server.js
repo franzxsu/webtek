@@ -1,10 +1,11 @@
-const express = require('express')
-const session = require('express-session')
+const express = require('express');
+const session = require('express-session');
+const cookieMonster = require('cookie-parser');
 // todo: unique session handling
 const MySQLSeshStorage = require('express-mysql-session')(session);
-const { request } = require('http')
-const path = require('path')
-const mysql = require('mysql')
+const { request } = require('http');
+const path = require('path');
+const mysql = require('mysql');
 const port = 3000
 
 const app = express()
@@ -13,9 +14,25 @@ const app = express()
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: 'password',
   database: 'webteknameronadmin'
 });
+
+const seshonStorage = new MySQLSeshStorage({
+  clearExpired: true,
+  checkExpirationInterval: 900000,
+  expiration: 1800000,
+  createDatabaseTable: true,
+  connection: connection,
+  schema: {
+    tableName: 'seshonroad',
+    columnNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+})
 
 connection.connect((err) => {
   if(err) {
@@ -26,7 +43,7 @@ connection.connect((err) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Admin / EO application listening on port ${port}`)
   console.log(`http://localhost:${port}/`)
 })  
 
@@ -34,18 +51,29 @@ app.set('view engine', 'ejs')
 
 app.use('/admin/scripts', express.static(path.join(__dirname, 'admin/scripts')))
 
+app.use(cookieMonster());
 app.use(session({
-  secret: 'idk',
+  secret: 'idk', // i have no idea what this does
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  // store: seshonStorage,
+  cookie: {
+    secure: false,
+  }
 }));
 
 app.get('/', (req, res) => {
-  res.render("../admin/login.ejs");
+  res.redirect("/login");
 })
 
 app.get('/login', (req, res) => {
-    res.render('../admin/login.ejs');
+    if (req.session.adminId) {
+      res.redirect('/admin_dashboard');
+    } else if (req.session.eventOrgId) {
+      res.redirect('/eo_dashboard');
+    } else {
+      res.render('../admin/login.ejs');
+    }
 })
 
 app.get('/verify', (req, res) => {
@@ -69,16 +97,28 @@ app.get('/verify', (req, res) => {
         const user = results[0];
 
         if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
+
+          if (req.session.adminId) {
+            res.status(401).json({message: 'User is already logged in!'});
+            return;
+          }
+
           // log in si admin
-          console.log("log in si admin: " + user.AdminOrOrgID);
           req.session.username = username;
           req.session.adminId = user.AdminOrOrgID;
+          console.log("log in si admin: " + req.session.adminId);
           res.redirect('/admin_dashboard');
         } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
+
+          if (req.session.eventOrgId) {
+            res.status(401).json({message: 'User is already logged in!'});
+            return;
+          }
+
           // log in si event organizer
-          console.log("log in si event organizer: " + user.AdminOrOrgID);
           req.session.username = username;
           req.session.eventOrgId = user.AdminOrOrgID;
+          console.log("log in si event organizer: " + req.session.eventOrgId);
           res.redirect('/eo_dashboard');
         }
 
@@ -113,7 +153,9 @@ app.post('/logout', (req, res) => {
       console.error("Error destroying session road:", err);
       res.status(500).send('Error logging out')
     } else {
+      console.log("logout si parecakes")
       res.redirect('/login');
     }
   })
-})
+});
+

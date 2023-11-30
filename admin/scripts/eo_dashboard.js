@@ -70,15 +70,18 @@ document.addEventListener('DOMContentLoaded', function () {
             events.push(eventData);
             localStorage.setItem('events', JSON.stringify(events));
         }
-        // Functionality for canceling form submission (Cancel button)
-        cancelButton.addEventListener('click', function () {
-            // Hide the form when the Cancel button is clicked
-            form.reset();
-            eventFormContainer.classList.add('hidden');
-        });
+        
 
         form.appendChild(createButton);
         form.appendChild(cancelButton);
+
+        // Functionality for canceling form submission (Cancel button)
+        cancelButton.addEventListener('click', function () {
+            // Hide the form when the Cancel button is clicked
+            console.log("clicked cancel");
+            form.reset();
+            eventFormContainer.classList.add('hidden');
+        });
 
         eventFormContainer.appendChild(form);
         eventFormContainer.classList.remove('hidden'); // Show the event form container

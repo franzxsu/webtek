@@ -20,7 +20,7 @@ function account_exists($conn, $email) {
     $resultData = mysqli_stmt_get_result($stmt1);
 
     if ($row = mysqli_fetch_assoc($resultData)) {
-        return true;
+        
     } else {
         return false;
     }
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         !empty($_POST['password_repeat'])
     ) {
 
-        if (account_exists($conn, $email) == false) {
+        if (account_exists($conn, $_POST['email']) !== false) {
             header('Location: register.php?signup=accountexists');
             exit();
         }
@@ -50,7 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $firstName = $_POST['first_name'];
             $lastName = $_POST['last_name'];
             $password = $_POST['password'];
-            $result = add_user($email, $firstName, $lastName, $password);        
+
+            // Hash browns tolz
+            $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+
+            $result = add_user($email, $firstName, $lastName, $hashedPwd);        
 
             if ($result !== true) {
                 echo "error: " . $result;

@@ -147,7 +147,26 @@ $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SE
                                             <td><?= $event['EventLocation'] ?></td>
                                             <td><?= date("F j", strtotime($event['EventDateStart'])) ?></td>
                                             <td><?= date("F j", strtotime($event['EventDateEnd'])) ?></td>
-                                            <td><a href="#">view QR</a></td>
+                                            <td>
+                                                <!-- le qr modal -->
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#qrModal<?= $event['eventID'] ?>">
+                                                    view QR
+                                                </a>
+                                                <div class="modal fade" id="qrModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="qrModalLabel<?= $event['eventID'] ?>" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="qrModalLabel<?= $event['eventID'] ?>">QR Code</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- hardcoded muna, todo implement api for this shit, id of modal contains eventID already ^^ -->
+                                                                <img src="../client/assets/img/sample_qr.jpg" alt="QR Code for <?= $event['EventName'] ?>" class="img-fluid">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelConfirmationModal<?= $event['eventID'] ?>">
                                                     Cancel

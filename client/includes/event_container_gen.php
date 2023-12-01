@@ -3,7 +3,13 @@
 include_once 'database_handler.php';
 
 // $result = get_all_events();
-$result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['courseID']);
+if(isset($_SESSION['user_id'])){
+    $result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['organizations']);
+}
+else{
+    $result = get_all_events();
+}
+
 // $result = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
 
 echo '

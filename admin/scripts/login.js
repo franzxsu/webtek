@@ -5,7 +5,16 @@ function verifyLogin() {
     var usernameValue = usernameInput.value;
     var passwordValue = passwordInput.value;
 
-    fetch(`/verify?username=${usernameValue}&password=${passwordValue}`)
+    fetch('/verify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: usernameValue,
+            password: passwordValue
+        })
+    })
     .then(response => {
         if (response.ok) {
             if (response.url.includes('/admin_dashboard')) {

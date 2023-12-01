@@ -11,7 +11,7 @@ function account_exists($conn, $email) {
 
     // Error pag meron mang case na d gumana ung query
     if (!mysqli_stmt_prepare($stmt1, $sql)) {
-        header('Location: ../register.php?error=stmtfailed');
+        header('Location: ../signup.php?error=stmtfailed');
         exit();
     }
 
@@ -39,12 +39,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ) {
 
         if (account_exists($conn, $_POST['email']) !== false) {
-            header('Location: register.php?signup=accountexists');
+            header('Location: signup.php?signup=accountexists');
             exit();
         }
 
         if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            header("Location: register.php?signup=invalidemail");
+            header("Location: signup.php?signup=invalidemail");
         } else {
             $email = $_POST['email'];
             $firstName = $_POST['first_name'];
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             } else {
                 // REGISTRATION SUCCESSFUL
-                header("Location: register.php?signup=success");
+                header("Location: signup.php?signup=success");
                 exit();
             }
         }
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         empty($_POST['password']) ||
         empty($_POST['password_repeat'])
     ) {
-        header('Location: register.php?signup=empty');
+        header('Location: signup.php?signup=empty');
         exit();
     }
 }

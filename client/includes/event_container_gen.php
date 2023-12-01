@@ -3,7 +3,7 @@ $sql = "SELECT * FROM events";
 $result = $conn->query($sql);
 echo
 '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>';
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>';
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -30,14 +30,31 @@ if ($result->num_rows > 0) {
                     </div>';
 
         if (isset($_SESSION['user_id'])) {
-            echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="border-radius: 0px;">Register</button>';
+            echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal_' . $eventID . '" style="border-radius: 0px;">Register</button>';
         } else {
             echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Not signed in</a>';
         }
 
         echo '
             </div>
-        </div>';
+        </div>
+        <div class="modal fade" id="myModal_' . $eventID . '" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">' . $eventName . '</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>' . $eventInfo . '</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" data-bs-target="#modalConfirm" data-toggle="modal">Open second modal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>';
         
     }
     
@@ -45,20 +62,4 @@ if ($result->num_rows > 0) {
 
 
 ?> 
-<div class="modal" id="myModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+

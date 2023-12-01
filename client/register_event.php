@@ -15,7 +15,7 @@ include 'database_handler.php';
             $reg_success = register_to_event($userId, $eventId);
 
             if ($reg_success) {
-                $_SESSION['reg_success'] = true; 
+                $_SESSION['reg_success'] = $eventId; 
                 logme("okay g");
                 header('Location: index.php');
             } else {

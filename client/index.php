@@ -112,8 +112,38 @@ include 'includes/user_info.php';
                     <div class="row">
                         <?php include_once 'includes/event_container_gen.php' ?>
                     </div>
+                    
                 </div>
             </div>
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Registration Successful!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                                echo '<p>Registration for event is successful' . $_SESSION['reg_success'] . '</p>'
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Go to My events (andito qr mo)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script>
+            <?php if (isset($_SESSION['reg_success'])): ?>
+                var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+                    //unset after showing modal
+                <?php unset($_SESSION['reg_success']); ?>
+            <?php endif; ?>
+        </script>
 <?php
     include_once 'includes/footer.php';
 ?>

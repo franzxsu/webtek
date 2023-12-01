@@ -49,29 +49,9 @@ if ($result->num_rows > 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="modal2" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Registration Successful!</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>You have now registered to ' . $eventName. '</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>
-                                    <a type="button" class="btn btn-primary" data-bs-dismiss="modal" href="#modal2">Go to my events (andito qr)</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    </div>
-                    </div>
-        
-                    
-                    ';
+                </div>
+            </div>';
+            
         } else {
             echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Sign in to register for this event</a>';
         }

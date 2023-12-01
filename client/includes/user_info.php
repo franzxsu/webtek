@@ -23,6 +23,11 @@ if (isset($_SESSION['user_id'])) {
             echo $orgId . " ";
         }
     }
+
+    echo "REGISTERED?:" . $_SESSION['reg_success'];
+
+    
+
 } else {
     echo "YOU ARE NOT LOGGED IN!  ";
 }

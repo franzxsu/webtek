@@ -165,6 +165,44 @@ function get_upcoming_events($currentDate){
   return $result;
 }
 
+function get_upcoming_events_for_me($currentDate, $courseID, $organizations){
+  global $conn;
+
+  // Construct the IN clause for organizations
+  $orgIDs = implode(',', array_map('intval', $organizations));
+  $orgCondition = "";
+  if (!empty($orgIDs)) {
+    $orgCondition = " OR OrganizationID IN ($orgIDs)";
+  }
+
+  // Prepare the statement
+  $query = "SELECT * FROM events WHERE (eventDateStart > ?) AND (courseID = ? $orgCondition) ORDER BY eventDateStart";
+  $stmt = $conn->prepare($query);
+
+  // Bind parameters and execute the query
+  $stmt->bind_param("si", $currentDate, $courseID);
+  $stmt->execute();
+
+  // Get the result
+  $result = $stmt->get_result();
+
+  return $result;
+}
+
+
+function get_registered_events_for_me($currentDate, $userID, $courseID, $organizations){
+  global $conn;
+
+  $query = "SELECT * FROM events WHERE eventDateStart > ? ORDER BY eventDateStart";
+  $stmt = $conn->prepare($query);
+
+  $stmt->bind_param("s", $currentDate);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  return $result;
+}
 
 // function get_upcoming_events($date){
 //   global $conn;

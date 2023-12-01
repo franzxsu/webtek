@@ -1,4 +1,5 @@
 <?php
+
 $sql = "SELECT * FROM events";
 $result = $conn->query($sql);
 echo '
@@ -39,8 +40,11 @@ if ($result->num_rows > 0) {
                                     <p>' . $eventInfo . '</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal" href="#modal2" role="button">Register to event</a>
+                                <form action="register_event.php" method="post">
+                                <input type="hidden" name="event_id" value="' . $eventID . '">
+                                <button type="submit" class="btn btn-primary">Register to event</button>
+                            </form>
+                                    </form>
                                 </div>
                             </div>
                         </div>

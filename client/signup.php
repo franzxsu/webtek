@@ -1,5 +1,5 @@
 <?php
-include 'includes/registration_handler.php';
+include 'includes/signup_handler.php';
 ?>
 
 <!DOCTYPE html>

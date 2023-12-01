@@ -1,8 +1,10 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
 <?php
-include 'includes/user_info.php';
+include 'includes/user_info.php';   
 ?>
+
+
 
 <!DOCTYPE html>
 <html>

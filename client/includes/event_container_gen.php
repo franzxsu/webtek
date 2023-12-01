@@ -2,7 +2,10 @@
 
 include_once 'database_handler.php';
 
-$result = get_upcoming_events(date("Y/m/d"));
+// $result = get_all_events();
+$result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['courseID']);
+// $result = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
+
 echo '
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
 

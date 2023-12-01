@@ -149,11 +149,9 @@ $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SE
                                             <td><?= date("F j", strtotime($event['EventDateEnd'])) ?></td>
                                             <td><a href="#">view QR</a></td>
                                             <td>
-                                                <form action="database_handler.php" method="post">
-                                                    <input type="hidden" name="userID" value="<?= $_SESSION['user_id'] ?>">
-                                                    <input type="hidden" name="eventID" value="<?= $event['eventID'] ?>">
-                                                    <button type="submit" class="btn btn-danger" name="cancel">Cancel</button>
-                                                </form>
+                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelConfirmationModal<?= $event['eventID'] ?>">
+                                                    Cancel
+                                                </button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -161,6 +159,29 @@ $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SE
                                 
                             </table>
                             </div>
+                            <?php foreach ($events as $event) : ?>
+                                <div class="modal fade" id="cancelConfirmationModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="cancelConfirmationModalLabel">Cancel event</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to cancel your registration for this event?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="database_handler.php" method="post">
+                                                    <input type="hidden" name="userID" value="<?= $_SESSION['user_id'] ?>">
+                                                    <input type="hidden" name="eventID" value="<?= $event['eventID'] ?>">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-danger" name="cancel">Confirm Cancel</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                             <div class="row">
                                 <div class="col-md-6 align-self-center">
                                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>

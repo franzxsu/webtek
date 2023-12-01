@@ -1,6 +1,9 @@
 <?php
 $sql = "SELECT * FROM events";
 $result = $conn->query($sql);
+echo
+'<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>';
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -11,8 +14,8 @@ if ($result->num_rows > 0) {
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
 
-        echo 
-            '<div class="col-md-6 col-xl-3 mb-4">
+        echo '
+            <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card" style="width: 18rem; height: 35rem;">
                     <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px; text-align: center;">' 
                     . $eventName . '
@@ -26,14 +29,36 @@ if ($result->num_rows > 0) {
                         <p class="card-text" style="max-width: 100%; padding: 0px;">' . $eventInfo . '</p>
                     </div>';
 
-                    if (isset($_SESSION['user_id'])) {
-                        echo '<a href="register.php?event_id=' . $eventID . '" class="btn btn-primary" style="border-radius: 0px;"">Register</a>';
-                    } else {
-                        echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;"">not sign in</a>';
-                    }
-                    
-                echo'
-                </div>
-            </div>';
+        if (isset($_SESSION['user_id'])) {
+            echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="border-radius: 0px;">Register</button>';
+        } else {
+            echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Not signed in</a>';
+        }
+
+        echo '
+            </div>
+        </div>';
+        
     }
+    
 }
+
+
+?>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                      asd
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>

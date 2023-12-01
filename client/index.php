@@ -21,6 +21,8 @@ include 'includes/user_info.php';
 <?php
     include_once 'includes/sidebar.php';
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">

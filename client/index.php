@@ -18,15 +18,6 @@ include 'includes/user_info.php';
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="./asd.css">
 </head>
-<style>
-
-    /* .modal-backdrop.fade {
-    opacity: 0.5 !important;
-    }
-    .fade:not(.show) {
-    opacity: 1;
-} */
-</style>
 
 <?php
     include_once 'includes/sidebar.php';

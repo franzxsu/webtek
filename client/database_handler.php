@@ -111,6 +111,35 @@ function remove_registration($userID, $eventID) {
 
 }
 
+// function get_all_events()
+// {
+
+//   global $conn;
+
+//   $query = "SELECT * FROM events";
+//   $result = mysqli_query($conn, $query);
+
+//   $events = array();
+
+//   if (mysqli_num_rows($result) > 0) {
+
+//     while ($row = mysqli_fetch_assoc($result)) {
+
+//       $event = array();
+
+//       $event['eventID'] = $row["eventID"];
+//       $event['organizerID'] = $row["OrganizerId"];
+//       $event['eventName'] = $row["EventName"];
+//       $event['startDate'] = $row["EventDateStart"];
+//       $event['endDate'] = $row["EventDateEnd"];
+
+//       $events[] = $event;
+//     }
+//   }
+
+//   return $events;
+// }
+
 function get_all_events()
 {
 
@@ -119,26 +148,52 @@ function get_all_events()
   $query = "SELECT * FROM events";
   $result = mysqli_query($conn, $query);
 
-  $events = array();
-
-  if (mysqli_num_rows($result) > 0) {
-
-    while ($row = mysqli_fetch_assoc($result)) {
-
-      $event = array();
-
-      $event['eventID'] = $row["eventID"];
-      $event['organizerID'] = $row["OrganizerId"];
-      $event['eventName'] = $row["EventName"];
-      $event['startDate'] = $row["EventDateStart"];
-      $event['endDate'] = $row["EventDateEnd"];
-
-      $events[] = $event;
-    }
-  }
-
-  return $events;
+  return $result;
 }
+
+function get_upcoming_events($currentDate){
+  global $conn;
+
+  $query = "SELECT * FROM events WHERE eventDateStart > ? ORDER BY eventDateStart";
+  $stmt = $conn->prepare($query);
+
+  $stmt->bind_param("s", $currentDate);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  return $result;
+}
+
+
+// function get_upcoming_events($date){
+//   global $conn;
+
+//   $query = "SELECT * FROM events WHERE eventDateStart > '2023/12/02'";
+  
+//   $result = mysqli_query($conn, $query);
+
+//   $events = array();
+
+//   if (mysqli_num_rows($result) > 0) {
+
+//     while ($row = mysqli_fetch_assoc($result)) {
+
+//       $event = array();
+
+//       $event['eventID'] = $row["eventID"];
+//       $event['organizerID'] = $row["OrganizerId"];
+//       $event['eventName'] = $row["EventName"];
+//       $event['startDate'] = $row["EventDateStart"];
+//       $event['endDate'] = $row["EventDateEnd"];
+
+//       $events[] = $event;
+//     }
+//   }
+
+//   return $events;
+
+// }
 
 //giveen email of the user, return his/her course id, return null if none
 function get_user_course_id($email)

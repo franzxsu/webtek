@@ -1,7 +1,8 @@
 <?php
 
-$sql = "SELECT * FROM events";
-$result = $conn->query($sql);
+include_once 'database_handler.php';
+
+$result = get_upcoming_events(date("Y/m/d"));
 echo '
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
 
@@ -38,11 +39,13 @@ if ($result->num_rows > 0) {
                                 <div class="modal-body">
                                     <p>' . $eventInfo . '</p>
                                 </div>
-                                <div class="modal-footer">';
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>';
 
                                 if(isset($_SESSION['user_id'])){
                                     echo '<form action="register_event.php" method="post">
                                     <input type="hidden" name="event_id" value="' . $eventID . '">
+                                    
                                     <button type="submit" class="btn btn-primary">Register to event</button>
                                     </form>
                                     </form>';

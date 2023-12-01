@@ -26,46 +26,48 @@ if ($result->num_rows > 0) {
                 </div>';
                 
                 if (isset($_SESSION['user_id'])) {
-                    echo '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle_' . $eventID . '" style="border-radius: 0px;">Register</button>
-                    
-                    <div class="modal fade" id="exampleModalToggle_' . $eventID . '" tabindex="-1" aria-hidden="true">
+                    echo '<a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'" role="button" style="border-radius: 0px;">Register</a>
+        
+                    <div class="modal fade" id="exampleModalToggle_'.$eventID.'" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">' . $eventName . '</h5>
+                                    <h4 class="modal-title">Register to     ' . $eventName . '</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <p>' . $eventInfo . '</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2_' . $eventID . '">Open second modal</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal" href="#modal2" role="button">Register to event</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="modal fade" id="modal2_' . $eventID . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="modal2" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">' . $eventName . '</h5>
+                                    <h5 class="modal-title">Registration Successful!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Confirmation for event ' . $eventName . '</p>
+                                    <p>You have now registered to ' . $eventName. '</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#exampleModalToggle_' . $eventID . '">Confirmation OK</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>
+                                    <a type="button" class="btn btn-primary" data-bs-dismiss="modal" href="#modal2">Go to my events (andito qr)</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                </div>
-            </div>';
+                    </div>
+                    </div>
+        
+                    
+                    ';
         } else {
             echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Sign in to register for this event</a>';
         }

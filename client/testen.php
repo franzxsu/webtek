@@ -32,3 +32,6 @@ include 'includes/user_info.php';
 <?php
     include_once 'includes/footer.php';
 ?>
+
+</body>
+</html>

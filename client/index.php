@@ -118,6 +118,8 @@ session_start();
                     
                 </div>
             </div>
+
+            <!-- SUCCESS MODAL (WILL REFACTOR PARA ISANG MODAL NALANG SSOON) -->
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -137,8 +139,30 @@ session_start();
                     </div>
                 </div>
             </div>
+
+            <!-- FAIL MODAL -->
+            <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Registration Failed!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                                echo '<p>ERROR: ' . $_SESSION['reg_fail'] . '</p>'
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <script>
-            <?php if (isset($_SESSION['reg_success'])): ?>
+            <?php 
+            
+            if (isset($_SESSION['reg_success'])): ?>
                 var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
                     keyboard: false
                 });
@@ -146,6 +170,17 @@ session_start();
                     //unset after showing modal
                 <?php unset($_SESSION['reg_success']); ?>
             <?php endif; ?>
+
+            <?php 
+            if (isset($_SESSION['reg_fail'])): ?>
+                var myModal = new bootstrap.Modal(document.getElementById('failModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+                    //unset after showing modal
+                <?php unset($_SESSION['reg_fail']); ?>
+            <?php endif; ?>
+
         </script>
 <?php
     include_once 'includes/footer.php';

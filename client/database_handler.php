@@ -82,19 +82,29 @@ function email_exists($email)
 
 //return true if successful, k
 function register_to_event($userID, $eventID) {
-
   global $conn;
 
-  $stmt = $conn->prepare("INSERT INTO registrations (userId, eventId) VALUES (?, ?)"); 
-  $stmt->bind_param("ii", $userID, $eventID);
-    
-  if(!$stmt->execute()) {
-    echo "fail";
+  // Check if the registration already exists
+  $checkStmt = $conn->prepare("SELECT * FROM registrations WHERE userId = ? AND eventId = ?");
+  $checkStmt->bind_param("ii", $userID, $eventID);
+  $checkStmt->execute();
+  $existingRegistration = $checkStmt->get_result()->fetch_assoc();
+
+  if ($existingRegistration) {
+      return "You are already registered for this event.";
+  }
+
+  // If not, proceed with inserting the new registration
+  $insertStmt = $conn->prepare("INSERT INTO registrations (userId, eventId) VALUES (?, ?)");
+  $insertStmt->bind_param("ii", $userID, $eventID);
+
+  if (!$insertStmt->execute()) {
+      return $insertStmt->error;
   }
 
   return true;
-
 }
+
 
 if (isset($_POST['cancel'])) {
   $userID = $_POST['userID'];
@@ -125,35 +135,6 @@ function remove_registration($userID, $eventID) {
   return true; 
 
 }
-
-// function get_all_events()
-// {
-
-//   global $conn;
-
-//   $query = "SELECT * FROM events";
-//   $result = mysqli_query($conn, $query);
-
-//   $events = array();
-
-//   if (mysqli_num_rows($result) > 0) {
-
-//     while ($row = mysqli_fetch_assoc($result)) {
-
-//       $event = array();
-
-//       $event['eventID'] = $row["eventID"];
-//       $event['organizerID'] = $row["OrganizerId"];
-//       $event['eventName'] = $row["EventName"];
-//       $event['startDate'] = $row["EventDateStart"];
-//       $event['endDate'] = $row["EventDateEnd"];
-
-//       $events[] = $event;
-//     }
-//   }
-
-//   return $events;
-// }
 
 function get_all_events()
 {
@@ -308,9 +289,6 @@ function remove_user_to_org($email, $organizationID)
 {
 }
 function show_events_for_me($organizations, $course){
-
-}
-function get_registered_events(){
 
 }
 function get_attendance_list(){

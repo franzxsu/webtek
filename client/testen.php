@@ -2,6 +2,8 @@
 include 'includes/user_info.php';
 ?>
 
+
+
 <!DOCTYPE html>
 <html>
 
@@ -25,5 +27,8 @@ include 'includes/user_info.php';
                         <?php include 'includes/event_container_gen.php' ?>
                     </div>
                 </div>
-</body>
 
+
+<?php
+    include_once 'includes/footer.php';
+?>

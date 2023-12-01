@@ -22,8 +22,7 @@ include 'includes/user_info.php';
 <?php
     include_once 'includes/sidebar.php';
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        </nav>
+
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
@@ -109,10 +108,12 @@ include 'includes/user_info.php';
                         <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                     </div>
                     <div class="row">
-                        <?php include 'includes/event_container_gen.php' ?>
+                        <?php include_once 'includes/event_container_gen.php' ?>
                     </div>
                 </div>
             </div>
 <?php
     include_once 'includes/footer.php';
 ?>
+</body>
+</html>

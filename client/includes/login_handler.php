@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $user = check_login($email, $password);
+    $user = check_login_no_hash($email, $password);
     
     //check if may nareturn na row, then it is logged in
     if ($user) {

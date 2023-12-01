@@ -18,23 +18,23 @@ function test()
 }
 
 // OLD CHECK_LOGIN CODE
-// function check_login($email, $password) {
+function check_login_no_hash($email, $password) {
   
-//   global $conn;
-//   $stmt = $conn->prepare("SELECT userId, FirstName, LastName, email FROM users WHERE email = ? AND password = ?");
-//   $stmt->bind_param("ss", $email, $password);
+  global $conn;
+  $stmt = $conn->prepare("SELECT userId, FirstName, LastName, email FROM users WHERE email = ? AND password = ?");
+  $stmt->bind_param("ss", $email, $password);
 
-//   $stmt->execute();
-//   $result = $stmt->get_result();
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-//   if ($result->num_rows === 1) {  
-//     //get user row data from da database
-//      $userData = $result->fetch_assoc(); 
-//      return $userData;  
-//   }
+  if ($result->num_rows === 1) {  
+    //get user row data from da database
+     $userData = $result->fetch_assoc(); 
+     return $userData;  
+  }
   
-//   return null;
-// }
+  return null;
+}
 
 function check_login($email, $password)
 {

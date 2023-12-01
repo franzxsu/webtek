@@ -49,12 +49,15 @@ if ($result->num_rows > 0) {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>';
+                ';
             
-        } else {
+        } 
+        else {
             echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Sign in to register for this event</a>';
         }
+        echo '
+            </div>
+        </div>';
     }
 }
 ?>

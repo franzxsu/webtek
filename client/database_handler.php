@@ -95,6 +95,21 @@ function register_to_event($userID, $eventID) {
   return true;
 
 }
+
+if (isset($_POST['cancel'])) {
+  $userID = $_POST['userID'];
+  $eventID = $_POST['eventID'];
+
+  $removed = remove_registration($userID, $eventID);
+
+  if ($removed) {
+      header('Location: my_events.php?removed=success');
+      exit();
+  } else {
+      echo "fail remove reg";
+  }
+}
+
 function remove_registration($userID, $eventID) {
 
   global $conn;

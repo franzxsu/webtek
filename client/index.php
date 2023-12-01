@@ -132,7 +132,7 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Go to My events (andito qr mo)</button>
+                            <a href="my_events.php" class="btn btn-primary">Go to My events (andito qr mo)</a>
                         </div>
                     </div>
                 </div>

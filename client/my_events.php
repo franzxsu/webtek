@@ -135,7 +135,6 @@ $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SE
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>QR</th>
-                                        <th>Status</th>
                                         <th>Cancel</th>
                                     </tr>
                                 </thead>
@@ -146,11 +145,16 @@ $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SE
                                             <td><?= $event['EventInfo'] ?></td>
                                             <td><?= get_organization_name_from_id($event['OrganizerId']) ?></td>
                                             <td><?= $event['EventLocation'] ?></td>
-                                            <td><?= $event['EventDateStart'] ?></td>
-                                            <td><?= $event['EventDateEnd'] ?></td>
+                                            <td><?= date("F j", strtotime($event['EventDateStart'])) ?></td>
+                                            <td><?= date("F j", strtotime($event['EventDateEnd'])) ?></td>
                                             <td><a href="#">view QR</a></td>
-                                            <td><a href="#">Cancel</a></td>
-                                            <td>upcoming</td>
+                                            <td>
+                                                <form action="database_handler.php" method="post">
+                                                    <input type="hidden" name="userID" value="<?= $_SESSION['user_id'] ?>">
+                                                    <input type="hidden" name="eventID" value="<?= $event['eventID'] ?>">
+                                                    <button type="submit" class="btn btn-danger" name="cancel">Cancel</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

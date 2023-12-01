@@ -12,11 +12,6 @@ if ($conn->connect_error) {
 //  echo "database ok!";
 //}
 
-function test()
-{
-  return "test";
-}
-
 // OLD CHECK_LOGIN CODE
 function check_login_no_hash($email, $password) {
   
@@ -199,5 +194,19 @@ function get_registered_events(){
 
 }
 function get_attendance_list(){
+
+}
+
+function get_event_name_from_id($eventID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT eventName from events WHERE eventID = ?;");
+  $stmt->bind_param("s", $eventID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+  return $row['eventName'];
 
 }

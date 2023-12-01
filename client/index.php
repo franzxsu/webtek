@@ -2,6 +2,7 @@
 
 <?php
 include 'includes/user_info.php';   
+include_once 'database_handler.php'
 ?>
 
 
@@ -124,7 +125,7 @@ include 'includes/user_info.php';
                         </div>
                         <div class="modal-body">
                             <?php
-                                echo '<p>Registration for event is successful' . $_SESSION['reg_success'] . '</p>'
+                                echo '<p>You have successfully registered to ' . get_event_name_from_id($_SESSION['reg_success']) . '</p>'
                             ?>
                         </div>
                         <div class="modal-footer">

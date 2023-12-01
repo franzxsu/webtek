@@ -1,8 +1,10 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
 <?php
-include 'includes/user_info.php';   
-include_once 'database_handler.php'
+include_once 'database_handler.php';
+
+session_start();
+
 ?>
 
 
@@ -117,7 +119,7 @@ include_once 'database_handler.php'
                 </div>
             </div>
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="successModalLabel">Registration Successful!</h5>

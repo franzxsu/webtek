@@ -24,10 +24,9 @@ if ($result->num_rows > 0) {
                 <div class="card-body" style="padding: 0px;">
                     <p class="card-text" style="margin: 0px; text-align: center;">' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
                     <p class="card-text" style="margin: 0px; text-align: center;">VENUE: ' . $eventLocation . '</p>
-                </div>';
+                </div>
                 
-                if (isset($_SESSION['user_id'])) {
-                    echo '<a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'" role="button" style="border-radius: 0px;">Register</a>
+                <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'" role="button" style="border-radius: 0px;">Register</a>
         
                     <div class="modal fade" id="exampleModalToggle_'.$eventID.'" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -39,22 +38,27 @@ if ($result->num_rows > 0) {
                                 <div class="modal-body">
                                     <p>' . $eventInfo . '</p>
                                 </div>
-                                <div class="modal-footer">
-                                <form action="register_event.php" method="post">
-                                <input type="hidden" name="event_id" value="' . $eventID . '">
-                                <button type="submit" class="btn btn-primary">Register to event</button>
-                            </form>
+                                <div class="modal-footer">';
+
+                                if(isset($_SESSION['user_id'])){
+                                    echo '<form action="register_event.php" method="post">
+                                    <input type="hidden" name="event_id" value="' . $eventID . '">
+                                    <button type="submit" class="btn btn-primary">Register to event</button>
                                     </form>
+                                    </form>';
+                                }
+                                else{
+                                    echo '<a href="login.php" type="submit" class="btn btn-primary">You must be signed in to continue</a>';
+                                }
+                                    
+                            
+                                echo'
                                 </div>
                             </div>
                         </div>
                     </div>
                 ';
-            
-        } 
-        else {
-            echo '<a href="login.php" class="btn btn-primary" style="border-radius: 0px;">Sign in to register for this event</a>';
-        }
+    
         echo '
             </div>
         </div>';

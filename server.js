@@ -38,7 +38,6 @@ app.use(session({
   secret: 'idk', // i have no idea what this does
   resave: false,
   saveUninitialized: true,
-  // store: seshonStorage,
   cookie: {
     secure: false,
   }
@@ -188,6 +187,7 @@ app.post('/createEvent', (req, res) => {
   const eventData = req.body;
   console.log(req.body);
 
+  // sakaling may nakapasa sa client-side alert somehow
   if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
     res.status.apply(406).json( {message: 'How did you do this lol'});
     return;

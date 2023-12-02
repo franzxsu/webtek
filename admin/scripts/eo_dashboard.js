@@ -44,40 +44,6 @@ function getEvents() {
     })
 }
 
-function createTable() {
-    const tableContainer = document.getElementById('eventsContainer');
-    const table = document.createElement('table');
-    const tableHeader = document.createElement('thead');
-    const tableBody = document.createElement('tbody');
-
-    const headerRow = document.createElement('tr');
-    for (let key in events[0]) {
-        if (events[0].hasOwnProperty(key)) {
-            const headerCell = document.createElement('th');
-            headerCell.textContent = key.toUpperCase();
-            headerRow.appendChild(headerCell);
-        }
-    }
-
-    tableHeader.appendChild(headerRow);
-    table.appendChild(tableHeader);
-
-    events.forEach(item => {
-        const row = document.createElement('tr');
-        for (let key in item) {
-            if (item.hasOwnProperty(key)) {
-                const cell = document.createElement('td');
-                cell.textContent = item[key];
-                row.appendChild(cell);
-            }
-        }
-        tableBody.appendChild(row);
-    });
-
-    table.appendChild(tableBody);
-    tableContainer.appendChild(table);
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     getDeets();
     getEvents();
@@ -85,8 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const createEventBtn = document.getElementById('createEventBtn');
     const eventFormContainer = document.getElementById('eventFormContainer');
     const eventsContainer = document.getElementById('eventsContainer');
-    const clearFormBtn = document.getElementById('clearFormBtn');
-    const form = document.createElement('form');
 
     createEventBtn.addEventListener('click', function () {
         eventFormContainer.innerHTML = '';
@@ -225,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
             eventsContainer.classList.remove('hidden');
             eventFormContainer.classList.add('hidden');
             console.log('show events'); 
-            createTable();
+            
+            
         } else {
             showAllEventsBtn.textContent = 'Show Events';
             eventsContainer.classList.add('hidden');
@@ -236,6 +201,37 @@ document.addEventListener('DOMContentLoaded', function () {
     showAllEventsBtn.addEventListener('click', function () {
         // Clear previous events
         eventsContainer.innerHTML = '';
+        const table = document.createElement('table');
+        const tableHeader = document.createElement('thead');
+        const tableBody = document.createElement('tbody');
+    
+        const headerRow = document.createElement('tr');
+        for (let key in events[0]) {
+            if (events[2].hasOwnProperty(key)) {
+                const headerCell = document.createElement('th');
+                headerCell.textContent = key.toUpperCase();
+                headerRow.appendChild(headerCell);
+            }
+        }
+    
+        tableHeader.appendChild(headerRow);
+        table.appendChild(tableHeader);
+    
+        events.forEach(item => {
+            const row = document.createElement('tr');
+            for (let key in item) {
+                if (item.hasOwnProperty(key)) {
+                    const cell = document.createElement('td');
+                    cell.textContent = item[key];
+                    row.appendChild(cell);
+                }
+            }
+            tableBody.appendChild(row);
+        });
+    
+        table.appendChild(tableBody);
+        console.log(table);
+        eventsContainer.appendChild(table);
 
 
         // Retrieve stored events from localStorage

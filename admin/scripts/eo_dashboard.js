@@ -1,6 +1,7 @@
 var welcomeMsg = document.getElementById("welcomeSpread");
 var id;
 var orgName;
+var events;
 
 
 function getDeets() {
@@ -22,12 +23,64 @@ function getDeets() {
         welcomeMsg.innerText = `Hello, ${orgName}, how are you today? Your ID number is ${id}!`;
     })
     .catch(error => {
-        console.error('Error', error.message);
+        console.error('Error:', error.message);
     })
+}
+
+function getEvents() {
+    fetch('/viewEvents')
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Error retrieving events!'); 
+    })
+    .then(data => {
+        events = data;
+        console.log(events);
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+    })
+}
+
+function createTable() {
+    const tableContainer = document.getElementById('eventsContainer');
+    const table = document.createElement('table');
+    const tableHeader = document.createElement('thead');
+    const tableBody = document.createElement('tbody');
+
+    const headerRow = document.createElement('tr');
+    for (let key in events[0]) {
+        if (events[0].hasOwnProperty(key)) {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = key.toUpperCase();
+            headerRow.appendChild(headerCell);
+        }
+    }
+
+    tableHeader.appendChild(headerRow);
+    table.appendChild(tableHeader);
+
+    events.forEach(item => {
+        const row = document.createElement('tr');
+        for (let key in item) {
+            if (item.hasOwnProperty(key)) {
+                const cell = document.createElement('td');
+                cell.textContent = item[key];
+                row.appendChild(cell);
+            }
+        }
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
+    tableContainer.appendChild(table);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     getDeets();
+    getEvents();
 
     const createEventBtn = document.getElementById('createEventBtn');
     const eventFormContainer = document.getElementById('eventFormContainer');
@@ -171,6 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
             showAllEventsBtn.textContent = 'Hide Events';
             eventsContainer.classList.remove('hidden');
             eventFormContainer.classList.add('hidden');
+            console.log('show events'); 
+            createTable();
         } else {
             showAllEventsBtn.textContent = 'Show Events';
             eventsContainer.classList.add('hidden');
@@ -182,45 +237,47 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clear previous events
         eventsContainer.innerHTML = '';
 
+
         // Retrieve stored events from localStorage
-        let eventData = JSON.parse(localStorage.getItem('events')) || [];
+        // let eventData = JSON.parse(getEvents()) || [];
+        // console.log(getEvents());
 
         // Create event containers dynamically
-        eventData.forEach(event => {
-            const eventDiv = document.createElement('div');
-            eventDiv.classList.add('event-item');
+        // eventData.forEach(event => {
+            // const eventDiv = document.createElement('div');
+            // eventDiv.classList.add('event-item');
 
-            const eventName = document.createElement('h3');
-            eventName.textContent = `Event Name: ${event.eventName}`;
+            // const eventName = document.createElement('h3');
+            // eventName.textContent = `Event Name: ${event.eventName}`;
 
-            const eventVenue = document.createElement('p');
-            eventVenue.textContent = `Venue: ${event.eventVenue}`;
+            // const eventVenue = document.createElement('p');
+            // eventVenue.textContent = `Venue: ${event.eventVenue}`;
 
-            const eventDateStart = document.createElement('p');
-            eventDate.textContent = `Date Start: ${event.eventDate}`;
+            // const eventDateStart = document.createElement('p');
+            // eventDate.textContent = `Date Start: ${event.eventDate}`;
 
-            const eventDateEnd = document.createElement('p');
-            eventDate.textContent = `Date End: ${event.eventDate}`;
+            // const eventDateEnd = document.createElement('p');
+            // eventDate.textContent = `Date End: ${event.eventDate}`;
 
-            const eventFor = document.createElement('p');
-            eventFor.textContent = `For: ${event.eventFor}`;
+            // const eventFor = document.createElement('p');
+            // eventFor.textContent = `For: ${event.eventFor}`;
 
-            const eventDescription = document.createElement('p');
-            eventDescription.textContent = `Description: ${event.eventDescription}`;
+            // const eventDescription = document.createElement('p');
+            // eventDescription.textContent = `Description: ${event.eventDescription}`;
 
-            eventDiv.appendChild(eventName);
-            eventDiv.appendChild(eventVenue);
-            eventDiv.appendChild(eventDateStart);
-            eventDiv.appendChild(eventDateEnd);
-            eventDiv.appendChild(eventFor);
-            eventDiv.appendChild(eventDescription);
+            // eventDiv.appendChild(eventName);
+            // eventDiv.appendChild(eventVenue);
+            // eventDiv.appendChild(eventDateStart);
+            // eventDiv.appendChild(eventDateEnd);
+            // eventDiv.appendChild(eventFor);
+            // eventDiv.appendChild(eventDescription);
 
-            eventsContainer.appendChild(eventDiv);
-        });
+            // eventsContainer.appendChild(eventDiv);
+        // });
 
-        if (showAllEventsBtn.dataset.state === 'show') {
-            showAllEventsBtn.click();
-        }
+        // if (showAllEventsBtn.dataset.state === 'show') {
+            // showAllEventsBtn.click();
+        // }
     });
 
     // // Functionality for form submission (Create button)

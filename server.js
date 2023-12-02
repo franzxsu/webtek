@@ -80,7 +80,7 @@ app.get('/eo_dashboard', (req, res) => {
 });
 
 app.get('/sendDeets', (req, res) => {
-  if(req.session.adminId) {
+  if (req.session.adminId) {
     res.status(200).json({
         id: req.session.adminId,
         username: req.session.username
@@ -90,8 +90,35 @@ app.get('/sendDeets', (req, res) => {
       id: req.session.eventOrgId,
       username: req.session.username
     })
+  } else {
+    res.status(404).json({ error: 'User not found!'});
   } 
 });
+
+app.get('/viewEvents', (req, res) => {
+  if (req.session.eventOrgId || req.session.adminId) {
+    const queryString = `SELECT * FROM events`;
+
+    connection.query(queryString, (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Error verifying credentials!');
+        return;
+      }
+
+      if (results && results.length > 0) {
+        res.status(200).json(results);
+      } else {
+        res.status(404).json({message: 'No events found!'});
+      }
+    });
+  } else {
+    console.log('ops bat ka andito bawal balik ka');
+    res.redirect('/login')
+  }
+});
+
+
 
 app.post('/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -108,58 +135,67 @@ app.post('/logout', (req, res) => {
 app.post('/verify', (req, res) => {
   const {username, password} = req.body;
 
-  connection.query(
-    'SELECT id AS AdminOrOrgID, username AS UsernameOrOrganizationName, password AS Password FROM admin WHERE username = ? AND password = ? ' +
-    'UNION ' +
-    'SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password FROM eventorganizers WHERE OrganizationName = ? AND password = ?',
-    [username, password, username, password],
-    (error, results) => {
-      if(error) {
-        console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
+  const queryString = `
+  SELECT id AS AdminOrOrgID, username AS UsernameOrOrganizationName, password AS Password
+  FROM admin
+  WHERE username = ? AND password = ?
+  UNION
+  SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
+  FROM eventorganizers
+  WHERE OrganizationName = ? AND password = ? `;
+
+  connection.query( queryString, [username, password, username, password], (error, results) => {
+    if(error) {
+      console.error('Error querying database:', error);
+      res.status(500).send('Error verifying credentials!');
+      return;
+    }
+
+    if (results && results.length > 0) {
+      // yes user
+      const user = results[0];
+
+      if (req.session.adminId || req.session.eventOrgId) {
+        res.status(401).json({message: 'User is already logged in!'});
         return;
       }
 
-      if (results && results.length > 0) {
-        // yes user
-        const user = results[0];
+      if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
+        // log in si admin
+        req.session.username = username;
+        req.session.adminId = user.AdminOrOrgID;
+        console.log("log in si admin: " + req.session.adminId);
+        res.redirect('/admin_dashboard');
 
-        if (req.session.adminId || req.session.eventOrgId) {
-          res.status(401).json({message: 'User is already logged in!'});
-          return;
-        }
-
-        if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
-          // log in si admin
-          req.session.username = username;
-          req.session.adminId = user.AdminOrOrgID;
-          console.log("log in si admin: " + req.session.adminId);
-          res.redirect('/admin_dashboard');
-
-        } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
-          // log in si event organizer
-          req.session.username = username;
-          req.session.eventOrgId = user.AdminOrOrgID;
-          console.log("log in si event organizer: " + req.session.eventOrgId);
-          res.redirect('/eo_dashboard');
-        }
-
-      } else {
-        // non user
-        res.status(401).json( {message: 'Invalid username or password! Try again. tite' });
+      } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
+        // log in si event organizer
+        req.session.username = username;
+        req.session.eventOrgId = user.AdminOrOrgID;
+        console.log("log in si event organizer: " + req.session.eventOrgId);
+        res.redirect('/eo_dashboard');
       }
+
+    } else {
+      // non user
+      res.status(401).json( {message: 'Invalid username or password! Try again. tite' });
     }
+  }
   )
 });
 
 app.post('/createEvent', (req, res) => {
+
   const eventData = req.body;
   console.log(req.body);
 
+  if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
+    res.status.apply(406).json( {message: 'How did you do this lol'});
+    return;
+  }
+
   const insertQuery = `
   INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
 
   const values = [
     eventData.id,
@@ -174,7 +210,9 @@ app.post('/createEvent', (req, res) => {
 
   connection.query(insertQuery, values, (error) => {
     if (error) {
-      console.error("Error inserting data:", error);
+      console.error('Error querying database:', error);
+      res.status(500).send('Error verifying credentials!');
+      return;
     } else {
       console.log("Data inserted successfully!")
       res.status(200).json( {message: 'Event successfully created!'});

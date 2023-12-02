@@ -1,8 +1,13 @@
 <!-- https://getbootstrap.com/docs/5.3/getting-started/introduction/ -->
 
 <?php
-include 'includes/user_info.php';
+include_once 'database_handler.php';
+
+session_start();
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -16,12 +21,13 @@ include 'includes/user_info.php';
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="./asd.css">
 </head>
 
 <?php
     include_once 'includes/sidebar.php';
 ?>
-        </nav>
+
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
@@ -107,10 +113,75 @@ include 'includes/user_info.php';
                         <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                     </div>
                     <div class="row">
-                        <?php include 'includes/event_container_gen.php' ?>
+                        <?php include_once 'includes/event_container_gen.php' ?>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- SUCCESS MODAL (WILL REFACTOR PARA ISANG MODAL NALANG SSOON) -->
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Registration Successful!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                                echo '<p>You have successfully registered to ' . get_event_name_from_id($_SESSION['reg_success']) . '</p>'
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="my_events.php" class="btn btn-primary">Go to My events (andito qr mo)</a>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- FAIL MODAL -->
+            <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Registration Failed!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                                echo '<p>ERROR: ' . $_SESSION['reg_fail'] . '</p>'
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script>
+            <?php 
+            
+            if (isset($_SESSION['reg_success'])): ?>
+                var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+                    //unset after showing modal
+                <?php unset($_SESSION['reg_success']); ?>
+            <?php endif; ?>
+
+            <?php 
+            if (isset($_SESSION['reg_fail'])): ?>
+                var myModal = new bootstrap.Modal(document.getElementById('failModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+                    //unset after showing modal
+                <?php unset($_SESSION['reg_fail']); ?>
+            <?php endif; ?>
+
+        </script>
 <?php
     include_once 'includes/footer.php';
 ?>

@@ -153,5 +153,9 @@ app.post('/verify', (req, res) => {
 });
 
 app.post('/createEvent', (req, res) => {
+  const eventData = req.body;
 
+  console.log('Received data:', eventData);
+
+  res.status(200).json({message: 'Submission received successfully!'});
 });

@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (confirm('Confirm event creation?')) {
                     const formData = new FormData(form);
                     const eventData = {};
+                    eventData["orgName"] = orgName;
                     for (const [name, value] of formData.entries()) {
                         eventData[name] = value;
                     }
@@ -222,34 +223,52 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Functionality for form submission (Create button)
-    form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form submission for demonstration purposes
+    // // Functionality for form submission (Create button)
+    // form.addEventListener('submit', function (event) {
+    //     event.preventDefault(); // Prevent form submission for demonstration purposes
 
-        // Perform actions when the Create button is clicked
-        if (form.checkValidity()) {
-            // Gather form data
-            const formData = new FormData(form);
-            const eventData = {};
-            for (const [name, value] of formData.entries()) {
-                eventData[name] = value;
-            }
-            // Save new event data to localStorage
-            // saveEventData(eventData);
+    //     // Perform actions when the Create button is clicked
+    //     if (form.checkValidity()) {
+    //         // Gather form data
+    //         const formData = new FormData(form);
+    //         const eventData = {};
+    //         for (const [name, value] of formData.entries()) {
+    //             eventData[name] = value;
+    //         }
+    //         // Save new event data to localStorage
+    //         // saveEventData(eventData);
 
-            // Reset the form after processing data
-            form.reset();
-            eventFormContainer.classList.add('hidden'); // Hide the form after submission (you can adjust this behavior)
+    //         // Reset the form after processing data
+    //         form.reset();
+    //         eventFormContainer.classList.add('hidden'); // Hide the form after submission (you can adjust this behavior)
 
-            // Trigger display of all events again, including the newly added event
-            // showAllEventsBtn.click();
-        }
-    });
+    //         // Trigger display of all events again, including the newly added event
+    //         // showAllEventsBtn.click();
+    //     }
+    // });
 
     // Function to save event data to localStorage
     function saveEventData(eventData) {
-        let events = JSON.parse(localStorage.getItem('events')) || [];
-        events.push(eventData);
-        localStorage.setItem('events', JSON.stringify(events));
+        // let events = JSON.parse(localStorage.getItem('events')) || [];
+        // events.push(eventData);
+        // localStorage.setItem('events', JSON.stringify(events));
+
+        fetch('/createEvent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(eventData)
+        })
+        .then(response => {
+            if(response.ok) {
+                return response.json().then(data => {
+                    alert(data.message);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
     }
 });

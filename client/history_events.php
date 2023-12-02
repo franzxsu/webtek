@@ -4,7 +4,7 @@ include_once 'database_handler.php';
 session_start();
 
 if(isset($_SESSION['user_id'])){
-    $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
+    $events = get_registered_events_for_me_done(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
 }
 
 ?>
@@ -16,7 +16,7 @@ if(isset($_SESSION['user_id'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Events History</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -137,7 +137,9 @@ if(isset($_SESSION['user_id'])){
                                         <th>Event Venue</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Attendance</th>
                                         <th>Rate</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -149,6 +151,7 @@ if(isset($_SESSION['user_id'])){
                                             <td><?= $event['EventLocation'] ?></td>
                                             <td><?= date("F j", strtotime($event['EventDateStart'])) ?></td>
                                             <td><?= date("F j", strtotime($event['EventDateEnd'])) ?></td>
+                                            <td style="text-align: center;"><i class="fas fa-check"></i></td>
                                             <td>
                                                 <!-- le rating modal -->
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#ratingModal<?= $event['eventID'] ?>">

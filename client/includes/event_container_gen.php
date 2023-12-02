@@ -19,8 +19,8 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $eventID = $row["eventID"];
         $eventName = $row["EventName"];
-        $eventDateStart = date_format(date_create($row["EventDateStart"]), "F j, Y");
-        $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j, Y");
+        $eventDateStart = date_format(date_create($row["EventDateStart"]), "F j");
+        $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j");
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
 
@@ -33,7 +33,7 @@ if ($result->num_rows > 0) {
                 <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem; object-fit: cover;">
                 <div class="card-body" style="padding: 0px;">
                     <p class="card-text" style="margin: 0px; text-align: center;">' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
-                    <p class="card-text" style="margin: 0px; text-align: center;">VENUE: ' . $eventLocation . '</p>
+                    <p class="card-text" style="margin: 0px; text-align: center;">' . $eventLocation . '</p>
                 </div>
                 
                 <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'" role="button" style="border-radius: 0px;">Register</a>

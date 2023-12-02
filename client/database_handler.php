@@ -211,6 +211,33 @@ function get_registered_events_for_me($currentDate, $userID, $courseID, $organiz
   return $result;
 }
 
+function get_registered_events_for_me_done($currentDate, $userID, $courseID, $organizations){
+  global $conn;
+
+  $orgIDs = implode(',', array_map('intval', (array)$organizations));
+
+  $orgCondition = "";
+  if (!empty($orgIDs)) {
+    $orgCondition = " OR OrganizationID IN ($orgIDs)";
+  }
+
+  $query = "SELECT e.* FROM events e
+            JOIN registrations r ON e.eventID = r.eventID
+            WHERE (e.eventDateStart < ?) 
+            AND ((e.courseID = ? $orgCondition) OR (e.courseID IS NULL AND e.OrganizationID IS NULL)) 
+            AND r.userID = ?
+            ORDER BY e.eventDateStart";
+
+  $stmt = $conn->prepare($query);
+
+  $stmt->bind_param("sii", $currentDate, $courseID, $userID);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  return $result;
+}
+
 
 // function get_upcoming_events($date){
 //   global $conn;
@@ -282,15 +309,7 @@ function get_user_organizations($userID)
 
   return $orgs;
 }
-function add_user_to_org($email, $organizationID)
-{
-}
-function remove_user_to_org($email, $organizationID)
-{
-}
-function show_events_for_me($organizations, $course){
 
-}
 function get_attendance_list(){
 
 }
@@ -319,5 +338,30 @@ function get_organization_name_from_id($orgID){
 
   $row = $result->fetch_assoc();
   return $row['orgName'];
+}
 
+function get_event_course($eventID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT courseID from events WHERE eventID = ?;");
+  $stmt->bind_param("s", $eventID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+  return $row['courseID'];
+}
+
+function get_event_org($eventID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT organizationID from events WHERE eventID = ?;");
+  $stmt->bind_param("s", $eventID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+  return $row['organizationID'];
 }

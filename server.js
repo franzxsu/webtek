@@ -12,8 +12,8 @@ const app = express()
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
-  database: 'webteknameronadmin'
+  password: '',
+  database: 'events'
 });
 
 connection.connect((err) => {
@@ -30,8 +30,9 @@ app.listen(port, () => {
 })  
 
 app.set('view engine', 'ejs')
-
+app.use('/admin/assets', express.static(path.join(__dirname, 'admin/public')));
 app.use('/admin/scripts', express.static(path.join(__dirname, 'admin/scripts')))
+app.use(express.static('public'));
 
 app.use(cookieMonster());
 app.use(session({
@@ -45,15 +46,19 @@ app.use(session({
 
 app.use(express.json());
 
+// ----------------------------------------- ROUTES -----------------------------------------
+
 app.get('/', (req, res) => {
   res.redirect("/login");
 })
 
 app.get('/login', (req, res) => {
     if (req.session.adminId) {
-      res.redirect('/admin_dashboard');
+      // res.redirect('/admin_dashboard');
+      res.redirect('/index');
     } else if (req.session.eventOrgId) {
-      res.redirect('/eo_dashboard');
+      // res.redirect('/eo_dashboard');
+      res.redirect('/index');
     } else {
       res.render('../admin/login.ejs');
     }
@@ -63,6 +68,15 @@ app.get('/login', (req, res) => {
 app.get('/admin_dashboard', (req, res) => {
   if (req.session.adminId) {
     res.render('../admin/admin_dashboard.ejs');
+  } else {
+    console.log('di ka na nakalog-in admin boi haha')
+    res.redirect('/login');
+  }
+});
+
+app.get('/index', (req, res) => {
+  if (req.session.eventOrgId) {
+    res.render('../admin/index.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');
@@ -135,13 +149,10 @@ app.post('/verify', (req, res) => {
   const {username, password} = req.body;
 
   const queryString = `
-  SELECT id AS AdminOrOrgID, username AS UsernameOrOrganizationName, password AS Password
-  FROM admin
-  WHERE username = ? AND password = ?
-  UNION
   SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
   FROM eventorganizers
-  WHERE OrganizationName = ? AND password = ? `;
+  WHERE OrganizationName = ? AND password = ?
+ `;
 
   connection.query( queryString, [username, password, username, password], (error, results) => {
     if(error) {
@@ -159,19 +170,19 @@ app.post('/verify', (req, res) => {
         return;
       }
 
-      if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
+      if (user.AdminOrOrgID && user.AdminOrOrgID > 1000) {
         // log in si admin
         req.session.username = username;
         req.session.adminId = user.AdminOrOrgID;
         console.log("log in si admin: " + req.session.adminId);
         res.redirect('/admin_dashboard');
 
-      } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
+      } else if (user.AdminOrOrgID && user.AdminOrOrgID <= 1000) {
         // log in si event organizer
         req.session.username = username;
         req.session.eventOrgId = user.AdminOrOrgID;
         console.log("log in si event organizer: " + req.session.eventOrgId);
-        res.redirect('/eo_dashboard');
+        res.redirect('/index');
       }
 
     } else {

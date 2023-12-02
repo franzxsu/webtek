@@ -14,12 +14,15 @@
                     if(isset($_SESSION['user_id'])){
                         echo ' <li class="nav-item"><a class="nav-link" href="my_events.php"><i class="fas fa-calendar-alt"></i><span>My Events</span></a></li> ';
                         echo ' <li class="nav-item"><a class="nav-link" href="history_events.php"><i class="far fa-calendar-check"></i><span>Past Events</span></a></li>';
+                        echo ' <li class="nav-item"><a class="nav-link" href="logout.php"><i class="far fa-user-circle"></i><span>Log out</span></a></li>';
+                    }
+                    else{
+                        echo ' <li class="nav-item"><a class="nav-link" href="login.php"><i class="far fa-user-circle"></i><span>Log in</span></a></li>';
+                        echo ' <li class="nav-item"><a class="nav-link" href="signup.php"><i class="fas fa-user-circle"></i><span>Register</span></a></li>';
                     }
 
                     ?>
                     
-                    <li class="nav-item"><a class="nav-link" href="login.php"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.php"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>

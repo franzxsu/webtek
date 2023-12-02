@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (confirm('Confirm event creation?')) {
                     const formData = new FormData(form);
                     const eventData = {};
-                    eventData["orgName"] = orgName;
+                    eventData["id"] = id;
                     for (const [name, value] of formData.entries()) {
                         eventData[name] = value;
                     }

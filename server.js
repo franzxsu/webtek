@@ -154,8 +154,30 @@ app.post('/verify', (req, res) => {
 
 app.post('/createEvent', (req, res) => {
   const eventData = req.body;
+  console.log(req.body);
 
-  console.log('Received data:', eventData);
+  const insertQuery = `
+  INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-  res.status(200).json({message: 'Submission received successfully!'});
+  const values = [
+    eventData.id,
+    eventData.eventName,
+    eventData.eventFor,
+    eventData.eventDateStart,
+    eventData.eventDateEnd,
+    eventData.eventVenue,
+    eventData.courseID !== undefined ? eventData.courseID : null,
+    eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
+  ];
+
+  connection.query(insertQuery, values, (error) => {
+    if (error) {
+      console.error("Error inserting data:", error);
+    } else {
+      console.log("Data inserted successfully!")
+      res.status(200).json( {message: 'Event successfully created!'});
+    }
+  });
 });

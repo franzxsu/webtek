@@ -1,4 +1,34 @@
+var welcomeMsg = document.getElementById("welcomeSpread");
+var id;
+var orgName;
+
+
+function getDeets() {
+
+    fetch('/sendDeets')
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Error retrieving details!');
+    })
+    .then(data => {
+        // test data received hihi
+
+        console.log('Received data:', data);
+        id = data.id;
+        orgName = data.username;
+
+        welcomeMsg.innerText = `Hello, ${orgName}, how are you today? Your ID number is ${id}!`;
+    })
+    .catch(error => {
+        console.error('Error', error.message);
+    })
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    getDeets();
+
     const createEventBtn = document.getElementById('createEventBtn');
     const eventFormContainer = document.getElementById('eventFormContainer');
     const eventsContainer = document.getElementById('eventsContainer');
@@ -13,29 +43,71 @@ document.addEventListener('DOMContentLoaded', function () {
         const formFields = [
             { label: 'Event Name:', type: 'text', name: 'eventName', required: true },
             { label: 'Event Venue:', type: 'text', name: 'eventVenue', required: true },
-            { label: 'Event Date:', type: 'date', name: 'eventDate', required: true },
-            { label: 'Event For:', type: 'text', name: 'eventFor', required: true },
+            { label: 'Event Date Start:', type: 'date', name: 'eventDateStart', required: true, id:'startDate' },
+            { label: 'Event Date End:', type: 'date', name: 'eventDateEnd', required: true, id: 'endDate' },
+            { 
+                label: 'Who gets to attend the event? :', 
+                type: 'select', 
+                name: 'eventFor', 
+                required: true,
+                options: [
+                    { value: "everyone", text: "Everyone!"},
+                    { value: "sluOnly", text: "SLU Students Only"},
+                    { value: "courseOnly", text: "A Particular Course Only"},
+                    { value: "orgOnly", text: "Organization Members Only"}
+                ] 
+            },
             { label: 'Event Description:', type: 'textarea', name: 'eventDescription', rows: 4, required: true }
         ];
 
         formFields.forEach(field => {
             const label = document.createElement('label');
             label.textContent = field.label;
+        
+            let input;
+        
+            if (field.type === 'select') {
+                input = document.createElement('select');
+                input.name = field.name;
+                input.required = field.required;
+        
+                // Creating the placeholder option
+                const placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.text = 'Select an option';
+                placeholderOption.disabled = true;
+                placeholderOption.selected = true;
+                input.appendChild(placeholderOption);
+        
+                // Adding other options
+                field.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.text = option.text;
+                    input.appendChild(optionElement);
+                });
+            } else {
+                input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
+                input.type = field.type;
+                input.name = field.name;
+                input.required = field.required;
 
-            const input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
-            input.type = field.type;
-            input.name = field.name;
-            input.required = field.required;
-
-            if (field.rows) {
-                input.rows = field.rows;
-                input.cols = 50;
+                if (field.id) {
+                    input.id = field.id;
+                    console.log(input.id);
+                }
+        
+                if (field.rows) {
+                    input.rows = field.rows;
+                    input.cols = 50;
+                }
             }
-
+        
             form.appendChild(label);
             form.appendChild(input);
             form.appendChild(document.createElement('br'));
         });
+        
 
         const createButton = document.createElement('button');
         createButton.type = 'submit';
@@ -47,28 +119,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-    
+
             if (form.checkValidity()) {
+                const startDate = form.querySelector('#startDate').value;
+                const endDate = form.querySelector('#endDate').value;
+            
+                if (!checkDate(startDate, endDate)) {
+                    alert("Invalid dates! Please try again.");
+                    return;
+                }
+            
                 if (confirm('Confirm event creation?')) {
                     const formData = new FormData(form);
                     const eventData = {};
                     for (const [name, value] of formData.entries()) {
                         eventData[name] = value;
                     }
-    
+            
                     saveEventData(eventData);
-    
+            
                     form.reset();
                     eventFormContainer.classList.add('hidden');
-                    }
+                }
             }
         });
 
-        //for test purposes
-        function saveEventData(eventData) {
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            events.push(eventData);
-            localStorage.setItem('events', JSON.stringify(events));
+        function checkDate(startDate, endDate) {
+            return endDate >= startDate;
         }
         
 
@@ -78,7 +155,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Functionality for canceling form submission (Cancel button)
         cancelButton.addEventListener('click', function () {
             // Hide the form when the Cancel button is clicked
-            console.log("clicked cancel");
             form.reset();
             eventFormContainer.classList.add('hidden');
         });
@@ -119,8 +195,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const eventVenue = document.createElement('p');
             eventVenue.textContent = `Venue: ${event.eventVenue}`;
 
-            const eventDate = document.createElement('p');
-            eventDate.textContent = `Date: ${event.eventDate}`;
+            const eventDateStart = document.createElement('p');
+            eventDate.textContent = `Date Start: ${event.eventDate}`;
+
+            const eventDateEnd = document.createElement('p');
+            eventDate.textContent = `Date End: ${event.eventDate}`;
 
             const eventFor = document.createElement('p');
             eventFor.textContent = `For: ${event.eventFor}`;
@@ -130,7 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             eventDiv.appendChild(eventName);
             eventDiv.appendChild(eventVenue);
-            eventDiv.appendChild(eventDate);
+            eventDiv.appendChild(eventDateStart);
+            eventDiv.appendChild(eventDateEnd);
             eventDiv.appendChild(eventFor);
             eventDiv.appendChild(eventDescription);
 
@@ -155,14 +235,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 eventData[name] = value;
             }
             // Save new event data to localStorage
-            saveEventData(eventData);
+            // saveEventData(eventData);
 
             // Reset the form after processing data
             form.reset();
             eventFormContainer.classList.add('hidden'); // Hide the form after submission (you can adjust this behavior)
 
             // Trigger display of all events again, including the newly added event
-            showAllEventsBtn.click();
+            // showAllEventsBtn.click();
         }
     });
 

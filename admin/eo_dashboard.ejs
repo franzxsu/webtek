@@ -11,17 +11,17 @@
 </head>
 
 <body>
-    <h1>Welcome to the Dashboard, Event Organizer!</h1>
+    <h1 id="welcomeSpread">Welcome to the Dashboard, Event Organizer!</h1>
     <button id="createEventBtn">Create Event</button>
     <button id="showAllEventsBtn">Show All Events</button>
     <div id="eventFormContainer" class="hidden">
-      <form id="eventForm">
+      <form id="eventCreationForm" action="createEvent" method="POST">
       </form>
     </div>
     <div id="eventsContainer" class="hidden">
     </div>
 
-    <form action="/logout" method="post">
+    <form action="/logout" method="POST">
         <button type="submit">Logout</button>
     </form>
     <script src="/admin/scripts/eo_dashboard.js"></script>

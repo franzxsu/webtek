@@ -79,6 +79,20 @@ app.get('/eo_dashboard', (req, res) => {
   }
 });
 
+app.get('/sendDeets', (req, res) => {
+  if(req.session.adminId) {
+    res.status(200).json({
+        id: req.session.adminId,
+        username: req.session.username
+    });
+  } else if (req.session.eventOrgId) {
+    res.status(200).json({
+      id: req.session.eventOrgId,
+      username: req.session.username
+    })
+  } 
+});
+
 app.post('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -136,4 +150,8 @@ app.post('/verify', (req, res) => {
       }
     }
   )
+});
+
+app.post('/createEvent', (req, res) => {
+
 });

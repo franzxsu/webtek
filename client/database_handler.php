@@ -1,7 +1,5 @@
 <?php
 
-include("database_config.php");
-
 global $conn;
 $conn = mysqli_connect("localhost", "root", "", "events");
 

@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'webteknameronadmin'
+  database: 'wibtik'
 });
 
 connection.connect((err) => {
@@ -76,7 +76,8 @@ app.get('/admin_dashboard', (req, res) => {
 
 app.get('/index', (req, res) => {
   if (req.session.eventOrgId) {
-    res.render('../admin/index.ejs');
+    // res.render('../admin/index.ejs');
+    res.render('../admin/eo_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');
@@ -120,30 +121,62 @@ function executeQuery(req, res, queryString) {
       }
 
       if (results && results.length > 0) {
-        console.log(JSON.stringify(results));
+
         res.status(200).json(results);
+
       } else {
+
         res.status(404).json({ message: 'No events found!' });
+
       }
     });
 
   } else {
 
     console.log('Unauthorized access: Redirecting to login');
-    res.redirect('/login');
+    res.status(401).redirect('/login');
 
   }
 }
 
 app.get('/viewEvents', (req, res) => {
-  const queryString = `SELECT * FROM events`;
-  executeQuery(req, res, queryString);
+  if (req.session.eventOrgId) {
+    const { sortBy, sortOrder } = req.query;
+    let queryString = 'SELECT * FROM events';
+
+    if (sortBy) {
+      queryString += ` ORDER BY ${sortBy}`;
+      if (sortOrder && (sortOrder.toUpperCase() === 'ASC' || sortOrder.toUpperCase() === 'DESC')) {
+        queryString += ` ${sortOrder.toUpperCase()}`;
+      }
+    }
+
+    executeQuery(req, res, queryString);
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
 });
 
 app.get('/viewOrgEvents', (req, res) => {
-  const eventOrgId = req.session.eventOrgId;
-  const queryString = `SELECT * FROM events WHERE OrganizerId = ${eventOrgId}`;
-  executeQuery(req, res, queryString);
+  if (req.session.eventOrgId) {
+    const eventOrgId = req.session.eventOrgId;
+    const { sortBy, sortOrder } = req.query;
+
+    let queryString = `SELECT * FROM events WHERE OrganizerId = ${eventOrgId}`;
+
+    if (sortBy) {
+      queryString += ` ORDER BY ${sortBy}`;
+      if (sortOrder && (sortOrder.toUpperCase() === 'ASC' || sortOrder.toUpperCase() === 'DESC')) {
+        queryString += ` ${sortOrder.toUpperCase()}`;
+      }
+    }
+
+    executeQuery(req, res, queryString);
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
 });
 
 
@@ -184,24 +217,27 @@ app.post('/verify', (req, res) => {
         return;
       }
 
-      if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
+      if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
         // log in si admin
         req.session.username = username;
         req.session.adminId = user.AdminOrOrgID;
         console.log("log in si admin: " + req.session.adminId);
         res.redirect('/admin_dashboard');
 
-      } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
+      } else if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
         // log in si event organizer
         req.session.username = username;
         req.session.eventOrgId = user.AdminOrOrgID;
         console.log("log in si event organizer: " + req.session.eventOrgId);
-        res.redirect('/index');
+        
+        // res.redirect('/index');
+
+        res.redirect('/eo_dashboard');
       }
 
     } else {
       // non user
-      res.status(401).json( {message: 'Invalid username or password! Try again. tite' });
+      res.status(401).json( {message: 'Invalid username or password! Try again.' });
     }
   }
   )
@@ -209,38 +245,43 @@ app.post('/verify', (req, res) => {
 
 app.post('/createEvent', (req, res) => {
 
-  const eventData = req.body;
-  console.log(req.body);
+  if (req.session.eventOrgId) {
+    const eventData = req.body;
+    console.log(req.body);
 
-  // sakaling may nakapasa sa client-side alert somehow
-  if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
-    res.status.apply(406).json( {message: 'How did you do this lol'});
-    return;
-  }
-
-  const insertQuery = `
-  INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
-
-  const values = [
-    eventData.id,
-    eventData.eventName,
-    eventData.eventFor,
-    eventData.eventDateStart,
-    eventData.eventDateEnd,
-    eventData.eventVenue,
-    eventData.courseID !== undefined ? eventData.courseID : null,
-    eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
-  ];
-
-  connection.query(insertQuery, values, (error) => {
-    if (error) {
-      console.error('Error querying database:', error);
-      res.status(500).send('Error verifying credentials!');
+    // sakaling may nakapasa sa client-side alert somehow
+    if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
+      res.status.apply(406).json( {message: 'How did you do this lol'});
       return;
-    } else {
-      console.log("Data inserted successfully!")
-      res.status(200).json( {message: 'Event successfully created!'});
     }
-  });
+
+    const insertQuery = `
+    INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
+
+    const values = [
+      eventData.id,
+      eventData.eventName,
+      eventData.eventDescription,
+      eventData.eventDateStart,
+      eventData.eventDateEnd,
+      eventData.eventVenue,
+      eventData.courseID !== undefined ? eventData.courseID : null,
+      eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
+    ];
+
+    connection.query(insertQuery, values, (error) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Error verifying credentials!');
+        return;
+      } else {
+        console.log("Data inserted successfully!")
+        res.status(200).json( {message: 'Event successfully created!'});
+      }
+    });
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
 });

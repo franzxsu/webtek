@@ -33,6 +33,8 @@ function getDeets() {
     })
 }
 
+// ----------------------------------------- GET FUNCTIONS -----------------------------------------
+
 function getEvents(endpoint) {
     return fetch(endpoint)
         .then(response => {
@@ -69,14 +71,49 @@ function getOrgEvents(id) {
     });
 }
 
+// ----------------------------------------- POST FUNCTIONS -----------------------------------------
+
+function saveEventData(eventData) {
+
+    fetch('/createEvent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData)
+    })
+    .then(response => {
+        if(response.ok) {
+            return response.json().then(data => {
+                alert(data.message);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    })
+
+}
+
+// ----------------------------------------- CLIENT-SIDE SCRIPTING -----------------------------------------
+
 
 document.addEventListener('DOMContentLoaded', function () {
     getDeets();
     getAllEvents();
     getOrgEvents();
 
+    const minutes = 2.5;
+    const miliseconds = minutes * 60 * 1000;
+
+    setInterval(() => {
+        getDeets();
+        getAllEvents();
+        getOrgEvents();
+    }, miliseconds);
+
     createEventBtn.addEventListener('click', function () {
-        toggleEvents(createEventBtn);
+        toggleEvents(createEventBtn, eventFormContainer);
     });
 
     // Functionality for showing all events
@@ -88,30 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleEvents(showMyEventsBtn, eventsContainer);
     });
 
-    function saveEventData(eventData) {
-
-        fetch('/createEvent', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(eventData)
-        })
-        .then(response => {
-            if(response.ok) {
-                return response.json().then(data => {
-                    alert(data.message);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        })
-
-    }
-
     function createEvents() {
         eventFormContainer.innerHTML = '';
+        eventFormContainer.classList.remove('hidden');
         const form = document.createElement('form');
         form.id = 'eventCreationForm';
 
@@ -250,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // tebl headers
         const headerRow = document.createElement('tr');
         for (let key in eventsData[0]) {
-            // remove !hideColumns if u want to see all columns din
+            // remove !hideColumns if u want to see all columns din 
             if (eventsData[0].hasOwnProperty(key) && !hideColumns.includes(key)) {
                 const headerCell = document.createElement('th');
                 headerCell.textContent = key.toUpperCase();
@@ -265,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
         eventsData.forEach(item => {
             const row = document.createElement('tr');
             for (let key in item) {
-                if (item.hasOwnProperty(key)) {
+                if (item.hasOwnProperty(key) && !hideColumns.includes(key)) {
                     const cell = document.createElement('td');
                     cell.textContent = item[key];
                     row.appendChild(cell);
@@ -279,44 +295,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function toggleEvents(button, container) {
-
-        if (button === createEventBtn) {
-            createEvents();
-        } else {
-            toggleHide(button, container);
-        }
-
-    }
-
-    function toggleHide(button, container) {
         if (container.classList.contains('hidden')) {
-
-
             container.classList.remove('hidden');
-            eventFormContainer.classList.add('hidden');
-
+            container.innerHTML = '';
+    
             if (button === showAllEventsBtn) {
                 getAllEvents();
                 const eventsTable = createEventsTable(allEvents);
-                container.innerHTML = '';
                 container.appendChild(eventsTable);
             } else if (button === showMyEventsBtn) {
                 getOrgEvents();
                 const eventsTable = createEventsTable(orgEvents);
-                container.innerHTML = '';
                 container.appendChild(eventsTable);
+            } else {
+                createEvents();
             }
-
         } else {
-
-            if (button === showAllEventsBtn) {
-                button.textContent = 'Show Events';
-            } else if (button === showMyEventsBtn) {
-                button.textContent = 'Show My Events';
-            }
-
             container.classList.add('hidden');
-            eventFormContainer.classList.add('hidden');
-        } 
-    }
+        }
+    }    
 });

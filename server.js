@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'webteknameronadmin'
+  database: 'wibtik'
 });
 
 connection.connect((err) => {
@@ -94,29 +94,43 @@ app.get('/sendDeets', (req, res) => {
   } 
 });
 
-app.get('/viewEvents', (req, res) => {
+function executeQuery(req, res, queryString) {
   if (req.session.eventOrgId || req.session.adminId) {
-    const queryString = `SELECT * FROM events`;
-
     connection.query(queryString, (error, results) => {
       if (error) {
+
         console.error('Error querying database:', error);
         res.status(500).send('Error verifying credentials!');
         return;
+
       }
 
       if (results && results.length > 0) {
+        console.log(JSON.stringify(results));
         res.status(200).json(results);
       } else {
-        res.status(404).json({message: 'No events found!'});
+        res.status(404).json({ message: 'No events found!' });
       }
     });
+
   } else {
-    console.log('ops bat ka andito bawal balik ka');
-    res.redirect('/login')
+
+    console.log('Unauthorized access: Redirecting to login');
+    res.redirect('/login');
+
   }
+}
+
+app.get('/viewEvents', (req, res) => {
+  const queryString = `SELECT * FROM events`;
+  executeQuery(req, res, queryString);
 });
 
+app.get('/viewOrgEvents', (req, res) => {
+  const eventOrgId = req.session.eventOrgId;
+  const queryString = `SELECT * FROM events WHERE OrganizerId = ${eventOrgId}`;
+  executeQuery(req, res, queryString);
+});
 
 
 app.post('/logout', (req, res) => {
@@ -159,14 +173,16 @@ app.post('/verify', (req, res) => {
         return;
       }
 
-      if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
+      if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
         // log in si admin
         req.session.username = username;
         req.session.adminId = user.AdminOrOrgID;
         console.log("log in si admin: " + req.session.adminId);
         res.redirect('/admin_dashboard');
 
-      } else if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
+      } else 
+      
+      if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
         // log in si event organizer
         req.session.username = username;
         req.session.eventOrgId = user.AdminOrOrgID;

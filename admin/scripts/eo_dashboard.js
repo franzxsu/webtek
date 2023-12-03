@@ -1,7 +1,11 @@
+var createEventBtn = document.getElementById('createEventBtn');
+var eventFormContainer = document.getElementById('eventFormContainer');
+var eventsContainer = document.getElementById('eventsContainer');
 var welcomeMsg = document.getElementById("welcomeSpread");
 var id;
 var orgName;
-var events;
+var allEvents;
+var orgEvents;
 
 
 function getDeets() {
@@ -20,6 +24,8 @@ function getDeets() {
         id = data.id;
         orgName = data.username;
 
+        console.log(id + " " + orgName)
+
         welcomeMsg.innerText = `Hello, ${orgName}, how are you today? Your ID number is ${id}!`;
     })
     .catch(error => {
@@ -27,32 +33,84 @@ function getDeets() {
     })
 }
 
-function getEvents() {
-    fetch('/viewEvents')
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-        throw new Error('Error retrieving events!'); 
-    })
-    .then(data => {
-        events = data;
-        console.log(events);
-    })
-    .catch(error => {
-        console.error('Error:', error.message);
-    })
+function getEvents(endpoint) {
+    return fetch(endpoint)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Error retrieving events!');
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            throw error;
+    });
 }
+
+function getAllEvents() {
+    getEvents('/viewEvents')
+        .then(data => {
+            allEvents = data; // Assigning fetched data to global variable
+            console.log(allEvents);
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+     });
+}
+
+function getOrgEvents(id) {
+    getEvents(`/viewOrgEvents?eventOrgId=${id}`)
+        .then(data => {
+            orgEvents = data; // Assigning fetched data to global variable
+            console.log(orgEvents);
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
     getDeets();
-    getEvents();
-
-    const createEventBtn = document.getElementById('createEventBtn');
-    const eventFormContainer = document.getElementById('eventFormContainer');
-    const eventsContainer = document.getElementById('eventsContainer');
+    getAllEvents();
+    getOrgEvents();
 
     createEventBtn.addEventListener('click', function () {
+        toggleEvents(createEventBtn);
+    });
+
+    // Functionality for showing all events
+    showAllEventsBtn.addEventListener('click', function () {
+        toggleEvents(showAllEventsBtn, eventsContainer);
+    });
+
+    showMyEventsBtn.addEventListener('click', function() {
+        toggleEvents(showMyEventsBtn, eventsContainer);
+    });
+
+    function saveEventData(eventData) {
+
+        fetch('/createEvent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(eventData)
+        })
+        .then(response => {
+            if(response.ok) {
+                return response.json().then(data => {
+                    alert(data.message);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
+
+    }
+
+    function createEvents() {
         eventFormContainer.innerHTML = '';
         const form = document.createElement('form');
         form.id = 'eventCreationForm';
@@ -178,36 +236,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         eventFormContainer.appendChild(form);
-        eventFormContainer.classList.remove('hidden'); // Show the event form container
-        eventsContainer.classList.add('hidden'); // Hide event containers
-      });
+    }
 
-    // Functionality for showing all events
-    showAllEventsBtn.addEventListener('click', function () {
-        if (eventsContainer.classList.contains('hidden')) {
-            showAllEventsBtn.textContent = 'Hide Events';
-            eventsContainer.classList.remove('hidden');
-            eventFormContainer.classList.add('hidden');
-            console.log('show events'); 
-            
-            
-        } else {
-            showAllEventsBtn.textContent = 'Show Events';
-            eventsContainer.classList.add('hidden');
-            eventFormContainer.classList.add('hidden');
-        }
-    });
-
-    showAllEventsBtn.addEventListener('click', function () {
-        // Clear previous events
-        eventsContainer.innerHTML = '';
+    function createEventsTable(eventsData) {
         const table = document.createElement('table');
         const tableHeader = document.createElement('thead');
         const tableBody = document.createElement('tbody');
+
+
+        // comment this out if us2 nyo makita all the columns
+        const hideColumns = ['eventID', 'OrganizerId', 'courseID', 'OrganizationID'];
     
+        // tebl headers
         const headerRow = document.createElement('tr');
-        for (let key in events[0]) {
-            if (events[2].hasOwnProperty(key)) {
+        for (let key in eventsData[0]) {
+            // remove !hideColumns if u want to see all columns din
+            if (eventsData[0].hasOwnProperty(key) && !hideColumns.includes(key)) {
                 const headerCell = document.createElement('th');
                 headerCell.textContent = key.toUpperCase();
                 headerRow.appendChild(headerCell);
@@ -217,7 +261,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tableHeader.appendChild(headerRow);
         table.appendChild(tableHeader);
     
-        events.forEach(item => {
+        // tebl rows and cells
+        eventsData.forEach(item => {
             const row = document.createElement('tr');
             for (let key in item) {
                 if (item.hasOwnProperty(key)) {
@@ -230,98 +275,48 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     
         table.appendChild(tableBody);
-        console.log(table);
-        eventsContainer.appendChild(table);
+        return table;
+    }
+
+    function toggleEvents(button, container) {
+
+        if (button === createEventBtn) {
+            createEvents();
+        } else {
+            toggleHide(button, container);
+        }
+
+    }
+
+    function toggleHide(button, container) {
+        if (container.classList.contains('hidden')) {
 
 
-        // Retrieve stored events from localStorage
-        // let eventData = JSON.parse(getEvents()) || [];
-        // console.log(getEvents());
+            container.classList.remove('hidden');
+            eventFormContainer.classList.add('hidden');
 
-        // Create event containers dynamically
-        // eventData.forEach(event => {
-            // const eventDiv = document.createElement('div');
-            // eventDiv.classList.add('event-item');
-
-            // const eventName = document.createElement('h3');
-            // eventName.textContent = `Event Name: ${event.eventName}`;
-
-            // const eventVenue = document.createElement('p');
-            // eventVenue.textContent = `Venue: ${event.eventVenue}`;
-
-            // const eventDateStart = document.createElement('p');
-            // eventDate.textContent = `Date Start: ${event.eventDate}`;
-
-            // const eventDateEnd = document.createElement('p');
-            // eventDate.textContent = `Date End: ${event.eventDate}`;
-
-            // const eventFor = document.createElement('p');
-            // eventFor.textContent = `For: ${event.eventFor}`;
-
-            // const eventDescription = document.createElement('p');
-            // eventDescription.textContent = `Description: ${event.eventDescription}`;
-
-            // eventDiv.appendChild(eventName);
-            // eventDiv.appendChild(eventVenue);
-            // eventDiv.appendChild(eventDateStart);
-            // eventDiv.appendChild(eventDateEnd);
-            // eventDiv.appendChild(eventFor);
-            // eventDiv.appendChild(eventDescription);
-
-            // eventsContainer.appendChild(eventDiv);
-        // });
-
-        // if (showAllEventsBtn.dataset.state === 'show') {
-            // showAllEventsBtn.click();
-        // }
-    });
-
-    // // Functionality for form submission (Create button)
-    // form.addEventListener('submit', function (event) {
-    //     event.preventDefault(); // Prevent form submission for demonstration purposes
-
-    //     // Perform actions when the Create button is clicked
-    //     if (form.checkValidity()) {
-    //         // Gather form data
-    //         const formData = new FormData(form);
-    //         const eventData = {};
-    //         for (const [name, value] of formData.entries()) {
-    //             eventData[name] = value;
-    //         }
-    //         // Save new event data to localStorage
-    //         // saveEventData(eventData);
-
-    //         // Reset the form after processing data
-    //         form.reset();
-    //         eventFormContainer.classList.add('hidden'); // Hide the form after submission (you can adjust this behavior)
-
-    //         // Trigger display of all events again, including the newly added event
-    //         // showAllEventsBtn.click();
-    //     }
-    // });
-
-    // Function to save event data to localStorage
-    function saveEventData(eventData) {
-        // let events = JSON.parse(localStorage.getItem('events')) || [];
-        // events.push(eventData);
-        // localStorage.setItem('events', JSON.stringify(events));
-
-        fetch('/createEvent', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(eventData)
-        })
-        .then(response => {
-            if(response.ok) {
-                return response.json().then(data => {
-                    alert(data.message);
-                });
+            if (button === showAllEventsBtn) {
+                getAllEvents();
+                const eventsTable = createEventsTable(allEvents);
+                container.innerHTML = '';
+                container.appendChild(eventsTable);
+            } else if (button === showMyEventsBtn) {
+                getOrgEvents();
+                const eventsTable = createEventsTable(orgEvents);
+                container.innerHTML = '';
+                container.appendChild(eventsTable);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        })
+
+        } else {
+
+            if (button === showAllEventsBtn) {
+                button.textContent = 'Show Events';
+            } else if (button === showMyEventsBtn) {
+                button.textContent = 'Show My Events';
+            }
+
+            container.classList.add('hidden');
+            eventFormContainer.classList.add('hidden');
+        } 
     }
 });

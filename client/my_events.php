@@ -163,7 +163,7 @@ if(isset($_SESSION['user_id'])){
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <!-- hardcoded muna, todo implement api for this shit, id of modal contains eventID already ^^ -->
+                                                                <!-- hardcoded muna, todo implement api, id of modal contains eventID already -->
                                                                 <img src="../client/assets/img/sample_qr.jpg" alt="QR Code for <?= $event['EventName'] ?>" class="img-fluid">
                                                             </div>
                                                         </div>

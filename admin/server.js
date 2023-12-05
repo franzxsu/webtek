@@ -12,8 +12,8 @@ const app = express()
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
-  database: 'wibtik'
+  password: '',
+  database: 'events'
 });
 
 connection.connect((err) => {
@@ -29,9 +29,10 @@ app.listen(port, () => {
   console.log(`http://localhost:${port}/`)
 })  
 
-app.set('view engine', 'ejs')
-app.use('/admin/assets', express.static(path.join(__dirname, 'admin/public')));
-app.use('/admin/scripts', express.static(path.join(__dirname, 'admin/scripts')))
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+// app.use('/admin/assets/bootstrap/css', express.static(path.join(__dirname, 'admin/assets/bootstrap/css  ')))\
+app.use('/admin/scripts', express.static(path.join(__dirname,'admin/scripts')));
 app.use(express.static('public'));
 
 app.use(cookieMonster());
@@ -45,6 +46,7 @@ app.use(session({
 }));
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 // ----------------------------------------- ROUTES -----------------------------------------
 
@@ -60,7 +62,7 @@ app.get('/login', (req, res) => {
       // res.redirect('/eo_dashboard');
       res.redirect('/index');
     } else {
-      res.render('../admin/login.ejs');
+      res.render('../views/login.ejs');
     }
 })
 
@@ -76,8 +78,8 @@ app.get('/admin_dashboard', (req, res) => {
 
 app.get('/index', (req, res) => {
   if (req.session.eventOrgId) {
-    // res.render('../admin/index.ejs');
-    res.render('../admin/eo_dashboard.ejs');
+    res.render('../admin/index.ejs');
+    // res.render('../admin/eo_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');

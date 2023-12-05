@@ -42,25 +42,24 @@ body.bg-gradient-primary {
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-flex">
-                                <div class="flex-grow-1 bg-login-image" style="background-image: url(&quot;../client/assets/img/logos/slu-logo-bg.jpg&quot;);"></div>
+                                <div class="flex-grow-1 bg-login-image" style="background-image: url('../public/assets/slu-campus.jpg');"></div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h4 class="text-dark mb-4">Log In</h4>
+                                        <h4 class="text-dark mb-4">Admin Log In</h4>
                                     </div>
                                     <form action="auth" method="POST" id="loginForm" target="_blank">
                                         <div class="mb-3"><input class="form-control form-control-user" name="username" type="text" id="usernameInput" placeholder="Enter username"></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" name="password" placeholder="Password" id="passwordInput"></div>
+                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="passwordInput" name="password" placeholder="Password" id="passwordInput"></div>
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox small">
                                                 <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
                                             </div>
+                                            <hr>
                                         </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
-                                        <hr>
+                                        
                                     </form>
-                                    <div class="text-center"><a class="small" href="index.php">Continue as Guest</a></div>
-                                    <div class="text-center"><a class="small" href="signup.php">Create an Account!</a></div>
                                 </div>
                             </div>
                         </div>
@@ -69,6 +68,7 @@ body.bg-gradient-primary {
             </div>
         </div>
     </div>
+    <script src="../scripts/login.js"></script>
 </body>
 
 </html>

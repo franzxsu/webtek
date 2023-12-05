@@ -161,11 +161,13 @@ app.get('/logout', (req, res) => {
 
 app.post('/auth', (req, res) => {
   const {username, password} = req.body;
-  const results = db.authLogIn(username, password);
+  let results = db.authLogIn(username, password);
+  console.log("asdasdasdas"+results);
 
     if (results && results.length > 0) {
-      // yes user
+      console.log("res"+results);
       const user = results[0];
+      console.log(user);
 
       //check if already logged in
       if (req.session.adminId || req.session.eventOrgId) {

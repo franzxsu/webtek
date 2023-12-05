@@ -29,8 +29,8 @@ function authLogIn(username, password){
         return;
       }
       else if (results){
-        console.log(results);
-        return results;
+        console.log(results[0].AdminOrOrgID);
+        return results[0].AdminOrOrgID;
       }
     });
 }

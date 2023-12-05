@@ -117,8 +117,7 @@ INSERT INTO `eventorganizers` (`OrganizerID`, `OrganizationName`, `Email`, `Pass
 (5, 'ssc', 'ssc@slu.edu.ph', 'ssc'),
 (6, 'kasama', 'kasama@slu.edu.ph', 'kasama'),
 (7, 'sluadmin', 'admin@slu.edu.ph', 'admin'),
-(8, 'nazis', 'nazis@slu.edu.ph', 'nazis'),
-(9, 'homies', 'homies@slu.edu.ph', 'homies');
+(8, 'homies', 'homies@slu.edu.ph', 'homies');
 
 -- --------------------------------------------------------
 

@@ -14,8 +14,8 @@ const app = express()
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
-  database: 'events'
+  password: 'password',
+  database: 'wibtik'
 });
 
 connection.connect((err) => {
@@ -33,7 +33,6 @@ app.listen(port, () => {
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-// app.use('/admin/assets/bootstrap/css', express.static(path.join(__dirname, 'admin/assets/bootstrap/css  ')))\
 app.use('/scripts', express.static(path.join(__dirname,'scripts')));
 app.use('/public/assets/bootstrap/css', express.static(path.join(__dirname, 'public/assets/bootstrap/css')));
 app.use('/public/assets/fonts', express.static(path.join(__dirname, 'public/assets/fonts')));
@@ -42,7 +41,7 @@ app.use(express.static('public'));
 
 app.use(cookieMonster());
 app.use(session({
-  secret: 'idk', // i have no idea what this does
+  secret: 'secret_key',
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -74,7 +73,7 @@ app.get('/admin_dashboard', (req, res) => {
   if (req.session.adminId) {
     res.render('admin_dashboard.ejs');
   } else {
-    console.log('di ka na nakalog-in admin boi haha')
+    console.log('di na nakalog-in admin')
     res.redirect('/login');
   }
 });
@@ -98,7 +97,7 @@ app.get('/eo_dashboard', (req, res) => {
   if (req.session.eventOrgId) {
     res.render('eo_dashboard.ejs');
   } else {
-    console.log('di ka na nakalog-in event organizer boi haha')
+    console.log('di na nakalog-in event organizer')
     res.redirect('/login');
   }
 });
@@ -165,8 +164,8 @@ app.get('/viewOrgEvents', (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error("Error destroying session road:", err);
-      res.status(500).send('Error logging out')
+      console.error("Error destroying session:", err);
+      res.status(500).send('Error logging out!')
     } else {
 
       res.redirect('/login');
@@ -218,14 +217,14 @@ app.post('/createEvent', (req, res) => {
     const eventData = req.body;
     console.log(req.body);
 
-    // sakaling may nakapasa sa client-side alert somehow
+    // sakaling may nakapasa sa client-side alert somehow na invalid date
     if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
-      res.status.apply(406).json( {message: 'How did you do this lol'});
+      res.status.apply(406).json( {message: 'Invalid date! Please try again.'});
       return;
     } else {
       try {
         db.createEvent(eventData);
-        res.status.send(200).json({message: 'Event successfully created!'});
+        res.status(200).json({message: 'Event successfully created!'});
       } catch (error) {
         console.error('Error querying database:', error);
         res.status(500).send('Error encountered when adding the event!');

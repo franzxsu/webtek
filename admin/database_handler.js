@@ -1,14 +1,14 @@
 const mysql = require('mysql2');
 const util = require('util');
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     // connectionLimit: 100,
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'events'
+    password: 'password',
+    database: 'wibtik'
   });
   
-  connection.connect((err) => {
+  connection.getConnection((err) => {
     if(err) {
       console.error('Error connecting to database:', err);
       return;

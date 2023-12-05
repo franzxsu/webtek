@@ -99,8 +99,65 @@
                 </nav>
                 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h1 class="text-dark mb-0">Event Organizer Dashboard</h1><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Create New Event</a>
+                        <h1 class="text-dark mb-0">Event Organizer Dashboard</h1>
+                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#" data-bs-toggle="modal" data-bs-target="#createEventModal"><i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Create New Event</a>
                     </div>
+
+                    <!-- MODAL BOX FOR EVENT CREATION -->
+                    <!-- TODO: MOVE TO PARTIALS -->
+                    <div class="modal fade" id="createEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Create New Event</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+
+                                    <!-- post form create event -->
+                                    <form>
+                                        <div class="mb-3">
+                                        <label for="eventName" class="form-label">Event Name</label>
+                                        <input type="text" class="form-control" id="eventName" placeholder="Enter event name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="eventVenue" class="form-label">Venue</label>
+                                            <input type="text" class="form-control" id="venue" placeholder="Enter event venue">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 ms">
+                                                <label for="startDate">Start date </label>
+                                                <input id="startDate" class="form-control" type="date" />
+                                            </div>
+                                            <div class="col-md-4 ms-auto">
+                                                <label for="endDate">End date </label>
+                                                <input id="endDate" class="form-control" type="date" />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
+                                            <label class="form-check-label" for="flexRadioDefault3">Organization Exclusive (org_name)</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">SLU Exclusive</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                            <label class="form-check-label" for="flexRadioDefault2">Open for all</label>
+                                        </div>
+                                    </div>
+                                <button type="submit" class="btn btn-primary">Create Event</button>
+                              </form>
+
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
                     <div class="row">
                         <div class="col-lg-7 col-xl-8 col-xxl-12 offset-xxl-0">
                             <div class="card shadow mb-4">

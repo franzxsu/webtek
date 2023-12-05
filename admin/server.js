@@ -174,41 +174,41 @@ app.get('/logout', (req, res) => {
   })
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
   const { username, password } = req.body;
 
-  db.authLogIn(username, password, (error, adminOrOrgID) => {
-    if (error) {
-      console.error('Error authenticating user:', error);
-      res.status(500).json({ message: 'Error authenticating user' });
-    } else {
-      if (adminOrOrgID !== null) {
-        console.log('ID:', adminOrOrgID);
+  try {
+    const adminOrOrgID = await db.authLogIn(username, password);
 
-        if (req.session.adminId || req.session.eventOrgId) {
-          res.status(401).json({ message: 'User is already logged in!' });
-          return;
-        }
+    if (adminOrOrgID !== null) {
+      console.log('ID:', adminOrOrgID);
 
-        if (adminOrOrgID >= 1000) {
-          // log in as admin
-          req.session.username = username;
-          req.session.adminId = adminOrOrgID;
-          console.log("Logged in as admin: " + req.session.adminId);
-          res.redirect('/index');
-        } else {
-          // log in as event organizer
-          req.session.username = username;
-          req.session.eventOrgId = adminOrOrgID;
-          console.log("Logged in as event organizer: " + req.session.eventOrgId);
-          res.redirect('/index');
-        }
-      } else {
-        // Authentication failed
-        res.status(401).json({ message: 'Invalid username or password! Try again.' });
+      if (req.session.adminId || req.session.eventOrgId) {
+        res.status(401).json({ message: 'User is already logged in!' });
+        return;
       }
+
+      if (adminOrOrgID >= 1000) {
+        // log in as admin
+        req.session.username = username;
+        req.session.adminId = adminOrOrgID;
+        console.log("Logged in as admin: " + req.session.adminId);
+        res.redirect('/index');
+      } else {
+        // log in as event organizer
+        req.session.username = username;
+        req.session.eventOrgId = adminOrOrgID;
+        console.log("Logged in as event organizer: " + req.session.eventOrgId);
+        res.redirect('/index');
+      }
+    } else {
+      // Authentication failed
+      res.status(401).json({ message: 'Invalid username or password! Try again.' });
     }
-  });
+  } catch (error) {
+    console.error('Error authenticating user:', error);
+    res.status(500).json({ message: 'Error authenticating user' });
+  }
 });
 
 

@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-
+const util = require('util');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -15,28 +15,29 @@ const connection = mysql.createConnection({
     console.log('Connected to MySQL database successfully!')
   });
 
-  function authLogIn(username, password, callback) {
+  const query = util.promisify(connection.query).bind(connection);
+
+  function authLogIn(username, password) {
     const queryString = `
       SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
       FROM eventorganizers
       WHERE OrganizationName = ? AND password = ?
     `;
-    
-    connection.query(queryString, [username, password], (error, results) => {
-      if (error) {
-        console.error('Error querying database:', error);
-        callback(error, null);
-      } else {
+  
+    return query(queryString, [username, password])
+      .then((results) => {
         if (results.length > 0) {
           const adminOrOrgID = results[0].AdminOrOrgID;
-          callback(null, adminOrOrgID);
+          return adminOrOrgID;
         } else {
-          callback(null, null);
+          return null;
         }
-      }
-    });
+      })
+      .catch((error) => {
+        console.error('Error querying database:', error);
+        throw error;
+      });
   }
-  
 
 module.exports = {
     authLogIn

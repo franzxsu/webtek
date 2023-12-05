@@ -1,3 +1,5 @@
+// https://www.geeksforgeeks.org/reading-query-parameters-in-node-js/
+
 const express = require('express');
 const session = require('express-session');
 const cookieMonster = require('cookie-parser');
@@ -81,7 +83,9 @@ app.get('/admin_dashboard', (req, res) => {
 
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
+    console.log('asd'+getOrgNameFromId(req.session.eventOrgId));
     res.render('index.ejs',{
+      // userID: getOrgNameFromId(req.session.eventOrgId)
       userID: req.session.eventOrgId
     });
 
@@ -280,20 +284,36 @@ function executeQuery(req, res, queryString) {
       }
 
       if (results && results.length > 0) {
-
         res.status(200).json(results);
-
       } else {
-
         res.status(404).json({ message: 'No events found!' });
-
       }
     });
 
   } else {
-
     console.log('Unauthorized access: Redirecting to login');
     res.status(401).redirect('/login');
+  }
+}
 
+function getOrgNameFromId(id) {
+  const query = "SELECT OrganizationName FROM eventOrganizers WHERE OrganizerID = ?";
+  
+  try {
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        throw error;
+      } else {
+        console.log("Data fetched successfully!");
+        console.log(results);
+        const orgName = results[0].OrganizationName;
+        console.log(orgName);
+        return orgName;
+      }
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
   }
 }

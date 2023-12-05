@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var eyeBtn = document.getElementById("showPass");
     var btnCheck = false;
 
-    eyeBtn.addEventListener("mousedown", function() {
+    eyeBtn.addEventListener("mousedown", function() {``
         console.log("button held!")
         passwordInput.type = "text";
         btnCheck = true;

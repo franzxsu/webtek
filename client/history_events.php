@@ -170,18 +170,22 @@ if(isset($_SESSION['user_id'])){
                                                         <div class="modal-body">
                                                             <form>
                                                             <div class="mb-3">
-                                                                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                                                <label for="recipient-name" class="col-form-label">Rating (star rating dapat ito):</label>
                                                                 <input type="text" class="form-control" id="recipient-name">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="message-text" class="col-form-label">Message:</label>
                                                                 <textarea class="form-control" id="message-text"></textarea>
+                                                            </div>  
+                                                            <div class="form-check">
+                                                                <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Send anonymously</label>
                                                             </div>
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                             <button type="button" class="btn btn-primary">Send Rating</button>
+                                                            
                                                         </div>
                                                         </div>
                                                     </div>

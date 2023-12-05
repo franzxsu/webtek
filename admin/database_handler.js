@@ -13,27 +13,30 @@ const connection = mysql.createConnection({
       return;
     }
     console.log('Connected to MySQL database successfully!')
-  })
+  });
 
-function authLogIn(username, password){
+  function authLogIn(username, password, callback) {
     const queryString = `
-    SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
-    FROM eventorganizers
-    WHERE OrganizationName = ? AND password = ?
-   `;
-  
-    connection.query( queryString, [username, password], (error, results) => {
-      if(error) {
+      SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
+      FROM eventorganizers
+      WHERE OrganizationName = ? AND password = ?
+    `;
+    
+    connection.query(queryString, [username, password], (error, results) => {
+      if (error) {
         console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
-        return;
-      }
-      else if (results){
-        console.log(results[0].AdminOrOrgID);
-        return results[0].AdminOrOrgID;
+        callback(error, null);
+      } else {
+        if (results.length > 0) {
+          const adminOrOrgID = results[0].AdminOrOrgID;
+          callback(null, adminOrOrgID);
+        } else {
+          callback(null, null);
+        }
       }
     });
-}
+  }
+  
 
 module.exports = {
     authLogIn

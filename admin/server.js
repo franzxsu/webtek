@@ -11,6 +11,21 @@ const db = require("../admin/database_handler.js");
 
 const app = express()
 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'events'
+});
+
+connection.connect((err) => {
+  if(err) {
+    console.error('Error connecting to database:', err);
+    return;
+  }
+  console.log('Connected to MySQL database successfully!')
+});
+
 app.listen(port, () => {
   console.log(`Admin / EO application listening on port ${port}`)
   console.log(`http://localhost:${port}/`)
@@ -160,44 +175,42 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/auth', (req, res) => {
-  const {username, password} = req.body;
-  let results = db.authLogIn(username, password);
-  console.log("asdasdasdas"+results);
+  const { username, password } = req.body;
 
-    if (results && results.length > 0) {
-      console.log("res"+results);
-      const user = results[0];
-      console.log(user);
-
-      //check if already logged in
-      if (req.session.adminId || req.session.eventOrgId) {
-        res.status(401).json({message: 'User is already logged in!'});
-        return;
-      }
-
-      if (user.AdminOrOrgID && user.AdminOrOrgID >= 1000) {
-        // log in si admin
-        req.session.username = username;
-        req.session.adminId = user.AdminOrOrgID;
-        console.log("log in si admin: " + req.session.adminId);
-        res.redirect('/index');
-
-      } else if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
-        // log in si event organizer
-        req.session.username = username;
-        req.session.eventOrgId = user.AdminOrOrgID;
-        console.log("log in si event organizer: " + req.session.eventOrgId);
-        
-        res.redirect('/index');
-
-        // res.redirect('/eo_dashboard');
-      }
-
+  db.authLogIn(username, password, (error, adminOrOrgID) => {
+    if (error) {
+      console.error('Error authenticating user:', error);
+      res.status(500).json({ message: 'Error authenticating user' });
     } else {
-      // non user
-      res.status(401).json( {message: 'Invalid username or password! Try again.' });
+      if (adminOrOrgID !== null) {
+        console.log('ID:', adminOrOrgID);
+
+        if (req.session.adminId || req.session.eventOrgId) {
+          res.status(401).json({ message: 'User is already logged in!' });
+          return;
+        }
+
+        if (adminOrOrgID >= 1000) {
+          // log in as admin
+          req.session.username = username;
+          req.session.adminId = adminOrOrgID;
+          console.log("Logged in as admin: " + req.session.adminId);
+          res.redirect('/index');
+        } else {
+          // log in as event organizer
+          req.session.username = username;
+          req.session.eventOrgId = adminOrOrgID;
+          console.log("Logged in as event organizer: " + req.session.eventOrgId);
+          res.redirect('/index');
+        }
+      } else {
+        // Authentication failed
+        res.status(401).json({ message: 'Invalid username or password! Try again.' });
+      }
     }
   });
+});
+
 
 app.post('/createEvent', (req, res) => {
 

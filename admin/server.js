@@ -82,7 +82,6 @@ app.get('/admin_dashboard', (req, res) => {
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
     res.render('index.ejs');
-    // res.render('../admin/eo_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');
@@ -186,13 +185,12 @@ app.get('/viewOrgEvents', (req, res) => {
 });
 
 
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session road:", err);
       res.status(500).send('Error logging out')
     } else {
-      console.log("logout si parecakes")
       res.redirect('/login');
     }
   })

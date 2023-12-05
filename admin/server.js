@@ -7,29 +7,14 @@ const { request } = require('http');
 const path = require('path');
 const mysql = require('mysql');
 const port = 3000
+const db = require("../admin/database_handler.js");
 
 const app = express()
-
-// palitan nyo db name if it isnt connecting here
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'events'
-});
-
-connection.connect((err) => {
-  if(err) {
-    console.error('Error connecting to database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database successfully!')
-})
 
 app.listen(port, () => {
   console.log(`Admin / EO application listening on port ${port}`)
   console.log(`http://localhost:${port}/`)
-})  
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -61,10 +46,8 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     if (req.session.adminId) {
-      // res.redirect('/admin_dashboard');
       res.redirect('/index');
     } else if (req.session.eventOrgId) {
-      // res.redirect('/eo_dashboard');
       res.redirect('/index');
     } else {
       res.render('login.ejs');
@@ -178,24 +161,13 @@ app.get('/logout', (req, res) => {
 
 app.post('/auth', (req, res) => {
   const {username, password} = req.body;
-
-  const queryString = `
-  SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
-  FROM eventorganizers
-  WHERE OrganizationName = ? AND password = ?
- `;
-
-  connection.query( queryString, [username, password, username, password], (error, results) => {
-    if(error) {
-      console.error('Error querying database:', error);
-      res.status(500).send('Error verifying credentials!');
-      return;
-    }
+  const results = db.authLogIn(username, password);
 
     if (results && results.length > 0) {
       // yes user
       const user = results[0];
 
+      //check if already logged in
       if (req.session.adminId || req.session.eventOrgId) {
         res.status(401).json({message: 'User is already logged in!'});
         return;
@@ -223,9 +195,7 @@ app.post('/auth', (req, res) => {
       // non user
       res.status(401).json( {message: 'Invalid username or password! Try again.' });
     }
-  }
-  )
-});
+  });
 
 app.post('/createEvent', (req, res) => {
 

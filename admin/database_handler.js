@@ -1,11 +1,11 @@
 const mysql = require('mysql2');
 const util = require('util');
-const connection = mysql.createPool({
-    connectionLimit: 100,
+const connection = mysql.createConnection({
+    // connectionLimit: 100,
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'webtek'
+    database: 'events'
   });
   
   connection.connect((err) => {

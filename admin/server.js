@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'webtek'
+  database: 'events'
 });
 
 connection.connect((err) => {
@@ -82,7 +82,7 @@ app.get('/admin_dashboard', (req, res) => {
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
     console.log('asd'+getOrgNameFromId(req.session.eventOrgId));
-    res.render('eo_dashboard.ejs',{
+    res.render('index.ejs',{
       // userID: getOrgNameFromId(req.session.eventOrgId)
       userID: req.session.eventOrgId
     });

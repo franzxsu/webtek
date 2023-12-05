@@ -81,10 +81,10 @@ app.get('/admin_dashboard', (req, res) => {
 
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
-    console.log('asd'+getOrgNameFromId(req.session.eventOrgId));
+    // console.log('asd'+getOrgNameFromId(req.session));
     res.render('index.ejs',{
       // userID: getOrgNameFromId(req.session.eventOrgId)
-      userID: req.session.eventOrgId
+      orgName: req.session.username
     });
 
   } else {

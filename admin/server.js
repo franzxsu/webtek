@@ -60,10 +60,10 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     if (req.session.adminId) {
       // res.redirect('/admin_dashboard');
-      res.redirect('index');
+      res.redirect('/index');
     } else if (req.session.eventOrgId) {
       // res.redirect('/eo_dashboard');
-      res.redirect('index');
+      res.redirect('/index');
     } else {
       res.render('login.ejs');
     }
@@ -81,9 +81,12 @@ app.get('/admin_dashboard', (req, res) => {
 
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
-    res.render('index.ejs');
+    res.render('index.ejs',{
+      userID: req.session.eventOrgId
+    });
+
   } else {
-    console.log('di ka na nakalog-in admin boi haha')
+    console.log('redirecting to login')
     res.redirect('/login');
     
   }
@@ -114,35 +117,7 @@ app.get('/sendDeets', (req, res) => {
   } 
 });
 
-function executeQuery(req, res, queryString) {
-  if (req.session.eventOrgId || req.session.adminId) {
-    connection.query(queryString, (error, results) => {
-      if (error) {
 
-        console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
-        return;
-
-      }
-
-      if (results && results.length > 0) {
-
-        res.status(200).json(results);
-
-      } else {
-
-        res.status(404).json({ message: 'No events found!' });
-
-      }
-    });
-
-  } else {
-
-    console.log('Unauthorized access: Redirecting to login');
-    res.status(401).redirect('/login');
-
-  }
-}
 
 app.get('/viewEvents', (req, res) => {
   if (req.session.eventOrgId) {
@@ -191,12 +166,13 @@ app.get('/logout', (req, res) => {
       console.error("Error destroying session road:", err);
       res.status(500).send('Error logging out')
     } else {
+
       res.redirect('/login');
     }
   })
 });
 
-app.post('/verify', (req, res) => {
+app.post('/auth', (req, res) => {
   const {username, password} = req.body;
 
   const queryString = `
@@ -226,7 +202,7 @@ app.post('/verify', (req, res) => {
         req.session.username = username;
         req.session.adminId = user.AdminOrOrgID;
         console.log("log in si admin: " + req.session.adminId);
-        res.redirect('/admin_dashboard');
+        res.redirect('/index');
 
       } else if (user.AdminOrOrgID && user.AdminOrOrgID < 1000) {
         // log in si event organizer
@@ -289,3 +265,35 @@ app.post('/createEvent', (req, res) => {
     res.status(401).redirect('/login');
   }
 });
+
+
+
+function executeQuery(req, res, queryString) {
+  if (req.session.eventOrgId || req.session.adminId) {
+    connection.query(queryString, (error, results) => {
+      if (error) {
+
+        console.error('Error querying database:', error);
+        res.status(500).send('Error verifying credentials!');
+        return;
+
+      }
+
+      if (results && results.length > 0) {
+
+        res.status(200).json(results);
+
+      } else {
+
+        res.status(404).json({ message: 'No events found!' });
+
+      }
+    });
+
+  } else {
+
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+
+  }
+}

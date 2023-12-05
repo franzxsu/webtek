@@ -5,7 +5,7 @@ function verifyLogin() {
     var usernameValue = usernameInput.value;
     var passwordValue = passwordInput.value;
 
-    fetch('/verify', {
+    fetch('/auth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

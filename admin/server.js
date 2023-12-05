@@ -32,7 +32,10 @@ app.listen(port, () => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // app.use('/admin/assets/bootstrap/css', express.static(path.join(__dirname, 'admin/assets/bootstrap/css  ')))\
-app.use('/admin/scripts', express.static(path.join(__dirname,'admin/scripts')));
+app.use('/scripts', express.static(path.join(__dirname,'scripts')));
+app.use('/public/assets/bootstrap/css', express.static(path.join(__dirname, 'public/assets/bootstrap/css')));
+app.use('/public/assets/fonts', express.static(path.join(__dirname, 'public/assets/fonts')));
+
 app.use(express.static('public'));
 
 app.use(cookieMonster());
@@ -57,38 +60,39 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     if (req.session.adminId) {
       // res.redirect('/admin_dashboard');
-      res.redirect('/index');
+      res.redirect('index');
     } else if (req.session.eventOrgId) {
       // res.redirect('/eo_dashboard');
-      res.redirect('/index');
+      res.redirect('index');
     } else {
-      res.render('../views/login.ejs');
+      res.render('login.ejs');
     }
 })
 
 
 app.get('/admin_dashboard', (req, res) => {
   if (req.session.adminId) {
-    res.render('../admin/admin_dashboard.ejs');
+    res.render('admin_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');
   }
 });
 
-app.get('/index', (req, res) => {
+app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
-    res.render('../admin/index.ejs');
+    res.render('index.ejs');
     // res.render('../admin/eo_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in admin boi haha')
     res.redirect('/login');
+    
   }
 });
 
 app.get('/eo_dashboard', (req, res) => {
   if (req.session.eventOrgId) {
-    res.render('../admin/eo_dashboard.ejs');
+    res.render('eo_dashboard.ejs');
   } else {
     console.log('di ka na nakalog-in event organizer boi haha')
     res.redirect('/login');
@@ -232,9 +236,9 @@ app.post('/verify', (req, res) => {
         req.session.eventOrgId = user.AdminOrOrgID;
         console.log("log in si event organizer: " + req.session.eventOrgId);
         
-        // res.redirect('/index');
+        res.redirect('/index');
 
-        res.redirect('/eo_dashboard');
+        // res.redirect('/eo_dashboard');
       }
 
     } else {

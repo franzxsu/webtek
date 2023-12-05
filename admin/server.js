@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'events'
+  database: 'webtek'
 });
 
 connection.connect((err) => {
@@ -82,7 +82,7 @@ app.get('/admin_dashboard', (req, res) => {
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
     console.log('asd'+getOrgNameFromId(req.session.eventOrgId));
-    res.render('index.ejs',{
+    res.render('eo_dashboard.ejs',{
       // userID: getOrgNameFromId(req.session.eventOrgId)
       userID: req.session.eventOrgId
     });
@@ -222,33 +222,15 @@ app.post('/createEvent', (req, res) => {
     if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
       res.status.apply(406).json( {message: 'How did you do this lol'});
       return;
-    }
-
-    const insertQuery = `
-    INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
-
-    const values = [
-      eventData.id,
-      eventData.eventName,
-      eventData.eventDescription,
-      eventData.eventDateStart,
-      eventData.eventDateEnd,
-      eventData.eventVenue,
-      eventData.courseID !== undefined ? eventData.courseID : null,
-      eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
-    ];
-
-    connection.query(insertQuery, values, (error) => {
-      if (error) {
+    } else {
+      try {
+        db.createEvent(eventData);
+        res.status.send(200).json({message: 'Event successfully created!'});
+      } catch (error) {
         console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
-        return;
-      } else {
-        console.log("Data inserted successfully!")
-        res.status(200).json( {message: 'Event successfully created!'});
+        res.status(500).send('Error encountered when adding the event!');
       }
-    });
+    }
   } else {
     console.log('Unauthorized access: Redirecting to login');
     res.status(401).redirect('/login');

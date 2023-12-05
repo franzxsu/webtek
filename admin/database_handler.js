@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'events'
+    database: 'webtek'
   });
   
   connection.connect((err) => {
@@ -39,6 +39,33 @@ const connection = mysql.createConnection({
       });
   }
 
+  function createEvent(eventData) {
+    const insertQuery = `
+    INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
+
+    const values = [
+      eventData.id,
+      eventData.eventName,
+      eventData.eventDescription,
+      eventData.eventDateStart,
+      eventData.eventDateEnd,
+      eventData.eventVenue,
+      eventData.courseID !== undefined ? eventData.courseID : null,
+      eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
+    ];
+
+    query(insertQuery, values, (error) => {
+      if (error) {
+        throw new Error(error);
+      } else {
+        console.log("Data inserted successfully!");
+      }
+    })
+    
+  };
+
 module.exports = {
-    authLogIn
+    authLogIn,
+    createEvent
 };  

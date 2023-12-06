@@ -96,29 +96,29 @@ function getOrgNameFromId(id) {
   }
 }
 
-function executeQuery(req, res, queryString) {
-  if (req.session.eventOrgId || req.session.adminId) {
-    connection.query(queryString, (error, results) => {
-      if (error) {
+// function executeQuery(req, res, queryString) {
+//   if (req.session.eventOrgId || req.session.adminId) {
+//     connection.query(queryString, (error, results) => {
+//       if (error) {
 
-        console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
-        return;
+//         console.error('Error querying database:', error);
+//         res.status(500).send('Error verifying credentials!');
+//         return;
 
-      }
+//       }
 
-      if (results && results.length > 0) {
-        res.status(200).json(results);
-      } else {
-        res.status(404).json({ message: 'No events found!' });
-      }
-    });
+//       if (results && results.length > 0) {
+//         res.status(200).json(results);
+//       } else {
+//         res.status(404).json({ message: 'No events found!' });
+//       }
+//     });
 
-  } else {
-    console.log('Unauthorized access: Redirecting to login');
-    res.status(401).redirect('/login');
-  }
-}
+//   } else {
+//     console.log('Unauthorized access: Redirecting to login');
+//     res.status(401).redirect('/login');
+//   }
+// }
 
 //hans pagawa 'to
 //per org, should return entire row hindi attributes, (SELECT *)
@@ -138,12 +138,33 @@ function getCompletedEvents(){
 function getUpcomingEvents(){
 
 }
-function getOrganizationMembers(){
+function getOrganizationMembers(orgID){
+  const query = "SELECT Email FROM organizationmembers WHERE organizationID = ?";
 
+  try {
+    connection.query(query, [orgID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        throw error;
+      }
+      else 
+      {
+        console.log("Data fetched successfully!");
+        console.log(results);
+        // const orgName = results[0].OrganizationName;
+        // console.log(orgName);
+        return results;
+      }
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 }
 
 module.exports = {
     authLogIn,
     createEvent,
-    getOrgNameFromId
+    getOrgNameFromId, 
+    getOrganizationMembers
 };  

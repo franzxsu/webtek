@@ -3,7 +3,6 @@
 const express = require('express');
 const session = require('express-session');
 const cookieMonster = require('cookie-parser');
-const { request } = require('http');
 const path = require('path');
 const port = 3000
 const db = require("../admin/database_handler.js");
@@ -18,8 +17,7 @@ app.listen(port, () => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/scripts', express.static(path.join(__dirname,'scripts')));
-app.use('/public/assets/bootstrap/css', express.static(path.join(__dirname, 'public/assets/bootstrap/css')));
-app.use('/public/assets/fonts', express.static(path.join(__dirname, 'public/assets/fonts')));
+app.use('/public/assets', express.static(path.join(__dirname, 'public/assets')));
 
 app.use(express.static('public'));
 
@@ -211,6 +209,7 @@ app.post('/auth', async (req, res) => {
   }
 });
 
+// app.post('/addmember')
 
 app.post('/createEvent', (req, res) => {
 

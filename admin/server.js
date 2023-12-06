@@ -5,26 +5,10 @@ const session = require('express-session');
 const cookieMonster = require('cookie-parser');
 const { request } = require('http');
 const path = require('path');
-const mysql = require('mysql');
 const port = 3000
 const db = require("../admin/database_handler.js");
 
 const app = express()
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'events'
-});
-
-connection.connect((err) => {
-  if(err) {
-    console.error('Error connecting to database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database successfully!')
-});
 
 app.listen(port, () => {
   console.log(`Admin / EO application listening on port ${port}`)
@@ -132,7 +116,7 @@ app.get('/viewEvents', (req, res) => {
       }
     }
 
-    executeQuery(req, res, queryString);
+    // executeQuery(req, res, queryString);
   } else {
     console.log('Unauthorized access: Redirecting to login');
     res.status(401).redirect('/login');
@@ -153,7 +137,7 @@ app.get('/viewOrgEvents', (req, res) => {
       }
     }
 
-    executeQuery(req, res, queryString);
+    // executeQuery(req, res, queryString);
   } else {
     console.log('Unauthorized access: Redirecting to login');
     res.status(401).redirect('/login');
@@ -236,50 +220,3 @@ app.post('/createEvent', (req, res) => {
   }
 });
 
-
-
-function executeQuery(req, res, queryString) {
-  if (req.session.eventOrgId || req.session.adminId) {
-    connection.query(queryString, (error, results) => {
-      if (error) {
-
-        console.error('Error querying database:', error);
-        res.status(500).send('Error verifying credentials!');
-        return;
-
-      }
-
-      if (results && results.length > 0) {
-        res.status(200).json(results);
-      } else {
-        res.status(404).json({ message: 'No events found!' });
-      }
-    });
-
-  } else {
-    console.log('Unauthorized access: Redirecting to login');
-    res.status(401).redirect('/login');
-  }
-}
-
-function getOrgNameFromId(id) {
-  const query = "SELECT OrganizationName FROM eventOrganizers WHERE OrganizerID = ?";
-  
-  try {
-    connection.query(query, [id], (error, results) => {
-      if (error) {
-        console.error('Error querying database:', error);
-        throw error;
-      } else {
-        console.log("Data fetched successfully!");
-        console.log(results);
-        const orgName = results[0].OrganizationName;
-        console.log(orgName);
-        return orgName;
-      }
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
-}

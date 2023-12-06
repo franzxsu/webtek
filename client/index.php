@@ -5,22 +5,22 @@ include_once 'database_handler.php';
 
 session_start();
 
-echo $_SESSION['user_id'] . "<br>";
-      echo $_SESSION['first_name'] . "<br>";
-      echo $_SESSION['last_name'] . "<br>";
-      echo $_SESSION['email'] . "<br>";
-      echo $_SESSION['courseID'] . "<br>";
-      // If 'organizations' is an array, you might want to loop through it
+// echo $_SESSION['user_id'] . "<br>";
+//       echo $_SESSION['first_name'] . "<br>";
+//       echo $_SESSION['last_name'] . "<br>";
+//       echo $_SESSION['email'] . "<br>";
+//       echo $_SESSION['courseID'] . "<br>";
+//       // If 'organizations' is an array, you might want to loop through it
 
-      echo 'HERE ARE MY ORGS:';
+//       echo 'HERE ARE MY ORGS:';
 
-      if (is_array($_SESSION['organizations'])) {
-          foreach ($_SESSION['organizations'] as $organization) {
-              echo $organization . "<br>";
-          }
-      } else {
-          echo $_SESSION['organizations'] . "<br>";
-      }
+//       if (is_array($_SESSION['organizations'])) {
+//           foreach ($_SESSION['organizations'] as $organization) {
+//               echo $organization . "<br>";
+//           }
+//       } else {
+//           echo $_SESSION['organizations'] . "<br>";
+//       }
 
 ?>
 

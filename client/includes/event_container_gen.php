@@ -8,14 +8,11 @@ include_once 'helpers.php';
 
 if(isset($_SESSION['user_id'])){
     $x = get_events_for_me($_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
-    $result = get_upcoming_events($x);
-
-    // var_dump($result);
-
 }
 else{
-    $result = get_all_events();
+    $x = get_everyone_events();
 }
+$result = get_upcoming_events($x);
 
 echo '
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';

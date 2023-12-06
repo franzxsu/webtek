@@ -156,6 +156,17 @@ function get_upcoming_events_all($currentDate){
   return $result;
 }
 
+function get_everyone_events(){
+  global $conn;
+
+  $query = "SELECT *
+            FROM events
+            WHERE accessLevel = 'Everyone'";
+
+  $result = mysqli_query($conn, $query);
+  return $result;
+}
+
 // !IMPORTANT METHOD
 
 function get_events_for_me($courseID, $organizations, $email) {
@@ -201,8 +212,6 @@ function get_events_given_ids($eventIDs){
   $result = mysqli_query($conn, $query);
   return $result;
 }
-
-
 
 function get_registered_events_for_me($userID){
   global $conn;

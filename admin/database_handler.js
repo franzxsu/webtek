@@ -23,6 +23,13 @@ const connection = mysql.createConnection({
 
   //todo
   function authLogIn(username, password) {
+    // const queryString = `
+    //   SELECT OrganizerID, OrganizationName, Email, Password
+    //   FROM eventorganizers
+    //   WHERE OrganizationName = ? AND Password = ?;
+    // `;
+
+    // TESTING
     const queryString = `
       SELECT OrganizerID, OrganizationName, Email, Password
       FROM eventorganizers

@@ -15,6 +15,7 @@ connection.connect((err) => {
   console.log('Connected to database');
 });
 
+//insert
 const createUser = (user) => {
   const sql = 'INSERT INTO users SET ?';
   connection.query(sql, user, (err, results) => {

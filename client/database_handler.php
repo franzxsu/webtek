@@ -156,6 +156,8 @@ function get_upcoming_events_all($currentDate){
   return $result;
 }
 
+// !IMPORTANT METHOD
+
 function get_events_for_me($courseID, $organizations, $email) {
   $accessLevel = 'Everyone';
 
@@ -189,34 +191,40 @@ function get_events_for_me($courseID, $organizations, $email) {
 }
 
 
-
-
-
-function get_registered_events_for_me($currentDate, $userID, $courseID, $organizations){
+function get_events_given_ids($eventIDs){
   global $conn;
 
-  $orgIDs = implode(',', array_map('intval', (array)$organizations));
+  $eventIDString = implode(',', array_map('intval', $eventIDs));
+  $query = "SELECT * FROM events WHERE eventID IN ($eventIDString)";
+  
 
-  $orgCondition = "";
-  if (!empty($orgIDs)) {
-    $orgCondition = " OR OrganizationID IN ($orgIDs)";
-  }
+  $result = mysqli_query($conn, $query);
+  return $result;
+}
 
-  $query = "SELECT e.* FROM events e
-            JOIN registrations r ON e.eventID = r.eventID
-            WHERE (e.eventDateStart > ?) 
-            AND ((e.courseID = ? $orgCondition) OR (e.courseID IS NULL AND e.OrganizationID IS NULL)) 
-            AND r.userID = ?
-            ORDER BY e.eventDateStart";
+
+
+function get_registered_events_for_me($userID){
+  global $conn;
+
+  $query = "SELECT EventId from registrations WHERE userId = ?" ;
 
   $stmt = $conn->prepare($query);
 
-  $stmt->bind_param("sii", $currentDate, $courseID, $userID);
+  $stmt->bind_param("i", $userID);
   $stmt->execute();
 
   $result = $stmt->get_result();
 
+  $eventIDs = [];
+    while ($row = $result->fetch_assoc()) {
+        $eventIDs[] = $row['EventId'];
+    }
+
+  $result = get_events_given_ids($eventIDs);
+
   return $result;
+
 }
 
 function get_registered_events_for_me_done($currentDate, $userID, $courseID, $organizations){
@@ -311,14 +319,14 @@ function get_event_name_from_id($eventID){
 function get_organization_name_from_id($orgID){
   global $conn;
 
-  $stmt = $conn->prepare("SELECT orgName from organizations WHERE OrganizationID = ?;");
+  $stmt = $conn->prepare("SELECT OrganizationName from eventorganizers WHERE OrganizerID = ?;");
   $stmt->bind_param("s", $orgID);
 
   $stmt->execute();
   $result = $stmt->get_result();
 
   $row = $result->fetch_assoc();
-  return $row['orgName'];
+  return $row['OrganizationName'];
 }
 
 function get_event_course($eventID){

@@ -1,10 +1,14 @@
 <?php
 include_once 'database_handler.php';
+include_once 'helpers.php';
 
 session_start();
 
 if(isset($_SESSION['user_id'])){
-    $events = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
+    $x = get_registered_events_for_me($_SESSION['user_id']);
+    $events = get_past_events($x);
+
+    var_dump($x);
 }
 
 ?>
@@ -26,6 +30,7 @@ if(isset($_SESSION['user_id'])){
 
 <?php
     include_once 'includes/sidebar.php';
+    include_once 'helpers.php';
 ?>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">

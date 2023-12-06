@@ -10,14 +10,12 @@ if(isset($_SESSION['user_id'])){
     $x = get_events_for_me($_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
     $result = get_upcoming_events($x);
 
-    var_dump($result);
+    // var_dump($result);
 
 }
 else{
     $result = get_all_events();
 }
-
-// $result = get_registered_events_for_me(date("Y/m/d"), $_SESSION['user_id'], $_SESSION['courseID'], $_SESSION['courseID']);
 
 echo '
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
@@ -30,11 +28,6 @@ if (is_array($result) && count($result) > 0) {
         $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j");
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
-
-        // Now you can use these variables as needed
-        // For example, echo them or use in HTML templates
-        echo "Event ID: $eventID, Event Name: $eventName, Start Date: $eventDateStart, End Date: $eventDateEnd, Location: $eventLocation, Info: $eventInfo <br>";
-
 
         echo '
         <div class="col-md-6 col-xl-3 mb-4">

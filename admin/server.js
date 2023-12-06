@@ -53,15 +53,6 @@ app.get('/login', (req, res) => {
 })
 
 
-app.get('/admin_dashboard', (req, res) => {
-  if (req.session.adminId) {
-    res.render('admin_dashboard.ejs');
-  } else {
-    console.log('di na nakalog-in admin')
-    res.redirect('/login');
-  }
-});
-
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
     // console.log('asd'+getOrgNameFromId(req.session));
@@ -74,6 +65,28 @@ app.get('/index', (req, res) => {
     console.log('redirecting to login')
     res.redirect('/login');
     
+  }
+});
+
+app.get('/profile', (req, res) => { 
+  if (req.session.eventOrgId) {
+    res.render('profile.ejs',{
+      orgName: req.session.username
+    });
+
+  } else {
+    console.log('redirecting to login')
+    res.redirect('/login');
+    
+  }
+});
+
+app.get('/admin_dashboard', (req, res) => {
+  if (req.session.adminId) {
+    res.render('admin_dashboard.ejs');
+  } else {
+    console.log('di na nakalog-in admin')
+    res.redirect('/login');
   }
 });
 

@@ -105,8 +105,20 @@ function getOrgNameFromId(id) {
 
 //hans pagawa 'to
 //per org, should return entire row hindi attributes, (SELECT *)
-function getAllOrganizationEvents(){
-
+function getAllEvents(orgID){
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM events WHERE OrganizerId = ?";
+    connection.query(query, [orgID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        console.log("Data fetched successfully!");
+        console.log(results);
+        resolve(results);
+      }
+    });
+  });
 }
 
 function removeEvent(eventID){
@@ -143,5 +155,6 @@ module.exports = {
     authLogIn,
     createEvent,
     getOrgNameFromId, 
-    getOrganizationMembers
+    getOrganizationMembers,
+    getAllEvents
 };  

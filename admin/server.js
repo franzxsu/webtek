@@ -52,9 +52,10 @@ app.get('/login', (req, res) => {
 
 
 app.get('/index', (req, res) => { 
-  if (req.session.eventOrgId) {
+  if (req.session.userData) {
+    console.log(req.session.userData);
     res.render('index.ejs',{
-      orgName: req.session.username,
+      orgName: req.session.userData.OrganizationName,
     });
 
   } else {
@@ -77,41 +78,6 @@ app.get('/profile', (req, res) => {
     
   }
 });
-
-app.get('/admin_dashboard', (req, res) => {
-  if (req.session.adminId) {
-    res.render('admin_dashboard.ejs');
-  } else {
-    console.log('di na nakalog-in admin')
-    res.redirect('/login');
-  }
-});
-
-app.get('/eo_dashboard', (req, res) => {
-  if (req.session.eventOrgId) {
-    res.render('eo_dashboard.ejs');
-  } else {
-    console.log('di na nakalog-in event organizer')
-    res.redirect('/login');
-  }
-});
-
-app.get('/sendDeets', (req, res) => {
-  if (req.session.adminId) {
-    res.status(200).json({
-        id: req.session.adminId,
-        username: req.session.username
-    });
-  } else if (req.session.eventOrgId) {
-    res.status(200).json({
-      id: req.session.eventOrgId,
-      username: req.session.username
-    })
-  } else {
-    res.status(404).json({ error: 'User not found!'});
-  } 
-});
-
 
 
 app.get('/viewEvents', (req, res) => {
@@ -172,36 +138,13 @@ app.post('/auth', async (req, res) => {
 
   try {
     const userData = await db.authLogIn(username, password);
-    console.log(userData);
-
+    console.log(userData)
     if (userData !== null) {
-      console.log(userData['OrganizerID']);
-
-      if (req.session.adminId || req.session.eventOrgId) {
-        res.status(401).json({ message: 'User is already logged in!' });
-        return;
-      }
-
-      if (userData['OrganizerID'] >= 1000) {
-        // log in as admin
-        req.session.username = userData['OrganizationName'];
-        req.session.adminId = userData['OrganizerID'];
-        req.session.email = userData['Email'];
-        console.log("Logged in as admin: " + req.session.adminId);
-        res.redirect('/index');
-      } else {
-        // log in as event organizer
-        req.session.username = userData['OrganizationName'];
-        req.session.eventOrgId = userData['OrganizerID'];
-        req.session.email = userData['Email'];
-        
-        console.log("Logged in as event organizer: " + req.session.eventOrgId);
-        res.redirect('/index');
-      }
-    } 
-    else {
-      // Authentication failed
-      res.status(401).json({ message: 'Invalid username or password! Try again.' });
+      req.session.userData = userData;
+      res.redirect('/index');
+    } else {
+      
+      res.render('login', { error: 'Invalid username or password' });
     }
   } catch (error) {
     console.error('Error authenticating user:', error);

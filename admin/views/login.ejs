@@ -10,28 +10,29 @@
 </head>
 
 <style>
+
      body {
-  background: url('../../client/assets/img/logos/slu-campus.jpg');
-  background-attachment: fixed;
-}
-body.bg-gradient-primary {
-    background-image: url('../../client/assets/img/logos/slu-campus.jpg') !important;
-    background-color: rgba(0,0,0,0.5) !important; 
-}
+        background: url('../../client/assets/img/logos/slu-campus.jpg');
+        background-attachment: fixed;
+    }
+    body.bg-gradient-primary {
+        background-image: url('../../client/assets/img/logos/slu-campus.jpg') !important;
+        background-color: rgba(0,0,0,0.5) !important; 
+    }
+    .bg-image-overlay {
+        position: relative; 
+    }
 
-.bg-image-overlay {
-  position: relative; 
-}
+    .bg-image-overlay::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;  
+        background-color: rgba(0,0,0,0.5) !important; 
+    } 
 
-.bg-image-overlay::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;  
-  background-color: rgba(0,0,0,0.5) !important; 
-} 
 </style>
 
 <body class="bg-gradient-primary">
@@ -49,7 +50,7 @@ body.bg-gradient-primary {
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Admin Log In</h4>
                                     </div>
-                                    <form action="auth" method="POST" id="loginForm" target="_blank">
+                                    <form action="auth" method="POST" id="loginForm">
                                         <div class="mb-3"><input class="form-control form-control-user" name="username" type="text" id="usernameInput" placeholder="Enter username"></div>
                                         <div class="mb-3"><input class="form-control form-control-user" type="password" id="passwordInput" name="password" placeholder="Password" id="passwordInput"></div>
                                         <div class="mb-3">
@@ -68,7 +69,6 @@ body.bg-gradient-primary {
             </div>
         </div>
     </div>
-    <script src="../scripts/login.js"></script>
 </body>
 
 </html>

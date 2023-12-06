@@ -25,7 +25,7 @@ const connection = mysql.createConnection({
     const queryString = `
       SELECT OrganizerID, OrganizationName, Email, Password
       FROM eventorganizers
-      WHERE organizationName = ? AND password = ?
+      
     `;
     
     return query(queryString, [username, password])

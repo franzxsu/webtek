@@ -30,12 +30,15 @@ router.get('/index', (req, res) => {
   }
 });
 
-router.get('/profile', (req, res) => {
+router.get('/profile', async (req, res) => {
     //check for session (todoextract)
     if (req.session.userData) {
+        // console.log("ID"+req.session.userData.OrganizerID)
+        const orgMembers = await db.getOrganizationMembers(req.session.userData.OrganizerID);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
-          orgEmail: req.session.userData.email
+          orgEmail: req.session.userData.email,
+          orgMembers: orgMembers
         });
     
       } else {

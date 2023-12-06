@@ -120,7 +120,7 @@
                                     <h4 class="small fw-bold">Total Events<span class="float-end">0</span></h4>
                                     <h4 class="small fw-bold">Completed Events<span class="float-end">0</span></h4>
                                     <h4 class="small fw-bold">Upcoming Events<span class="float-end">0</span></h4>
-                                    <h4 class="small fw-bold"><span class="float-end">5</span></h4>
+                                    <h4 class="small fw-bold"><span class="float-end"><%= orgMembers.length %></span></h4>
                                     <h4 class="small fw-bold">Total Members<span class="float-end"></span></h4>
                                     <h4 class="small fw-bold"><span class="float-end"></span></h4>
                                 </div>
@@ -188,19 +188,13 @@
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>EMAIL</th>
-                                                                    <th>NAME</th>
+                                                                    <th>Email</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>Cell 1</td>
-                                                                    <td>Cell 2</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Cell 3</td>
-                                                                    <td>Cell 4</td>
-                                                                </tr>
+                                                                <% orgMembers.forEach(member => { %>
+                                                                    <tr><td><%= member.Email %></td></tr>
+                                                                <% }); %>
                                                             </tbody>
                                                         </table>
                                                     </div>

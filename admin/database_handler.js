@@ -121,29 +121,23 @@ function getCompletedEvents(){
 function getUpcomingEvents(){
 
 }
-function getOrganizationMembers(orgID){
-  const query = "SELECT Email FROM organizationmembers WHERE organizationID = ?";
 
-  try {
+function getOrganizationMembers(orgID) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT Email FROM organizationmembers WHERE organizationID = ?";
     connection.query(query, [orgID], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
-        throw error;
-      }
-      else 
-      {
+        reject(error);
+      } else {
         console.log("Data fetched successfully!");
         console.log(results);
-        // const orgName = results[0].OrganizationName;
-        // console.log(orgName);
-        return results;
+        resolve(results);
       }
     });
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
+  });
 }
+
 
 module.exports = {
     authLogIn,

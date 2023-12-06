@@ -14,8 +14,8 @@ const app = express()
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
-  database: 'wibtik'
+  password: '',
+  database: 'events'
 });
 
 connection.connect((err) => {

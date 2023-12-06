@@ -220,7 +220,7 @@ app.post('/createEvent', (req, res) => {
 
     // sakaling may nakapasa sa client-side alert somehow na invalid date
     if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
-      res.status.apply(406).json( {message: 'Invalid date! Please try again.'});
+      res.status(406).json( {message: 'Invalid date! Please try again.'});
       return;
     } else {
       try {

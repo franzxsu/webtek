@@ -127,35 +127,35 @@
                                 <div class="container-fluid">
 
                                     <!-- post form create event -->
-                                    <form>
+                                    <form id="eventCreationForm" action="createEvent" method="post">
                                         <div class="mb-3">
                                         <label for="eventName" class="form-label">Event Name</label>
-                                        <input type="text" class="form-control" id="eventName" placeholder="Enter event name">
+                                        <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name">
                                         </div>
                                         <div class="mb-3">
                                             <label for="eventVenue" class="form-label">Venue</label>
-                                            <input type="text" class="form-control" id="venue" placeholder="Enter event venue">
+                                            <input type="text" name="eventVenue" class="form-control" id="venue" placeholder="Enter event venue">
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 ms">
                                                 <label for="startDate">Start date </label>
-                                                <input id="startDate" class="form-control" type="date" />
+                                                <input name="eventDateStart" id="startDate" class="form-control" type="date" />
                                             </div>
                                             <div class="col-md-4 ms-auto">
                                                 <label for="endDate">End date </label>
-                                                <input id="endDate" class="form-control" type="date" />
+                                                <input name="eventDateEnd" id="endDate" class="form-control" type="date" />
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
+                                            <input class="form-check-input" type="radio" name="eventFor" id="flexRadioDefault1" value="OrganizationExclusive" checked>
                                             <label class="form-check-label" for="flexRadioDefault3">Organization Exclusive [<%= orgName %>]</label>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                            <input class="form-check-input" type="radio" name="eventFor" value="SLUExclusive" id="flexRadioDefault2">
                                             <label class="form-check-label" for="flexRadioDefault1">SLU Exclusive</label>
                                         </div>
                                         <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                            <input class="form-check-input" type="radio" name="eventFor" value="OpenForAll" id="flexRadioDefault3" checked>
                                             <label class="form-check-label" for="flexRadioDefault2">Open for all</label>
                                         </div>
                                     </div>
@@ -265,6 +265,7 @@
     </div>
     <script type="module" src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="../scripts/eo_dashboard.js"></script>
 </body>
 
 </html>

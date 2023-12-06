@@ -6,7 +6,7 @@ session_start();
 
 if(isset($_SESSION['user_id'])){
     $x = get_registered_events_for_me($_SESSION['user_id']);
-    $events = get_past_events($x);
+    $events = get_upcoming_events($x);
 
     var_dump($x);
 }

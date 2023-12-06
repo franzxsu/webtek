@@ -23,17 +23,17 @@ function get_upcoming_events($events) {
 
 function get_past_events($events) {
     $currentDate = date('Y-m-d');
-    $upcomingEvents = array();
+    $pastEvents = array();
 
     while ($event = $events->fetch_assoc()) {
         $eventDateStart = $event['EventDateStart'];
 
         if (strtotime($eventDateStart) < strtotime($currentDate)) {
-            $upcomingEvents[] = $event;
+            $pastEvents[] = $event;
         }
     }
 
-    return $upcomingEvents;
+    return $pastEvents;
 }
 
 

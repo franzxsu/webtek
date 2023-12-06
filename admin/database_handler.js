@@ -118,6 +118,28 @@ function executeQuery(req, res, queryString) {
   }
 }
 
+//hans pagawa 'to
+//per org, should return entire row hindi attributes, (SELECT *)
+function getAllOrganizationEvents(){
+
+}
+
+function removeEvent(eventID){
+
+}
+function changeEventAttribute(eventID, headerOfTableToChange, newValue){
+
+}
+function getCompletedEvents(){
+
+}
+function getUpcomingEvents(){
+
+}
+function getOrganizationMembers(){
+
+}
+
 module.exports = {
     authLogIn,
     createEvent,

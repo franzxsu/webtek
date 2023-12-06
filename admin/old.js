@@ -75,8 +75,51 @@ app.get('/profile', (req, res) => {
   } else {
     console.log('redirecting to login')
     res.redirect('/login');
+    
   }
 });
+
+
+app.get('/viewEvents', (req, res) => {
+  if (req.session.eventOrgId) {
+    const { sortBy, sortOrder } = req.query;
+    let queryString = 'SELECT * FROM events';
+
+    if (sortBy) {
+      queryString += ` ORDER BY ${sortBy}`;
+      if (sortOrder && (sortOrder.toUpperCase() === 'ASC' || sortOrder.toUpperCase() === 'DESC')) {
+        queryString += ` ${sortOrder.toUpperCase()}`;
+      }
+    }
+
+    // executeQuery(req, res, queryString);
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
+});
+
+app.get('/viewOrgEvents', (req, res) => {
+  if (req.session.eventOrgId) {
+    const eventOrgId = req.session.eventOrgId;
+    const { sortBy, sortOrder } = req.query;
+
+    let queryString = `SELECT * FROM events WHERE OrganizerId = ${eventOrgId}`;
+
+    if (sortBy) {
+      queryString += ` ORDER BY ${sortBy}`;
+      if (sortOrder && (sortOrder.toUpperCase() === 'ASC' || sortOrder.toUpperCase() === 'DESC')) {
+        queryString += ` ${sortOrder.toUpperCase()}`;
+      }
+    }
+
+    // executeQuery(req, res, queryString);
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
+});
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -84,6 +127,7 @@ app.get('/logout', (req, res) => {
       console.error("Error destroying session:", err);
       res.status(500).send('Error logging out!')
     } else {
+
       res.redirect('/login');
     }
   })
@@ -107,3 +151,31 @@ app.post('/auth', async (req, res) => {
     res.status(500).json({ message: 'Error authenticating user' });
   }
 });
+
+// app.post('/addmember')
+
+app.post('/createEvent', (req, res) => {
+
+  if (req.session.eventOrgId) {
+    const eventData = req.body;
+    console.log(req.body);
+
+    // sakaling may nakapasa sa client-side alert somehow na invalid date
+    if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
+      res.status(406).json( {message: 'Invalid date! Please try again.'});
+      return;
+    } else {
+      try {
+        db.createEvent(eventData);
+        res.status(200).json({message: 'Event successfully created!'});
+      } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Error encountered when adding the event!');
+      }
+    }
+  } else {
+    console.log('Unauthorized access: Redirecting to login');
+    res.status(401).redirect('/login');
+  }
+});
+

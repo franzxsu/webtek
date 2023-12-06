@@ -21,11 +21,11 @@ const connection = mysql.createConnection({
 
   const query = util.promisify(connection.query).bind(connection);
 
+  //todo
   function authLogIn(username, password) {
     const queryString = `
       SELECT OrganizerID, OrganizationName, Email, Password
       FROM eventorganizers
-      
     `;
     
     return query(queryString, [username, password])
@@ -95,30 +95,6 @@ function getOrgNameFromId(id) {
     throw error;
   }
 }
-
-// function executeQuery(req, res, queryString) {
-//   if (req.session.eventOrgId || req.session.adminId) {
-//     connection.query(queryString, (error, results) => {
-//       if (error) {
-
-//         console.error('Error querying database:', error);
-//         res.status(500).send('Error verifying credentials!');
-//         return;
-
-//       }
-
-//       if (results && results.length > 0) {
-//         res.status(200).json(results);
-//       } else {
-//         res.status(404).json({ message: 'No events found!' });
-//       }
-//     });
-
-//   } else {
-//     console.log('Unauthorized access: Redirecting to login');
-//     res.status(401).redirect('/login');
-//   }
-// }
 
 //hans pagawa 'to
 //per org, should return entire row hindi attributes, (SELECT *)

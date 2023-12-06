@@ -142,7 +142,7 @@ function get_all_events()
   return $result;
 }
 
-function get_upcoming_events($currentDate){
+function get_upcoming_events_all($currentDate){
   global $conn;
 
   $query = "SELECT * FROM events WHERE eventDateStart > ? ORDER BY eventDateStart";
@@ -156,7 +156,7 @@ function get_upcoming_events($currentDate){
   return $result;
 }
 
-function get_upcoming_events_for_me($currentDate, $courseID, $organizations, $email) {
+function get_events_for_me($courseID, $organizations, $email) {
   $accessLevel = 'Everyone';
 
   if (strpos($email, "@slu.edu.ph") !== false) {
@@ -187,12 +187,6 @@ function get_upcoming_events_for_me($currentDate, $courseID, $organizations, $em
   $result = mysqli_query($conn, $query);
   return $result;
 }
-
-
-
-
-
-
 
 
 

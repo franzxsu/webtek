@@ -1,10 +1,17 @@
 <?php
 
 include_once 'database_handler.php';
+include_once 'helpers.php';
 
 // $result = get_all_events();
+
+
 if(isset($_SESSION['user_id'])){
-    $result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
+    $x = get_events_for_me($_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
+    $result = get_upcoming_events($x);
+
+    var_dump($result);
+
 }
 else{
     $result = get_all_events();
@@ -15,14 +22,19 @@ else{
 echo '
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if (is_array($result) && count($result) > 0) {
+    foreach ($result as $row) {
         $eventID = $row["eventID"];
         $eventName = $row["EventName"];
         $eventDateStart = date_format(date_create($row["EventDateStart"]), "F j");
         $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j");
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
+
+        // Now you can use these variables as needed
+        // For example, echo them or use in HTML templates
+        echo "Event ID: $eventID, Event Name: $eventName, Start Date: $eventDateStart, End Date: $eventDateEnd, Location: $eventLocation, Info: $eventInfo <br>";
+
 
         echo '
         <div class="col-md-6 col-xl-3 mb-4">

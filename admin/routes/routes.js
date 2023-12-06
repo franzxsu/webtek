@@ -20,7 +20,7 @@ router.get('/login', (req, res) => {
 router.get('/index', (req, res) => {
   //check if there is session
   if (req.session.userData) {
-    console.log("ALLEVENTS: "+db.getAllEvents(req.session.userData.OrganizerID));
+    console.log("ALLEVENTS: "+db.getCompletedEvents(req.session.userData.OrganizerID));
     console.log(req.session.userData);
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
@@ -34,7 +34,7 @@ router.get('/index', (req, res) => {
 router.get('/profile', async (req, res) => {
     //check for session (todoextract)
     if (req.session.userData) {
-        
+        // console.log("ID"+req.session.userData.OrganizerID)
         const orgMembers = await db.getOrganizationMembers(req.session.userData.OrganizerID);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,

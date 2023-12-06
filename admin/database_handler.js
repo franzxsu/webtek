@@ -103,8 +103,7 @@ function getOrgNameFromId(id) {
   }
 }
 
-//hans pagawa 'to
-//per org, should return entire row hindi attributes, (SELECT *)
+//get all events given organization id
 function getAllEvents(orgID){
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM events WHERE OrganizerId = ?";
@@ -127,10 +126,26 @@ function removeEvent(eventID){
 function changeEventAttribute(eventID, headerOfTableToChange, newValue){
 
 }
-function getCompletedEvents(){
-
+function getCompletedEvents(orgID){
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Get current date in MySQL datetime format
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND eventDateEnd < ?";
+    connection.query(query, [orgID, currentDate], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        console.log("Data fetched successfully!");
+        console.log(results);
+        resolve(results);
+      }
+    });
+  });
 }
 function getUpcomingEvents(){
+
+}
+function getOngoignEvents(){
 
 }
 
@@ -156,5 +171,6 @@ module.exports = {
     createEvent,
     getOrgNameFromId, 
     getOrganizationMembers,
-    getAllEvents
+    getAllEvents,
+    getCompletedEvents
 };  

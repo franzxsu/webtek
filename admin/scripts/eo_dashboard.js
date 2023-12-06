@@ -1,215 +1,151 @@
-var createEventBtn = document.getElementById('createEventBtn');
-var eventFormContainer = document.getElementById('eventFormContainer');
-var eventsContainer = document.getElementById('eventsContainer');
-var welcomeMsg = document.getElementById("welcomeSpread");
+// var createEventBtn = document.getElementById('createEventBtn');
+// var eventFormContainer = document.getElementById('eventFormContainer');
+// var eventsContainer = document.getElementById('eventsContainer');
+// var welcomeMsg = document.getElementById("welcomeSpread");
 var id;
 var orgName;
 var allEvents;
 var orgEvents;
 
 
-function getDeets() {
-
-    fetch('/sendDeets')
-    .then(response => {
-        if (response.ok) {
-            return response.json();
+async function getDeets() {
+    try {
+        const response = await fetch('/sendDeets');
+        if (!response.ok) {
+            throw new Error('Error retrieving details!');
         }
-        throw new Error('Error retrieving details!');
-    })
-    .then(data => {
-        // test data received hihi
-
-        console.log('Received data:', data);
+        const data = await response.json();
         id = data.id;
         orgName = data.username;
-
-        console.log(id + " " + orgName)
-
-        welcomeMsg.innerText = `Hello, ${orgName}, how are you today? Your ID number is ${id}!`;
-    })
-    .catch(error => {
+        console.log(id + " " + orgName);
+        // Additional logic if needed
+        return data;
+    } catch (error) {
         console.error('Error:', error.message);
-    })
+        throw error;
+    }
 }
 
 // ----------------------------------------- GET FUNCTIONS -----------------------------------------
 
-function getEvents(endpoint) {
-    return fetch(endpoint)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Error retrieving events!');
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-            throw error;
-    });
+async function getEvents(endpoint) {
+    try {
+        const response = await fetch(endpoint);
+
+        if (response.ok) {
+            return await response.json();
+        }
+
+        throw new Error('Error retrieving events!');
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
 }
 
-function getAllEvents() {
-    getEvents('/viewEvents')
-        .then(data => {
-            allEvents = data; // Assigning fetched data to global variable
-            console.log(allEvents);
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-     });
+async function getAllEvents() {
+    try {
+        const data = await getEvents('/viewEvents');
+        allEvents = data; // Assigning fetched data to global variable
+        console.log(allEvents);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
 }
 
-function getOrgEvents(id) {
-    getEvents(`/viewOrgEvents?eventOrgId=${id}`)
-        .then(data => {
-            orgEvents = data; // Assigning fetched data to global variable
-            console.log(orgEvents);
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-    });
+async function getOrgEvents(id) {
+    try {
+        const data = await getEvents(`/viewOrgEvents?eventOrgId=${id}`);
+        orgEvents = data; // Assigning fetched data to global variable
+        console.log(orgEvents);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
 }
+
 
 // ----------------------------------------- POST FUNCTIONS -----------------------------------------
 
-function saveEventData(eventData) {
+async function saveEventData(eventData) {
+    try {
+        const response = await fetch('/createEvent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(eventData)
+        });
 
-    fetch('/createEvent', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(eventData)
-    })
-    .then(response => {
-        if(response.ok) {
-            return response.json().then(data => {
-                alert(data.message);
-            });
+        if (response.ok) {
+            const data = await response.json();
+            alert(data.message);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error);
-    })
-
+    }
 }
+
 
 // ----------------------------------------- CLIENT-SIDE SCRIPTING -----------------------------------------
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    getDeets();
+document.addEventListener('DOMContentLoaded', async function () {
+    await getDeets();
     getAllEvents();
     getOrgEvents();
 
-    const minutes = 2.5;
-    const miliseconds = minutes * 60 * 1000;
+    createEvents();
 
-    setInterval(() => {
-        getDeets();
-        getAllEvents();
-        getOrgEvents();
-    }, miliseconds);
+    // const minutes = 2.5;
+    // const miliseconds = minutes * 60 * 1000;
 
-    createEventBtn.addEventListener('click', function () {
-        toggleEvents(createEventBtn, eventFormContainer);
-    });
+    // setInterval(() => {
+    //     getDeets();
+    //     getAllEvents();
+    //     getOrgEvents();
+    // }, miliseconds);
 
-    // Functionality for showing all events
-    showAllEventsBtn.addEventListener('click', function () {
-        toggleEvents(showAllEventsBtn, eventsContainer);
-    });
+    // createEventBtn.addEventListener('click', function () {
+    //     toggleEvents(createEventBtn, eventFormContainer);
+    // });
 
-    showMyEventsBtn.addEventListener('click', function() {
-        toggleEvents(showMyEventsBtn, eventsContainer);
-    });
+    // // Functionality for showing all events
+    // showAllEventsBtn.addEventListener('click', function () {
+    //     toggleEvents(showAllEventsBtn, eventsContainer);
+    // });
+
+    // showMyEventsBtn.addEventListener('click', function() {
+    //     toggleEvents(showMyEventsBtn, eventsContainer);
+    // });
 
     function createEvents() {
-        eventFormContainer.innerHTML = '';
-        eventFormContainer.classList.remove('hidden');
-        const form = document.createElement('form');
-        form.id = 'eventCreationForm';
-
-        const formFields = [
-            { label: 'Event Name:', type: 'text', name: 'eventName', required: true },
-            { label: 'Event Venue:', type: 'text', name: 'eventVenue', required: true },
-            { label: 'Event Date Start:', type: 'date', name: 'eventDateStart', required: true, id:'startDate' },
-            { label: 'Event Date End:', type: 'date', name: 'eventDateEnd', required: true, id: 'endDate' },
-            { 
-                label: 'Who gets to attend the event? :', 
-                type: 'select', 
-                name: 'eventFor', 
-                required: true,
-                options: [
-                    { value: "everyone", text: "Everyone!"},
-                    { value: "sluOnly", text: "SLU Students Only"},
-                    { value: "courseOnly", text: "A Particular Course Only"},
-                    { value: "orgOnly", text: "Organization Members Only"}
-                ] 
-            },
-            { label: 'Event Description:', type: 'textarea', name: 'eventDescription', rows: 4, required: true }
-        ];
-
-        formFields.forEach(field => {
-            const label = document.createElement('label');
-            label.textContent = field.label;
-        
-            let input;
-        
-            if (field.type === 'select') {
-                input = document.createElement('select');
-                input.name = field.name;
-                input.required = field.required;
-        
-                // Creating the placeholder option
-                const placeholderOption = document.createElement('option');
-                placeholderOption.value = '';
-                placeholderOption.text = 'Select an option';
-                placeholderOption.disabled = true;
-                placeholderOption.selected = true;
-                input.appendChild(placeholderOption);
-        
-                // Adding other options
-                field.options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option.value;
-                    optionElement.text = option.text;
-                    input.appendChild(optionElement);
-                });
-            } else {
-                input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
-                input.type = field.type;
-                input.name = field.name;
-                input.required = field.required;
-
-                if (field.id) {
-                    input.id = field.id;
-                    console.log(input.id);
-                }
-        
-                if (field.rows) {
-                    input.rows = field.rows;
-                    input.cols = 50;
-                }
-            }
-        
-            form.appendChild(label);
-            form.appendChild(input);
-            form.appendChild(document.createElement('br'));
-        });
-        
-
-        const createButton = document.createElement('button');
-        createButton.type = 'submit';
-        createButton.textContent = 'Create';
-
-        const cancelButton = document.createElement('button');
-        cancelButton.type = 'button';
-        cancelButton.textContent = 'Cancel';
+        const form = document.getElementById('eventCreationForm');
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
+
+            const formData = new FormData(form);
+            const eventData = {};
+            eventData["id"] = id;
+
+            const buttonMapping = {
+                flexRadioDefault1: 'Organization Exclusive',
+                flexRadioDefault2: 'SLU Exclusive',
+                flexRadioDefault3: 'Open for all',
+            };
+
+            for (const [name, value] of formData.entries()) {
+                if (name === 'flexRadioDefault' && buttonMapping[value]) {
+                    eventData['selectedOption'] = buttonMapping[value];
+                } else {
+                    eventData[name] = value;
+                }
+            }
+
+            console.log(eventData);
+
+            // saveEventData(eventData);
+            
 
             if (form.checkValidity()) {
                 const startDate = form.querySelector('#startDate').value;
@@ -231,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     saveEventData(eventData);
             
                     form.reset();
-                    eventFormContainer.classList.add('hidden');
+                    // eventFormContainer.classList.add('hidden');
                 }
             }
         });
@@ -241,17 +177,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
 
-        form.appendChild(createButton);
-        form.appendChild(cancelButton);
+        // form.appendChild(createButton);
+        // form.appendChild(cancelButton);
 
-        // Functionality for canceling form submission (Cancel button)
-        cancelButton.addEventListener('click', function () {
-            // Hide the form when the Cancel button is clicked
-            form.reset();
-            eventFormContainer.classList.add('hidden');
-        });
+        // // Functionality for canceling form submission (Cancel button)
+        // cancelButton.addEventListener('click', function () {
+        //     // Hide the form when the Cancel button is clicked
+        //     form.reset();
+        //     eventFormContainer.classList.add('hidden');
+        // });
 
-        eventFormContainer.appendChild(form);
+        // eventFormContainer.appendChild(form);
     }
 
     function createEventsTable(eventsData) {

@@ -6,9 +6,6 @@ $conn = mysqli_connect("localhost", "root", "", "events");
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-//else{
-//  echo "database ok!";
-//}
 
 // OLD CHECK_LOGIN CODE
 function check_login_no_hash($email, $password) {
@@ -274,24 +271,21 @@ function get_user_course_id($email)
   $stmt = $conn->prepare("SELECT courseID from enrolledcourse WHERE email = ?;");
   $stmt->bind_param("s", $email);
 
-  // if(email_exists($email)) {
-  //   return "Email already taken"; 
-  // }
-
   $stmt->execute();
   $result = $stmt->get_result();
 
   $row = $result->fetch_assoc();
   return $row['courseID'];
 }
+
 //giveen email of the user, return his/her organizations as list, return null if none
-function get_user_organizations($userID)
+function get_user_organizations($email)
 {
 
   global $conn;
 
-  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE userID = ?");
-  $stmt->bind_param("i", $userID);
+  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE email = ?");
+  $stmt->bind_param("i", $email);
   $stmt->execute();
 
   $result = $stmt->get_result();

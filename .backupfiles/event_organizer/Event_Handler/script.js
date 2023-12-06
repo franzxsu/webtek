@@ -1,4 +1,3 @@
-<script>
 var selectedRow = null
 
 function onFormSubmit() {
@@ -78,4 +77,3 @@ function validate() {
     }
     return isValid;
 }
-</script>

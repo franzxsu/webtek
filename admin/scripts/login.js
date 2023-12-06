@@ -5,7 +5,7 @@ function verifyLogin() {
     var usernameValue = usernameInput.value;
     var passwordValue = passwordInput.value;
 
-    fetch('/verify', {
+    fetch('/auth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -43,20 +43,20 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    var eyeBtn = document.getElementById("showPass");
-    var btnCheck = false;
+    // var eyeBtn = document.getElementById("showPass");
+    // var btnCheck = false;
 
-    eyeBtn.addEventListener("mousedown", function() {
-        console.log("button held!")
-        passwordInput.type = "text";
-        btnCheck = true;
-    });
+    // eyeBtn.addEventListener("mousedown", function() {``
+    //     console.log("button held!")
+    //     passwordInput.type = "text";
+    //     btnCheck = true;
+    // });
 
-    window.addEventListener("mouseup", function() {
-        if (btnCheck) {
-            console.log("button not held!")
-            passwordInput.type = "password";
-            btnCheck = false;
-        }
-    });
+    // window.addEventListener("mouseup", function() {
+    //     if (btnCheck) {
+    //         console.log("button not held!")
+    //         passwordInput.type = "password";
+    //         btnCheck = false;
+    //     }
+    // });
 });

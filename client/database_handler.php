@@ -156,27 +156,46 @@ function get_upcoming_events($currentDate){
   return $result;
 }
 
-function get_upcoming_events_for_me($currentDate, $courseID, $organizations){
-  global $conn;
-  $orgIDs = implode(',', array_map('intval', (array)$organizations));
+function get_upcoming_events_for_me($currentDate, $courseID, $organizations, $email) {
+  $accessLevel = 'Everyone';
 
-  $orgCondition = "";
-  if (!empty($orgIDs)) {
-    $orgCondition = " OR OrganizationID IN ($orgIDs)";
+  if (strpos($email, "@slu.edu.ph") !== false) {
+      $accessLevel = 'SLU';
   }
 
-  $query = "SELECT * FROM events WHERE (eventDateStart > ?) AND ((courseID = ? $orgCondition) OR (courseID IS NULL AND OrganizationID IS NULL)) ORDER BY eventDateStart";
-  $stmt = $conn->prepare($query);
+  global $conn;
 
+  $query = "SELECT *
+            FROM events
+            WHERE accessLevel = 'Everyone'";
 
-  $stmt->bind_param("si", $currentDate, $courseID);
-  $stmt->execute();
+  if ($accessLevel === 'SLU') {
+      $query .= " OR (accessLevel = 'SLU' OR accessLevel = 'Everyone')";
+  }
 
+  if ($accessLevel === 'SLU') {
+      $query .= " OR (accessLevel = 'Course' AND courseID = $courseID)";
+  }
 
-  $result = $stmt->get_result();
+  if ($accessLevel === 'SLU') {
+      $orgConditions = implode(',', array_map('intval', (array)$organizations));
+      if (!empty($orgConditions)) {
+          $query .= " OR (accessLevel = 'Organization' AND OrganizerId IN ($orgConditions))";
+      }
+  }
 
+  $result = mysqli_query($conn, $query);
   return $result;
 }
+
+
+
+
+
+
+
+
+
 
 
 function get_registered_events_for_me($currentDate, $userID, $courseID, $organizations){
@@ -234,35 +253,6 @@ function get_registered_events_for_me_done($currentDate, $userID, $courseID, $or
 }
 
 
-// function get_upcoming_events($date){
-//   global $conn;
-
-//   $query = "SELECT * FROM events WHERE eventDateStart > '2023/12/02'";
-  
-//   $result = mysqli_query($conn, $query);
-
-//   $events = array();
-
-//   if (mysqli_num_rows($result) > 0) {
-
-//     while ($row = mysqli_fetch_assoc($result)) {
-
-//       $event = array();
-
-//       $event['eventID'] = $row["eventID"];
-//       $event['organizerID'] = $row["OrganizerId"];
-//       $event['eventName'] = $row["EventName"];
-//       $event['startDate'] = $row["EventDateStart"];
-//       $event['endDate'] = $row["EventDateEnd"];
-
-//       $events[] = $event;
-//     }
-//   }
-
-//   return $events;
-
-// }
-
 //giveen email of the user, return his/her course id, return null if none
 function get_user_course_id($email)
 {
@@ -285,7 +275,12 @@ function get_user_organizations($email)
   global $conn;
 
   $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE email = ?");
-  $stmt->bind_param("i", $email);
+  $stmt->bind_param("s", $email);
+
+  // echo "<script>";
+  // echo "console.log('SQL Query: " . $stmt->queryString . "')";
+  // echo "</script>";
+
   $stmt->execute();
 
   $result = $stmt->get_result();

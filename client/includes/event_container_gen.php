@@ -4,7 +4,7 @@ include_once 'database_handler.php';
 
 // $result = get_all_events();
 if(isset($_SESSION['user_id'])){
-    $result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['organizations']);
+    $result = get_upcoming_events_for_me(date("Y/m/d"), $_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
 }
 else{
     $result = get_all_events();

@@ -55,7 +55,6 @@ app.get('/login', (req, res) => {
 
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
-    // console.log('asd'+getOrgNameFromId(req.session));
     res.render('index.ejs',{
       // userID: getOrgNameFromId(req.session.eventOrgId)
       orgName: req.session.username
@@ -71,7 +70,8 @@ app.get('/index', (req, res) => {
 app.get('/profile', (req, res) => { 
   if (req.session.eventOrgId) {
     res.render('profile.ejs',{
-      orgName: req.session.username
+      orgName: req.session.username,
+      orgEmail: req.session.email
     });
 
   } else {
@@ -174,30 +174,36 @@ app.post('/auth', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const adminOrOrgID = await db.authLogIn(username, password);
+    const userData = await db.authLogIn(username, password);
+    console.log(userData);
 
-    if (adminOrOrgID !== null) {
-      console.log('ID:', adminOrOrgID);
+    if (userData !== null) {
+      console.log(userData['OrganizerID']);
+
 
       if (req.session.adminId || req.session.eventOrgId) {
         res.status(401).json({ message: 'User is already logged in!' });
         return;
       }
 
-      if (adminOrOrgID >= 1000) {
+      if (userData['OrganizerID'] >= 1000) {
         // log in as admin
-        req.session.username = username;
-        req.session.adminId = adminOrOrgID;
+        req.session.username = userData['OrganizationName'];
+        req.session.adminId = userData['OrganizerID'];
+        req.session.email = userData['Email'];
         console.log("Logged in as admin: " + req.session.adminId);
         res.redirect('/index');
       } else {
         // log in as event organizer
-        req.session.username = username;
-        req.session.eventOrgId = adminOrOrgID;
+        req.session.username = userData['OrganizationName'];
+        req.session.eventOrgId = userData['OrganizerID'];
+        req.session.email = userData['Email'];
+        
         console.log("Logged in as event organizer: " + req.session.eventOrgId);
         res.redirect('/index');
       }
-    } else {
+    } 
+    else {
       // Authentication failed
       res.status(401).json({ message: 'Invalid username or password! Try again.' });
     }

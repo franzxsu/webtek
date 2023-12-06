@@ -21,28 +21,27 @@ const connection = mysql.createConnection({
 
   const query = util.promisify(connection.query).bind(connection);
 
-function authLogIn(username, password) {
-  const queryString = `
-    SELECT OrganizerID AS AdminOrOrgID, OrganizationName AS UsernameOrOrganizationName, password AS Password
-    FROM eventorganizers
-    WHERE OrganizationName = ? AND password = ?
-  `;
-  
-  return query(queryString, [username, password])
-    .then((results) => {
-      if (results.length > 0) {
-        const adminOrOrgID = results[0].AdminOrOrgID;
-        return adminOrOrgID;
-      } 
-      else {
-      return null;
-      }
-    })
-    .catch((error) => {
-      console.error('Error querying database:', error);
-      throw error;
-  });
-}
+  function authLogIn(username, password) {
+    const queryString = `
+      SELECT OrganizerID, organizationName, Email, Password
+      FROM eventorganizers
+      WHERE organizationName = ? AND password = ?
+    `;
+    
+    return query(queryString, [username, password])
+      .then((results) => {
+        if (results.length > 0) {
+          const userData = results[0];
+          return userData;
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        console.error('Error querying database:', error);
+        throw error;
+      });
+  }
 
 function createEvent(eventData) {
   const insertQuery = `

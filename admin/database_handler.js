@@ -23,7 +23,7 @@ const connection = mysql.createConnection({
 
   function authLogIn(username, password) {
     const queryString = `
-      SELECT OrganizerID, organizationName, Email, Password
+      SELECT OrganizerID, OrganizationName, Email, Password
       FROM eventorganizers
       WHERE organizationName = ? AND password = ?
     `;

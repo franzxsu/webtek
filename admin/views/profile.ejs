@@ -17,7 +17,7 @@
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="far fa-user"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span><%= orgName %> EVENTS`</span></div>
+                    <div class="sidebar-brand-text mx-3"><span><%= orgName %> EVENTS</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
@@ -104,7 +104,7 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Organization [ORG_NAME]</h3>
+                    <h3 class="text-dark mb-4">Organization: <%= orgName  %></h3>
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
@@ -167,10 +167,10 @@
                                             <form>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Organization Name</strong></label><input class="form-control" type="text" id="username" placeholder="ORG_NAME (TODO)" name="username"></div>
+                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Organization Name</strong></label><input class="form-control" type="text" id="username" placeholder="<%= orgName %>" name="username"></div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="[ORG_EMAIL] TODO" name="email"></div>
+                                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="<%= orgEmail %>" name="email"></div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>

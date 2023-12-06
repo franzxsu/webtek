@@ -56,8 +56,7 @@ app.get('/login', (req, res) => {
 app.get('/index', (req, res) => { 
   if (req.session.eventOrgId) {
     res.render('index.ejs',{
-      // userID: getOrgNameFromId(req.session.eventOrgId)
-      orgName: req.session.username
+      orgName: req.session.username,
     });
 
   } else {
@@ -179,7 +178,6 @@ app.post('/auth', async (req, res) => {
 
     if (userData !== null) {
       console.log(userData['OrganizerID']);
-
 
       if (req.session.adminId || req.session.eventOrgId) {
         res.status(401).json({ message: 'User is already logged in!' });

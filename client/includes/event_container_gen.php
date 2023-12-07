@@ -28,8 +28,16 @@ if (is_array($result) && count($result) > 0) {
         $posterBlob = $row["poster"];
 
         // To support multiple image formats
-        $imageType = exif_imagetype("data://image;base64," . base64_encode($posterBlob));
-        $imageMime = image_type_to_mime_type($imageType);
+        if (strpos($posterBlob, "\xFF\xD8") === 0) {
+            $mime = 'image/jpeg';
+        } elseif (strpos($posterBlob, "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A") === 0) {
+            $mime = 'image/png';
+        } else {
+            // Default jpeg if d nahanap signature
+            $mime = 'image/jpeg';
+        }
+        // $imageType = exif_imagetype("data://image;base64," . base64_encode($posterBlob));
+        // $imageMime = image_type_to_mime_type($imageType);
 
         echo '
         <div class="col-md-6 col-xl-3 mb-4">

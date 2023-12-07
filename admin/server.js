@@ -10,6 +10,9 @@ const routes = require('./routes/routes.js');
 
 const app = express()
 
+
+
+
 // change to a proper scripts path within the admin folder instead of .backupfiles
 const scriptsPath = path.join(__dirname, '..', '.backupfiles', 'scripts');
 const assetsPath = path.join(__dirname, 'assets');

@@ -28,12 +28,6 @@ const connection = mysql.createConnection({
       FROM eventorganizers
       WHERE OrganizationName = ? AND Password = ?;
     `;
-
-    // TESTING
-    // const queryString = `
-    //   SELECT OrganizerID, OrganizationName, Email, Password
-    //   FROM eventorganizers
-    // `;
     
     return query(queryString, [username, password])
       .then((results) => {
@@ -51,33 +45,6 @@ const connection = mysql.createConnection({
       });
   }
 
-function createEvent(eventData) {
-
-  const insertQuery = `
-  INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
-
-  const values = [
-    eventData.id,
-    eventData.eventName,
-    eventData.eventFor,
-    eventData.eventDateStart,
-    eventData.eventDateEnd,
-    eventData.eventVenue,
-    eventData.courseID !== undefined ? eventData.courseID : null,
-    eventData.OrganizationID !== undefined ? eventData.OrganizationID : null
-  ];
-
-  query(insertQuery, values, (error) => {
-    if (error) {
-      throw new Error(error);
-    } 
-    else {
-      // console.log("Data inserted successfully!");
-    }
-  })
- 
-}
 
 function getOrgNameFromId(id) {
   const query = "SELECT OrganizationName FROM eventOrganizers WHERE OrganizerID = ?";
@@ -230,6 +197,23 @@ function addOrgMember(orgID, email){
     });
   });
 }
+
+function createEvent(orgid, eventName, eventInfo, 
+  eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob) {
+  return new Promise((resolve, reject) => {
+    const query = "INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, accessLevel, poster) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    connection.query(query, [orgid, eventName, eventInfo, eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else if (results){
+        resolve(true);
+        console.log("CREATE EVENT SUCCESS");
+      }
+    });
+  });
+}
+
 
 module.exports = {
     authLogIn,

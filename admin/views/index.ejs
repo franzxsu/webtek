@@ -127,18 +127,19 @@
                             </div>
                                 <div class="modal-body">
                                     <!-- post form create event -->
-                                    <form class="row g-3" id="eventCreationForm" action="createEvent" method="post">
+                                    <form class="row g-3" id="eventCreationForm" action="createEvent" method="post" enctype="multipart/form-data">
                                         <div class="col-12">
+                                            <input type="hidden" name="orgid" value="<%= orgId %>">
                                             <label for="eventName" class="form-label">Event Name</label>
                                             <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name">
                                         </div>
                                         <div class="col-12">
-                                            <label for="eventVenue" class="form-label">Venue</label>
-                                            <input type="text" name="eventVenue" class="form-control" id="venue" placeholder="Enter event venue">
+                                            <label for="eventLocation" class="form-label">Venue</label>
+                                            <input type="text" name="eventLocation" class="form-control" id="venue" placeholder="Enter event venue">
                                         </div>
                                         <div class="col-12">
-                                            <label for="eventDescription" class="form-label">Description</label>
-                                            <textarea class="form-control" name="eventDescription" id="description" placeholder="Enter description" rows="5"></textarea>
+                                            <label for="eventInfo" class="form-label">Description</label>
+                                            <textarea class="form-control" name="eventInfo" id="description" placeholder="Enter description" rows="5"></textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="startDate">Start date </label>
@@ -180,7 +181,7 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="formFile" class="form-label">Upload Event Poster</label>
-                                                <input class="form-control" type="file" accept="image/*" id="eventPoster">
+                                                <input class="form-control" type="file" accept="image/*" id="eventPoster" name="eventPoster">
                                               </div>
                                         </div>
                                         <div class="col-12">

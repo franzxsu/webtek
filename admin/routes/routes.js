@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database_handler.js');
 
+const multer = require('multer');
+
+//store to memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 router.get('/', (req, res) => {
   res.redirect('/login');
 });
@@ -23,6 +29,7 @@ router.get('/index', (req, res) => {
     // console.log(req.session.userData);
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
+      orgId: req.session.userData.OrganizerID
     });
   //go to login if there is no session set
   } else {
@@ -110,30 +117,62 @@ router.post('/addOrgMember', async (req, res) => {
   }
 });
 
-router.post('/createEvent', async (req, res) => {
+router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
   try {
-    let { eventName,
-      eventVenue,
-      eventDescription,
+    let { 
+      orgid,
+      eventName,
+      eventLocation,
+      eventInfo,
       eventDateStart,
       eventDateEnd,
       visibility,
       course } = req.body;
 
+      // const fileBuffer = req.file.buffer;
+      // console.log(fileBuffer);
+
+      // const posterBlob = new Blob([fileBuffer]);
+
+      const posterBlob = Buffer.from(req.file.buffer);
+
+    //   const bufferToBlob = (bufferData, contentType) => {
+    //     const arrayBuffer = bufferData.buffer.slice(
+    //         bufferData.byteOffset, bufferData.byteOffset + bufferData.byteLength
+    //     );
+    
+    //     return new Blob([arrayBuffer], { type: contentType });
+    // };
+    
+    // const posterBlob = bufferToBlob(req.file.buffer, 'image/jpeg');
+    // console.log(posterBlob);
+    
+
     if (visibility === 'Course') {
       console.log('course chosen');
     }
+    
     //for good measure
     else{
       course = null
     }
-    console.log('Event Name:', eventName);
-    console.log('Venue:', eventVenue);
-    console.log('Description:', eventDescription);
-    console.log('Start Date:', eventDateStart);
-    console.log('End Date:', eventDateEnd);
-    console.log('Visibility Selection:', visibility);
-    console.log('Course Selection:', course);
+
+    console.log('orgid:', orgid);
+    console.log('eventName:', eventName);
+    console.log('eventInfo:', eventInfo);
+    console.log('eventDateStart:', eventDateStart);
+    console.log('eventDateEnd:', eventDateEnd);
+    console.log('eventLocation:', eventLocation);
+    console.log('course:', course);
+    console.log('visibility:', visibility);
+    console.log('posterBlob:', posterBlob);
+
+    const asd = await db.createEvent(orgid, eventName, eventInfo, 
+      eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
+
+      if(asd){
+        console.log();
+      }
 
     res.status(200).json({ message: 'Event created successfully!' });
   } catch (error) {

@@ -20,7 +20,7 @@ router.get('/login', (req, res) => {
 router.get('/index', (req, res) => {
   //check if there is session
   if (req.session.userData) {
-    console.log("ALLEVENTS: "+db.getCompletedEvents(req.session.userData.OrganizerID));
+    console.log("ALLEVENTS: "+db.getUpcomingEvents(req.session.userData.OrganizerID));
     console.log(req.session.userData);
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,

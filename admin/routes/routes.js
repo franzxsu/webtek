@@ -112,17 +112,20 @@ router.post('/addOrgMember', async (req, res) => {
 
 router.post('/createEvent', async (req, res) => {
   try {
-    const { eventName,
+    let { eventName,
       eventVenue,
       eventDescription,
       eventDateStart,
       eventDateEnd,
       visibility,
-      courseSelection } = req.body;
+      course } = req.body;
 
-    let course = null;
     if (visibility === 'Course') {
-      course = courseSelection;
+      console.log('course chosen');
+    }
+    //for good measure
+    else{
+      course = null
     }
     console.log('Event Name:', eventName);
     console.log('Venue:', eventVenue);

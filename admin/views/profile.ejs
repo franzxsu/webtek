@@ -106,7 +106,7 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Organization: <%= success==='true'  %></h3>
+                    <h3 class="text-dark mb-4">Organization: <%= orgName  %></h3>
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
@@ -265,9 +265,7 @@
     </div>
     <% if (success==='true') { %>
         <script>
-
             console.log('triggered');
-
             // Display the modal using its ID
             $(document).ready(function () {
                 $('#successAddingModal').modal('show');
@@ -284,7 +282,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>Member successfully added</p>
+                <p><%= addedEmail %> has successfully been registered to <%= orgName %></p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -180,7 +180,7 @@
                                             <p class="text-primary m-0 fw-bold">Members</p>
                                         </div>
                                         <div class="card-body">
-                                            <form>
+
                                                 <div class="mb-3"><label class="form-label" for="address"></label>
                                                     <div class="table-responsive">
                                                         <table class="table">
@@ -213,17 +213,17 @@
                                                                 <div class="container-fluid">
 
                                                                     <!-- post form create event -->
-                                                                    <form id="addOrgMemberForm" action="addOrgMember" method="post">
-                                                                        <div class="mb-3">
-                                                                            <!-- form validation email add todo -->
+                                                                    <form id="addOrgMemberForm" action="/addOrgMember" method="POST">
                                                                         <label for="email" class="form-label">Enter email</label>
                                                                         <input type="text" name="email" class="form-control" id="emailOrg" placeholder="example@slu.edu.ph">
                                                                         <input type="hidden" name="orgid" value="<%= orgId %>">
-                                                                    </div>
+                                                                        <button type="submit" class="btn btn-primary">Add member</button>
                                                                     </form>
+                                                                    
                                                                 </div>
                                 
-                                                                <button type="submit" class="btn btn-primary">Add member</button>
+                                                                
+                                                            
                                                             </div>
                                                           </div>
                                                         </div>
@@ -231,7 +231,6 @@
 
                                         
                                                 </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>

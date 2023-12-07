@@ -89,9 +89,11 @@ router.post('/auth', async (req, res) => {
 });
 
 router.post('/addOrgMember', async (req, res) => {
-  const { email, orgId } = req.body;
+  const { email, orgid } = req.body;
+  console.log("EMAIL: "+email);
+  console.log(orgid);
   try {
-      const bool = await db.addOrgMember(email, orgId);
+      const bool = await db.addOrgMember(email, orgid);
       if (bool) {
           // Success adding member
           res.redirect(`/profile?success=true`);

@@ -10,14 +10,18 @@ const routes = require('./routes/routes.js');
 
 const app = express()
 
+// change to a proper scripts path within the admin folder instead of .backupfiles
+const scriptsPath = path.join(__dirname, '..', '.backupfiles', 'scripts');
+const assetsPath = path.join(__dirname, 'public', 'assets');
+
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`)
 });
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use('/scripts', express.static(path.join(__dirname,'scripts')));
-app.use('/public/assets', express.static(path.join(__dirname, 'public/assets')));
+app.use('/scripts', express.static(scriptsPath));
+app.use('/assets', express.static(assetsPath));
 
 app.use(express.static('public'));
 

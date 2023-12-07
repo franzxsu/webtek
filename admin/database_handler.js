@@ -52,7 +52,6 @@ const connection = mysql.createConnection({
   }
 
 function createEvent(eventData) {
-  // todo: figure out how to do courseID and OrganizationID
 
   const insertQuery = `
   INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, OrganizationID)

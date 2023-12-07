@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/scripts', express.static(path.join(__dirname,'scripts')));
 app.use('/public/assets', express.static(path.join(__dirname, 'public/assets')));
-
+app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'));
 
 app.use(cookieMonster());

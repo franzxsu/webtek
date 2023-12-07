@@ -23,13 +23,16 @@ router.get('/login', (req, res) => {
   }
 });
 
-router.get('/index', (req, res) => {
+router.get('/index', async  (req, res) => {
   //check if there is session
   if (req.session.userData) {
     // console.log(req.session.userData);
+    const success=req.query.eventSuccess
+
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
-      orgId: req.session.userData.OrganizerID
+      orgId: req.session.userData.OrganizerID,
+      success: success
     });
   //go to login if there is no session set
   } else {
@@ -38,7 +41,7 @@ router.get('/index', (req, res) => {
 });
 
 router.get('/profile', async (req, res) => {
-    //check for session (todoextract)
+
     if (req.session.userData) {
         // console.log("ID"+req.session.userData.OrganizerID)
         const orgMembers = await db.getOrganizationMembers(req.session.userData.OrganizerID);
@@ -47,8 +50,6 @@ router.get('/profile', async (req, res) => {
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         const success = req.query.success;
         const emailOfAddedMember = req.query.email;
-        console.log(success);
-        console.log(emailOfAddedMember);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
@@ -133,8 +134,11 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       // console.log(fileBuffer);
 
       // const posterBlob = new Blob([fileBuffer]);
+      let posterBlob = null;
 
-      const posterBlob = Buffer.from(req.file.buffer);
+      if (req.file) {
+        posterBlob = Buffer.from(req.file.buffer);
+      }
 
     //   const bufferToBlob = (bufferData, contentType) => {
     //     const arrayBuffer = bufferData.buffer.slice(
@@ -157,24 +161,31 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       course = null
     }
 
-    console.log('orgid:', orgid);
-    console.log('eventName:', eventName);
-    console.log('eventInfo:', eventInfo);
-    console.log('eventDateStart:', eventDateStart);
-    console.log('eventDateEnd:', eventDateEnd);
-    console.log('eventLocation:', eventLocation);
-    console.log('course:', course);
-    console.log('visibility:', visibility);
-    console.log('posterBlob:', posterBlob);
+    // console.log('orgid:', orgid);
+    // console.log('eventName:', eventName);
+    // console.log('eventInfo:', eventInfo);
+    // console.log('eventDateStart:', eventDateStart);
+    // console.log('eventDateEnd:', eventDateEnd);
+    // console.log('eventLocation:', eventLocation);
+    // console.log('course:', course);
+    // console.log('visibility:', visibility);
+    // console.log('posterBlob:', posterBlob);
 
-    const asd = await db.createEvent(orgid, eventName, eventInfo, 
+    const bool = await db.createEvent(orgid, eventName, eventInfo, 
       eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
 
-      if(asd){
-        console.log();
+      console.log(bool);
+
+      if(bool){
+        console.log('go success');
+        res.redirect('/index?eventSuccess=true');
+      } else{
+        //fail
+        console.log('event creation fail');
+        res.redirect('/index?eventSuccess=false');
       }
 
-    res.status(200).json({ message: 'Event created successfully!' });
+    // res.status(200).json({ message: 'Event created successfully!' });
   } catch (error) {
     console.error('Error creating event:', error);
     res.status(500).json({ message: 'Error creating event' });

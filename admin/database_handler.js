@@ -208,7 +208,6 @@ function createEvent(orgid, eventName, eventInfo,
         reject(error);
       } else if (results){
         resolve(true);
-        console.log("CREATE EVENT SUCCESS");
       }
     });
   });

@@ -120,9 +120,7 @@
                                     <h4 class="small fw-bold">Total Events<span class="float-end"><%= allEvents.length %></span></h4>
                                     <h4 class="small fw-bold">Completed Events<span class="float-end"><%= pastEvents.length %></span></h4>
                                     <h4 class="small fw-bold">Upcoming Events<span class="float-end"><%= upcomingEvents.length %></span></h4>
-                                    <h4 class="small fw-bold"><span class="float-end"><%= orgMembers.length %></span></h4>
-                                    <h4 class="small fw-bold">Total Members<span class="float-end"></span></h4>
-                                    <h4 class="small fw-bold"><span class="float-end"></span></h4>
+                                    <h4 class="small fw-bold">Total Members<span class="float-end"><%= orgMembers.length %></span></h4>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +180,7 @@
                                             <p class="text-primary m-0 fw-bold">Members</p>
                                         </div>
                                         <div class="card-body">
-                                            <form>
+
                                                 <div class="mb-3"><label class="form-label" for="address"></label>
                                                     <div class="table-responsive">
                                                         <table class="table">
@@ -199,8 +197,40 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Add member</button></div>
-                                            </form>
+                                                <div class="mb-3">
+                                                    <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#" data-bs-toggle="modal" 
+                                                    data-bs-target="#addMemberModal"><i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Add member</a>
+
+                                                    <!-- MODAL FOR ADDING USER -->
+                                                    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                          <div class="modal-content">
+                                                            <div class="modal-header">
+                                                              <h5 class="modal-title" id="exampleModalLabel">Add member</h5>
+                                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container-fluid">
+
+                                                                    <!-- post form create event -->
+                                                                    <form id="addOrgMemberForm" action="/addOrgMember" method="POST">
+                                                                        <label for="email" class="form-label">Enter email</label>
+                                                                        <input type="text" name="email" class="form-control" id="emailOrg" placeholder="example@slu.edu.ph">
+                                                                        <input type="hidden" name="orgid" value="<%= orgId %>">
+                                                                        <button type="submit" class="btn btn-primary">Add member</button>
+                                                                    </form>
+                                                                    
+                                                                </div>
+                                
+                                                                
+                                                            
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+
+                                        
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -234,6 +264,32 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
+    <% if (success) { %>
+        <script>
+            // Display the modal using its ID
+            $(document).ready(function () {
+                $('#successAddingModal').modal('show');
+            });
+        </script>
+    <% } %>
+
+    <!-- MODAL TO DISPLAY SUCCESS ORG MEMBER ADDING -->
+    <div class="modal fade" id="successAddingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <h1>success adding</h1>
+                </div>
+                <button type="submit" class="btn btn-primary">Add member</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>

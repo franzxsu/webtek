@@ -39,13 +39,16 @@ router.get('/profile', async (req, res) => {
         const allEvents = await db.getAllEvents(req.session.userData.OrganizerID);
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
+        const success = req.query.success;
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
+          orgId: req.session.userData.OrganizerID,
           orgMembers: orgMembers,
           allEvents: allEvents,
           pastEvents: pastEvents,
-          upcomingEvents: upcomingEvents
+          upcomingEvents: upcomingEvents,
+          success: success === 'true'
         });
     
       } else {
@@ -84,5 +87,26 @@ router.post('/auth', async (req, res) => {
       res.status(500).json({ message: 'Error authenticating user' });
     }
 });
+
+router.post('/addOrgMember', async (req, res) => {
+  const { email, orgid } = req.body;
+  console.log("EMAIL: "+email);
+  console.log(orgid);
+  try {
+      const bool = await db.addOrgMember(email, orgid);
+      if (bool) {
+          // Success adding member
+          res.redirect(`/profile?success=true`);
+      } else {
+          // Handle failure to add member
+          res.redirect(`/profile?success=false`);
+      }
+  } catch (error) {
+      console.error('Error adding member:', error);
+      res.status(500).json({ message: 'Error adding member' });
+  }
+});
+
+
 
 module.exports = router;

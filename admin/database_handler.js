@@ -39,6 +39,7 @@ const connection = mysql.createConnection({
       .then((results) => {
         if (results.length > 0) {
           const userData = results[0];
+          console.log(userData)
           return userData;
         } else {
           return null;
@@ -113,7 +114,7 @@ function getAllEvents(orgID){
         reject(error);
       } else {
         console.log("Data fetched successfully!");
-        console.log(results);
+        // console.log(results);
         resolve(results);
       }
     });
@@ -136,7 +137,7 @@ function getCompletedEvents(orgID){
         reject(error);
       } else {
         console.log("Data fetched successfully!");
-        console.log(results);
+        // console.log(results);
         resolve(results);
       }
     });
@@ -152,7 +153,7 @@ function getUpcomingEvents(orgID){
         reject(error);
       } else {
         console.log("Data fetched successfully!");
-        console.log(results);
+        // console.log(results);
         resolve(results);
       }
     });
@@ -171,7 +172,7 @@ function getOrganizationMembers(orgID) {
         reject(error);
       } else {
         console.log("Data fetched successfully!");
-        console.log(results);
+        // console.log(results);
         resolve(results);
       }
     });

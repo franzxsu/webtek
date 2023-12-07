@@ -36,10 +36,16 @@ router.get('/profile', async (req, res) => {
     if (req.session.userData) {
         // console.log("ID"+req.session.userData.OrganizerID)
         const orgMembers = await db.getOrganizationMembers(req.session.userData.OrganizerID);
+        const allEvents = await db.getAllEvents(req.session.userData.OrganizerID);
+        const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
+        const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
-          orgEmail: req.session.userData.email,
-          orgMembers: orgMembers
+          orgEmail: req.session.userData.Email,
+          orgMembers: orgMembers,
+          allEvents: allEvents,
+          pastEvents: pastEvents,
+          upcomingEvents: upcomingEvents
         });
     
       } else {

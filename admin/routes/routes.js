@@ -49,7 +49,7 @@ router.get('/profile', async (req, res) => {
           allEvents: allEvents,
           pastEvents: pastEvents,
           upcomingEvents: upcomingEvents,
-          success: success === 'true'
+          success: success
         });
     
       } else {
@@ -72,9 +72,6 @@ router.get('/logout', (req, res) => {
 
 router.post('/auth', async (req, res) => {
     const { username, password } = req.body;
-    // console.log("AUTH");
-    // console.log(username);
-    // console.log(password);
     try {
       const userData = await db.authLogIn(username, password);
         //check if query returned row
@@ -94,9 +91,6 @@ router.post('/auth', async (req, res) => {
 
 router.post('/addOrgMember', async (req, res) => {
   const { email, orgid } = req.body;
-  // console.log(req.body);
-  // console.log(email);
-  // console.log(orgid);
   try {
       const bool = await db.addOrgMember(orgid, email);
       if (bool) {

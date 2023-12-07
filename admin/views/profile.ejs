@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="../public/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="../public/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="../public/assets/fonts/fontawesome5-overrides.min.css">
+    
 </head>
 
 <body id="page-top">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
@@ -104,7 +106,7 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Organization: <%= orgName  %></h3>
+                    <h3 class="text-dark mb-4">Organization: <%= success==='true'  %></h3>
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
@@ -177,7 +179,7 @@
                                     </div>
                                     <div class="card shadow">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">Members</p>
+                                            <p class="text-primary m-0 fw-bold">Members of <%= orgName %></p>
                                         </div>
                                         <div class="card-body">
 
@@ -261,8 +263,11 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <% if (success) { %>
+    <% if (success==='true') { %>
         <script>
+
+            console.log('triggered');
+
             // Display the modal using its ID
             $(document).ready(function () {
                 $('#successAddingModal').modal('show');

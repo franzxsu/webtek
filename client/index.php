@@ -39,7 +39,7 @@ session_start();
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="./asd.css">
+    <link rel="stylesheet" href="assets/css/News-Cards.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
@@ -132,7 +132,10 @@ session_start();
                         <h3 class="text-dark mb-0">Upcoming Events</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                     </div>
                     <div class="row">
-                        <?php include_once 'includes/event_container_gen.php' ?>
+                        <div class="col">
+                            <?php include_once 'includes/event_container_gen.php' ?>
+                        </div>
+                        
                     </div>
                     
                 </div>

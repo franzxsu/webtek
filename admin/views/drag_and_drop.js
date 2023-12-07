@@ -12,4 +12,3 @@ $(document).on('change', '.file-input', function() {
       textbox.text(filesCount + ' files selected');
     }
   });
-

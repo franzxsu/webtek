@@ -25,6 +25,11 @@ if (is_array($result) && count($result) > 0) {
         $eventDateEnd = date_format(date_create($row["EventDateEnd"]), "F j");
         $eventLocation = $row["EventLocation"];
         $eventInfo = $row["EventInfo"];
+        $posterBlob = $row["poster"];
+
+        // To support multiple image formats
+        $imageType = exif_imagetype("data://image;base64," . base64_encode($posterBlob));
+        $imageMime = image_type_to_mime_type($imageType);
 
         echo '
         <div class="col-md-6 col-xl-3 mb-4">
@@ -32,7 +37,7 @@ if (is_array($result) && count($result) > 0) {
                 <h5 class="card-title d-flex justify-content-center" style="padding: 15px; padding-bottom: 5px; text-align: center;">' 
                 . $eventName . '
                 </h5>
-                <img class="card-img-top img-fluid" src="../client/assets/img/sample_pubmat.jpg" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem; object-fit: cover;">
+                <img class="card-img-top img-fluid" src="data:' . $mime . ';base64,' . base64_encode($posterBlob) . '" alt="Card image cap" style="border-radius: 0px; max-width: 100%; height: 14rem; object-fit: cover;">
                 <div class="card-body" style="padding: 0px;">
                     <p class="card-text" style="margin: 0px; text-align: center;">' . $eventDateStart . ' - ' . $eventDateEnd . '</p>
                     <p class="card-text" style="margin: 0px; text-align: center;">' . $eventLocation . '</p>

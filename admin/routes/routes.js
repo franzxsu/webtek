@@ -39,13 +39,16 @@ router.get('/profile', async (req, res) => {
         const allEvents = await db.getAllEvents(req.session.userData.OrganizerID);
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
+        const success = req.query.success;
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
+          orgId: req.session.userData.OrganizerID,
           orgMembers: orgMembers,
           allEvents: allEvents,
           pastEvents: pastEvents,
-          upcomingEvents: upcomingEvents
+          upcomingEvents: upcomingEvents,
+          success: success === 'true'
         });
     
       } else {
@@ -86,22 +89,22 @@ router.post('/auth', async (req, res) => {
 });
 
 router.post('/addOrgMember', async (req, res) => {
-  const { email }= req.body;
+  const { email, orgId } = req.body;
   try {
-    const userData = await db.authLogIn(username, password);
-      //check if query returned row
-    if (userData !== null) {
-      //set session data and fo to index
-      req.session.userData = userData;
-      res.redirect('/profile');
-    } else {
-      //go back to login
-      res.render('login', { error: 'Invalid username or password' });
-    }
+      const bool = await db.addOrgMember(email, orgId);
+      if (bool) {
+          // Success adding member
+          res.redirect(`/profile?success=true`);
+      } else {
+          // Handle failure to add member
+          res.redirect(`/profile?success=false`);
+      }
   } catch (error) {
-    console.error('Error authenticating user:', error);
-    res.status(500).json({ message: 'Error authenticating user' });
+      console.error('Error adding member:', error);
+      res.status(500).json({ message: 'Error adding member' });
   }
 });
+
+
 
 module.exports = router;

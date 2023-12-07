@@ -181,24 +181,17 @@ function getOrganizationMembers(orgID) {
 
 //todo`
 function addOrgMember(orgID, email){
-
-  const insertQuery = `
-  INSERT INTO organizationmembers (organizationID, Email)
-  VALUES (?, ?) `;
-
-  // const values = [
-  //   eventData.id,
-  //   eventData.eventName,
-  // ];
-
-  query(insertQuery, values, (error) => {
-    if (error) {
-      throw new Error(error);
-    } 
-    else {
-      console.log("Data inserted successfully!");
-    }
-  })
+  return new Promise((resolve, reject) => {
+    const query = "INSERT INTO organizationmembers (organizationID, Email) VALUES (?,?)";
+    connection.query(query, [orgID, email], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        console.log("Data inserted successfully successfully!");
+      }
+    });
+  });
 }
 
 module.exports = {
@@ -208,5 +201,6 @@ module.exports = {
     getOrganizationMembers,
     getAllEvents,
     getCompletedEvents,
-    getUpcomingEvents
+    getUpcomingEvents,
+    addOrgMember
 };  

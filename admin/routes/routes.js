@@ -117,11 +117,11 @@ router.post('/createEvent', async (req, res) => {
       eventDescription,
       eventDateStart,
       eventDateEnd,
-      visibilitySelection,
+      visibility,
       courseSelection } = req.body;
 
     let course = null;
-    if (visibilitySelection === 'Course') {
+    if (visibility === 'Course') {
       course = courseSelection;
     }
     console.log('Event Name:', eventName);
@@ -129,7 +129,7 @@ router.post('/createEvent', async (req, res) => {
     console.log('Description:', eventDescription);
     console.log('Start Date:', eventDateStart);
     console.log('End Date:', eventDateEnd);
-    console.log('Visibility Selection:', visibilitySelection);
+    console.log('Visibility Selection:', visibility);
     console.log('Course Selection:', course);
 
     res.status(200).json({ message: 'Event created successfully!' });

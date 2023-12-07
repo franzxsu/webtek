@@ -150,7 +150,7 @@
                                         </div>
                                         <div class="col-md-6">
                                         <label class="" for="visibilitySelection">Event Visibility</label>
-                                            <select class="form-select" id="visibilitySelection">
+                                            <select class="form-select" id="visibilitySelection" name="visibility">
                                             <option selected value="Everyone">Everyone</option>
                                             <option value="SLU">SLU Exclusive</option>
                                             <option value="Organization"><%= orgName %> Exclusive</option>
@@ -159,7 +159,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="" for="courseSelection">Course</label>
-                                            <select class="form-select" disabled="true" id="courseSelection">
+                                            <select class="form-select" disabled="true" id="courseSelection" name="course">
                                                 <option value="1">BSCS</option>
                                                 <option value="2">BSIT</option>
                                                 <option value="3">BMMA</option>
@@ -178,14 +178,47 @@
                                         </script>
                                         <label for="fileUpload" class="form-label">Event Poster</label>
                                         <div class="col-12">
-                                            <div class = "custom-drag-and-drop">
-                                                <div class="file-drop-area">
-                                                <span class="choose-file-button">Choose files</span>
-                                                <span class="file-message">or drag and drop files here</span>
-                                                <input class="file-input" type="file" multiple>
-                                                </div>     
+                                            <label for="fileUpload" class="form-label">Event Poster</label>
+                                            <div class="col-12">
+                                                <div class="custom-drag-and-drop">
+                                                    <div class="file-drop-area">
+                                                        <span class="choose-file-button">Choose files</span>
+                                                        <span class="file-message">or drag and drop files here</span>
+                                                        <input class="file-input" type="file" accept="image/*" multiple>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <script>
+                                            // Function to handle file input change
+                                            function handleFileInput(event) {
+                                                const files = event.target.files;
+                                        
+                                                for (let i = 0; i < files.length; i++) {
+                                                    const file = files[i];
+                                                    if (file.type.match('image.*')) {
+                                                        // File is an image
+                                                        const reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            // Convert the file to Blob object
+                                                            const blob = new Blob([e.target.result], { type: file.type });
+                                                            // Use the blob for further processing or upload
+                                                            console.log('Blob:', blob);
+                                                        };
+                                                        reader.readAsArrayBuffer(file);
+                                                    } else {
+                                                        // File is not an image
+                                                        alert('Please upload only image files.');
+                                                        // Reset the file input to clear the non-image file
+                                                        event.target.value = '';
+                                                    }
+                                                }
+                                            }
+                                        
+                                            // Attach the event listener to the file input
+                                            const fileInput = document.querySelector('.file-input');
+                                            fileInput.addEventListener('change', handleFileInput);
+                                        </script>
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Create event</button>
                                         </div>

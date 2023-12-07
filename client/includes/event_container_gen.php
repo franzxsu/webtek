@@ -17,6 +17,9 @@ if (is_array($result) && count($result) > 0) {
         $eventID = $row["eventID"];
         $eventName = $row["EventName"];
 
+        $realDateStart = date_format(date_create($row["EventDateStart"]), "F j");
+        $realDateEnd = date_format(date_create($row["EventDateEnd"]), "F j");
+
         $eventMonthStart = date_format(date_create($row["EventDateStart"]), "M");
         $eventMonthEnd = date_format(date_create($row["EventDateEnd"]), "M");
 
@@ -44,7 +47,9 @@ if (is_array($result) && count($result) > 0) {
                     <figcaption>
                         <div class="date"><span class="day">'.$eventDayStart.'</span><span class="month">'.$eventMonthStart.'</span></div>
                         <h3>'. $eventName .'</h3>
-                        <p>'. $eventInfo .'</p>
+                        <p class="d-inline-block text-truncate" style="max-width: 200px;">
+                        '.$eventInfo.'
+                    </p>
                     </figcaption>
                     <div class="image"><img src="data:'.$mime.';base64,'.base64_encode($posterBlob).'" alt="event-image" /></div>
                     <a data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'"></a>
@@ -55,7 +60,9 @@ if (is_array($result) && count($result) > 0) {
                     <figcaption>
                         <div class="date"><span class="day">'.$eventDayStart.'</span><span class="month">'.$eventMonthStart.'</span></div>
                         <h3>'. $eventName .'</h3>
-                        <p>'. $eventInfo .'</p>
+                        <p class="d-inline-block text-truncate" style="max-width: 200px;">
+                        '.$eventInfo.'
+                    </p>
                     </figcaption>
                     <div class="image"><img src="../client/assets/img/sample_pub.jpg" alt="default-event-image" /></div>
                     <a data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'"></a>
@@ -66,8 +73,10 @@ if (is_array($result) && count($result) > 0) {
             <figure class="snip1527">
                 <figcaption>
                     <div class="date"><span class="day">'.$eventDayStart.'</span><span class="month">'.$eventMonthStart.'</span></div>
-                    <h3>'. $eventName .'</h3>
-                    <p>'. $eventInfo .'</p>
+                    <h3 >'. $eventName .'</h3>
+                    <p class="d-inline-block text-truncate" style="max-width: 200px;">
+                        '.$eventInfo.'
+                    </p>
                 </figcaption>
                 <div class="image"><img src="../client/assets/img/sample_pub.jpg" alt="default-event-image" /></div>
                 <a data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'"></a>
@@ -77,33 +86,41 @@ if (is_array($result) && count($result) > 0) {
         echo' 
         
         <div class="modal fade" id="exampleModalToggle_'.$eventID.'" tabindex="-1" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h4 class="modal-title">Register to     ' . $eventName . '</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-            <p>' . $eventInfo . '</p>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>';
-            if(isset($_SESSION['user_id'])){
-            echo '
-            <form action="register_event.php" method="post">
-               <input type="hidden" name="event_id" value="' . $eventID . '">
-               <button type="submit" class="btn btn-primary">Register to event</button>
-            </form>
-            </form>';
-            }
-            else{
-            echo '<a href="login.php" type="submit" class="btn btn-primary">You must be signed in to continue</a>';
-            }
-            echo'
-         </div>
-      </div>
-   </div>
-</div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Register to     ' . $eventName . '</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <p>' . $eventInfo . '</p>
+                        </div>
+                        <div class="row">
+                            <p>VENUE: '. $eventLocation .'</p>
+                        </div>
+                        <div class="row">
+                            <p>' . $realDateStart . ' - ' .$realDateEnd .'</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>';
+                        if(isset($_SESSION['user_id'])){
+                        echo '
+                        <form action="register_event.php" method="post">
+                        <input type="hidden" name="event_id" value="' . $eventID . '">
+                        <button type="submit" class="btn btn-primary">Register to event</button>
+                        </form>
+                        </form>';
+                        }
+                        else{
+                        echo '<a href="login.php" type="submit" class="btn btn-primary">You must be signed in to continue</a>';
+                        }
+                        echo'
+                    </div>
+                </div>
+            </div>
+            </div>
 
         ';
     }

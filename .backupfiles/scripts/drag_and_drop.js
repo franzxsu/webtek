@@ -13,15 +13,18 @@
 
 // vanilla js
 document.addEventListener('change', function (event) {
-  if (event.target.classList.contains('file-input')) {
-      var filesCount = event.target.files.length;
-      var textbox = event.target.previousElementSibling;
-
-      if (filesCount === 1) {
-          var fileName = event.target.value.split('\\').pop();
-          textbox.textContent = fileName;
-      } else {
-          textbox.textContent = filesCount + ' files selected';
-      }
-  }
+    if (event.target.classList.contains('file-input')) {
+        var filesCount = event.target.files.length;
+        var textbox = event.target.previousElementSibling;
+  
+        if (filesCount === 1) {
+            var fileName = event.target.value.split('\\').pop();
+            textbox.textContent = fileName;
+        } else {
+            textbox.textContent = filesCount + ' files selected';
+        }
+    }
 });
+
+
+

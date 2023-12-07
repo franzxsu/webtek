@@ -291,6 +291,61 @@
     </div>
     <script type="module" src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
+    <% if (success === 'true') { %>
+        <script>
+            console.log('triggered');
+            // Display the modal using its ID
+            $(document).ready(function () {
+                $('#successAddingEventModal').modal('show');
+            });
+        </script>
+    <% } else { %>
+        <script>
+            console.log('else');
+            // Display a different modal using its ID
+            $(document).ready(function () {
+                $('#failAddingEventModal').modal('show');
+            });
+        </script>
+    <% } %>
+    <!-- MODAL TO DISPLAY SUCCESS EVENT MAKING -->
+    <div class="modal fade" id="successAddingEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Success!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Event has been created!</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <!-- MODAL END -->
+
+      <!-- FAIL EVENT MAKING-->
+    <div class="modal fade" id="failAddingEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Event not created</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <!-- MODAL END -->
+
 </body>
 
 </html>

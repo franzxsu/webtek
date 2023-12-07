@@ -122,11 +122,25 @@ function getAllEvents(orgID){
 }
 
 function removeEvent(eventID){
-
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM events WHERE eventID = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', query);
+        console.error('Error:', error);
+        reject(error);
+      } else {
+        console.log("Event deleted successfully!");
+        resolve(results);
+      }
+    });
+  });
 }
+
 function changeEventAttribute(eventID, headerOfTableToChange, newValue){
 
 }
+
 function getCompletedEvents(orgID){
   return new Promise((resolve, reject) => {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Get current date in MySQL datetime format

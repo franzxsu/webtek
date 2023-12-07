@@ -110,6 +110,35 @@ router.post('/addOrgMember', async (req, res) => {
   }
 });
 
+router.post('/createEvent', async (req, res) => {
+  try {
+    const { eventName,
+      eventVenue,
+      eventDescription,
+      eventDateStart,
+      eventDateEnd,
+      visibilitySelection,
+      courseSelection } = req.body;
+
+    let course = null;
+    if (visibilitySelection === 'Course') {
+      course = courseSelection;
+    }
+    console.log('Event Name:', eventName);
+    console.log('Venue:', eventVenue);
+    console.log('Description:', eventDescription);
+    console.log('Start Date:', eventDateStart);
+    console.log('End Date:', eventDateEnd);
+    console.log('Visibility Selection:', visibilitySelection);
+    console.log('Course Selection:', course);
+
+    res.status(200).json({ message: 'Event created successfully!' });
+  } catch (error) {
+    console.error('Error creating event:', error);
+    res.status(500).json({ message: 'Error creating event' });
+  }
+});
+
 
 
 module.exports = router;

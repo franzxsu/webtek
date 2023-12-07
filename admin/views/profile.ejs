@@ -87,7 +87,7 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Modal Title</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <h4 class="modal-title">Modal Title</h4><button type="button" class="btn-remove" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>The content of your modal.</p>
@@ -189,11 +189,46 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Email</th>
+                                                                    <th>                               </th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <% orgMembers.forEach(member => { %>
-                                                                    <tr><td><%= member.Email %></td></tr>
+                                                                    <tr>
+                                                                        <td><%= member.Email %></td>
+                                                                        <td>
+                                                                            <!--<button class="btn btn-danger" data-bs-toggle="modal">Remove</button>-->
+                                                                            <div class="mb-3">
+                                                                                <a class="btn btn-danger btn-sm d-none d-sm-inline-block" role="button" href="#" data-bs-toggle="modal" 
+                                                                                data-bs-target="#removeMemberModal"><i class="fas fa-sm text-white-50"></i>&nbsp;Remove member</a>
+                            
+                                                                                <!-- MODAL FOR REMOVING USER -->
+                                                                                <div class="modal fade" id="removeMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-dialog-centered">
+                                                                                      <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                          <h5 class="modal-title" id="exampleModalLabel">Remove member</h5>
+                                                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <div class="container-fluid">
+                                                                                                <!-- post form create event -->
+                                                                                                <!-- EDIT THIS, DAPAT REMOVE SIYA
+                                                                                                <form id="addOrgMemberForm" action="/addOrgMember" method="POST">
+                                                                                                    <label for="email" class="form-label">Enter email</label>
+                                                                                                    <input type="text" name="email" class="form-control" id="emailOrg" placeholder="example@slu.edu.ph">
+                                                                                                    <input type="hidden" name="orgid" value="<%= orgId %>">
+                                                                                                    <button type="submit" class="btn btn-primary">Add member</button>
+                                                                                                </form>
+                                                                                                -->
+                                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                  </div>
+                            
+                                                                        </td>
+                                                                    </tr>
                                                                 <% }); %>
                                                             </tbody>
                                                         </table>

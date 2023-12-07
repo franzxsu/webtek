@@ -20,8 +20,7 @@ router.get('/login', (req, res) => {
 router.get('/index', (req, res) => {
   //check if there is session
   if (req.session.userData) {
-    console.log("ALLEVENTS: "+db.getUpcomingEvents(req.session.userData.OrganizerID));
-    console.log(req.session.userData);
+    // console.log(req.session.userData);
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
     });
@@ -40,6 +39,8 @@ router.get('/profile', async (req, res) => {
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         const success = req.query.success;
+        console.log("SUCCESS");
+        console.log(success);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
@@ -48,11 +49,11 @@ router.get('/profile', async (req, res) => {
           allEvents: allEvents,
           pastEvents: pastEvents,
           upcomingEvents: upcomingEvents,
-          success: success === 'true'
+          success: success
         });
     
       } else {
-        console.log('redirecting to login')
+
         res.redirect('/login');
       }
 });
@@ -90,16 +91,16 @@ router.post('/auth', async (req, res) => {
 
 router.post('/addOrgMember', async (req, res) => {
   const { email, orgid } = req.body;
-  console.log("EMAIL: "+email);
-  console.log(orgid);
   try {
-      const bool = await db.addOrgMember(email, orgid);
+      const bool = await db.addOrgMember(orgid, email);
       if (bool) {
           // Success adding member
-          res.redirect(`/profile?success=true`);
+          console.log("go to success")
+          res.redirect('/profile?success=true');
       } else {
           // Handle failure to add member
-          res.redirect(`/profile?success=false`);
+          console.log("go to failure")
+          res.redirect('/profile?success=false');
       }
   } catch (error) {
       console.error('Error adding member:', error);

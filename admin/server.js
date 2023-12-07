@@ -22,7 +22,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/scripts', express.static(scriptsPath));
 app.use('/assets', express.static(assetsPath));
-
+app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'));
 
 app.use(cookieMonster());

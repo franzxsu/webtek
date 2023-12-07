@@ -39,8 +39,9 @@ router.get('/profile', async (req, res) => {
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         const success = req.query.success;
-        console.log("SUCCESS");
+        const emailOfAddedMember = req.query.email;
         console.log(success);
+        console.log(emailOfAddedMember);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
@@ -49,7 +50,8 @@ router.get('/profile', async (req, res) => {
           allEvents: allEvents,
           pastEvents: pastEvents,
           upcomingEvents: upcomingEvents,
-          success: success
+          success: success,
+          addedEmail: emailOfAddedMember
         });
     
       } else {
@@ -96,7 +98,7 @@ router.post('/addOrgMember', async (req, res) => {
       if (bool) {
           // Success adding member
           console.log("go to success")
-          res.redirect('/profile?success=true');
+          res.redirect(`/profile?success=true&email=${encodeURIComponent(email)}`);
       } else {
           // Handle failure to add member
           console.log("go to failure")

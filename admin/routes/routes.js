@@ -85,4 +85,23 @@ router.post('/auth', async (req, res) => {
     }
 });
 
+router.post('/addOrgMember', async (req, res) => {
+  const { email }= req.body;
+  try {
+    const userData = await db.authLogIn(username, password);
+      //check if query returned row
+    if (userData !== null) {
+      //set session data and fo to index
+      req.session.userData = userData;
+      res.redirect('/profile');
+    } else {
+      //go back to login
+      res.render('login', { error: 'Invalid username or password' });
+    }
+  } catch (error) {
+    console.error('Error authenticating user:', error);
+    res.status(500).json({ message: 'Error authenticating user' });
+  }
+});
+
 module.exports = router;

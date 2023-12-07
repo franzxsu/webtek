@@ -179,6 +179,27 @@ function getOrganizationMembers(orgID) {
   });
 }
 
+//todo`
+function addOrgMember(orgID, email){
+
+  const insertQuery = `
+  INSERT INTO organizationmembers (organizationID, Email)
+  VALUES (?, ?) `;
+
+  // const values = [
+  //   eventData.id,
+  //   eventData.eventName,
+  // ];
+
+  query(insertQuery, values, (error) => {
+    if (error) {
+      throw new Error(error);
+    } 
+    else {
+      console.log("Data inserted successfully!");
+    }
+  })
+}
 
 module.exports = {
     authLogIn,

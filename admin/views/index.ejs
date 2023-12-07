@@ -21,6 +21,7 @@
 </head>
 
 <body id="page-top">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
@@ -124,65 +125,77 @@
                               <h5 class="modal-title" id="exampleModalLabel">Create New Event</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="container-fluid">
-
+                                <div class="modal-body">
                                     <!-- post form create event -->
-                                    <form id="eventCreationForm" action="createEvent" method="post">
-                                        <div class="mb-3">
-                                        <label for="eventName" class="form-label">Event Name</label>
-                                        <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name">
+                                    <form class="row g-3" id="eventCreationForm" action="createEvent" method="post">
+                                        <div class="col-12">
+                                            <label for="eventName" class="form-label">Event Name</label>
+                                            <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name">
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="col-12">
                                             <label for="eventVenue" class="form-label">Venue</label>
                                             <input type="text" name="eventVenue" class="form-control" id="venue" placeholder="Enter event venue">
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="col-12">
                                             <label for="eventDescription" class="form-label">Description</label>
                                             <textarea class="form-control" name="eventDescription" id="description" placeholder="Enter description" rows="5"></textarea>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4 ms">
-                                                <label for="startDate">Start date </label>
-                                                <input name="eventDateStart" id="startDate" class="form-control" type="date" />
-                                            </div>
-                                            <div class="col-md-4 ms-auto">
-                                                <label for="endDate">End date </label>
-                                                <input name="eventDateEnd" id="endDate" class="form-control" type="date" />
-                                            </div>
+                                        <div class="col-md-6">
+                                            <label for="startDate">Start date </label>
+                                            <input name="eventDateStart" id="startDate" class="form-control" type="date" />
                                         </div>
-                                        <br>
-                                        <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="eventFor" id="flexRadioDefault1" value="OrganizationExclusive" checked>
-                                            <label class="form-check-label" for="flexRadioDefault3">Organization Exclusive [<%= orgName %>]</label>
+                                        <div class="col-md-6">
+                                            <label for="endDate">End date </label>
+                                            <input name="eventDateEnd" id="endDate" class="form-control" type="date" />
                                         </div>
-                                        <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="eventFor" value="SLUExclusive" id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault1">SLU Exclusive</label>
+                                        <div class="col-md-6">
+                                        <label class="" for="visibilitySelection">Event Visibility</label>
+                                            <select class="form-select" id="visibilitySelection">
+                                            <option selected value="Everyone">Everyone</option>
+                                            <option value="SLU">SLU Exclusive</option>
+                                            <option value="Organization"><%= orgName %> Exclusive</option>
+                                            <option value="Course">Course Exclusive</option>
+                                            </select>
                                         </div>
-                                        <div class="mb-3">
-                                            <input class="form-check-input" type="radio" name="eventFor" value="OpenForAll" id="flexRadioDefault3" checked>
-                                            <label class="form-check-label" for="flexRadioDefault2">Open for all</label>
+                                        <div class="col-md-6">
+                                            <label class="" for="courseSelection">Course</label>
+                                            <select class="form-select" id="courseSelection">
+                                                <option value="1">BSCS</option>
+                                                <option value="2">BSIT</option>
+                                                <option value="3">BMMA</option>
+                                            </select>
                                         </div>
+                                        <script>
+                                              $(document).ready(function () {
+                                                $('#visibilitySelection').change(function () {
+                                                    if ($(this).val() === 'Course') {
+                                                        $('#courseSelection').prop('disabled', false);
+                                                    } else {
+                                                        $('#courseSelection').prop('disabled', true).val('');
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                         <label for="fileUpload" class="form-label">Event Poster</label>
-                                        <div class = "custom-drag-and-drop">
-                                            <div class="file-drop-area">
-                                              <span class="choose-file-button">Choose files</span>
-                                              <span class="file-message">or drag and drop files here</span>
-                                              <input class="file-input" type="file" multiple>
-                                            </div>     
+                                        <div class="col-12">
+                                            <div class = "custom-drag-and-drop">
+                                                <div class="file-drop-area">
+                                                <span class="choose-file-button">Choose files</span>
+                                                <span class="file-message">or drag and drop files here</span>
+                                                <input class="file-input" type="file" multiple>
+                                                </div>     
+                                            </div>
                                         </div>
-                                        <br>
-                                    </div>
-                                <button type="submit" class="btn btn-primary">Create Event</button>
-                              </form>
-
-                              
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Create event</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                    </div>
 
+                    <!-- END OF MODAL -->
 
                     <div class="row">
                         <div class="col-lg-7 col-xl-8 col-xxl-12 offset-xxl-0">
@@ -280,7 +293,6 @@
     </div>
     <script type="module" src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="../scripts/eo_dashboard.js"></script>
 </body>
 
 </html>

@@ -138,7 +138,9 @@ function removeEvent(eventID){
 }
 
 function changeEventAttribute(eventID, headerOfTableToChange, newValue){
-
+  // return new Promise((resolve, reject) => {
+  //   const query = "UPDATE events SET eventID = ?, WHERE eventID = ?" //?????
+  // }
 }
 
 function getCompletedEvents(orgID){

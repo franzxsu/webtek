@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - Brand</title>
+    <title>Table - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
@@ -27,8 +27,8 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="/index"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/attendance"><i class="fa fa-group"></i><span>Check Attendance</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/events"><i class="fas fa-table"></i><span>Manage Events</span></a>
+                    <li class="nav-item"><a class="nav-link" href="/attendance"><i class="fa fa-group"></i><span>Check Attendance</span></a></li>
+                    <li class="nav-item"><a class="nav-link acvtive" href="#"><i class="fas fa-table"></i><span>Manage Events</span></a>
                     <li class="nav-item"><a class="nav-link" href="/profile"><i class="fa fa-group"></i><span>Manage Organization</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/logout"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
                 </ul>
@@ -95,116 +95,139 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-1"></h3>
-                </div>
-                <div class="col-xxl-8 offset-xxl-2"><script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
-
-<div id="container">
-      <h1>Scan QR</h1>
-
-      <a id="btn-scan-qr">
-        <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg">
-      </a>
-
-      <canvas hidden="" id="qr-canvas"></canvas>
-
-      <div id="qr-result" hidden="">
-        <b>Data:</b> <span id="outputData"></span>
-      </div>
-    </div>
-
-
-<script>
-    var qrcode = window.qrcode;
-
-const video = document.createElement("video");
-const canvasElement = document.getElementById("qr-canvas");
-const canvas = canvasElement.getContext("2d");
-
-const qrResult = document.getElementById("qr-result");
-const outputData = document.getElementById("outputData");
-const btnScanQR = document.getElementById("btn-scan-qr");
-
-let scanning = false;
-
-qrcode.callback = res => {
-  if (res) {
-    outputData.innerText = res;
-    scanning = false;
-
-    video.srcObject.getTracks().forEach(track => {
-      track.stop();
-    });
-
-    qrResult.hidden = false;
-    canvasElement.hidden = true;
-    btnScanQR.hidden = false;
-  }
-};
-
-btnScanQR.onclick = () => {
-  navigator.mediaDevices
-    .getUserMedia({ video: { facingMode: "environment" } })
-    .then(function(stream) {
-      scanning = true;
-      qrResult.hidden = true;
-      btnScanQR.hidden = true;
-      canvasElement.hidden = false;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      video.srcObject = stream;
-      video.play();
-      tick();
-      scan();
-    });
-};
-
-function tick() {
-  canvasElement.height = video.videoHeight;
-  canvasElement.width = video.videoWidth;
-  canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-
-  scanning && requestAnimationFrame(tick);
-}
-
-//recursive
-function scan() {
-  try {
-    qrcode.decode();
-  } catch (e) {
-    setTimeout(scan, 300);
-  }
-}
-</script></div>
-                <div class="col-xxl-10 offset-xxl-1">
-                    <div class="card shadow mb-4">
+                    <h3 class="text-dark mb-4">Ongoing Events</h3>
+                    <div class="card shadow">
                         <div class="card-header py-3">
-                            <h6 class="text-primary m-0 fw-bold">Ongoing Events</h6>
+                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>EventID</th>
                                             <th>Event Name</th>
-                                            <th>Scan Attendace</th>
+                                            <th>Date Start</th>
+                                            <th>Date End</th>
+                                            <th>Venue</th>
+                                            <th>Registered</th>
+                                            <th>Attendance</th>
+                                            <th>Info</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>2</td>
-                                            <td>sample</td>
-                                            <td>open modal</td>
+                                            <td>Cell 1</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
                                         </tr>
                                         <tr>
-                                            <td>3</td>
-                                            <td>sample part</td>
-                                            <td>modal</td>
+                                            <td>Cell 3</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 4</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="m-0"></p>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Upcoming Events</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Event Name</th>
+                                            <th>Event Info</th>
+                                            <th>Date Start</th>
+                                            <th>Date End</th>
+                                            <th>Venue</th>
+                                            <th>Registered</th>
+                                            <th>Cancel</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Cell 1</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cell 3</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Past Events</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Event Name</th>
+                                            <th>Date Start</th>
+                                            <th>Date End</th>
+                                            <th>Venue</th>
+                                            <th>Registered</th>
+                                            <th>Attendees</th>
+                                            <th>View feedbacks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Cell 1</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cell 3</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 2</td>
+                                            <td>Cell 4</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -43,13 +43,24 @@ router.get('/index', async  (req, res) => {
 router.get('/attendance', async  (req, res) => {
   //check if there is session
   if (req.session.userData) {
-    // console.log(req.session.userData);
-    const success=req.query.eventSuccess
 
     res.render('attendance.ejs',{
       orgName: req.session.userData.OrganizationName,
       orgId: req.session.userData.OrganizerID,
-      success: success
+    });
+  //go to login if there is no session set
+  } else {
+    res.redirect('/login');
+  }
+});
+
+router.get('/events', async  (req, res) => {
+  //check if there is session
+  if (req.session.userData) {
+
+    res.render('events.ejs',{
+      orgName: req.session.userData.OrganizationName,
+      orgId: req.session.userData.OrganizerID,
     });
   //go to login if there is no session set
   } else {

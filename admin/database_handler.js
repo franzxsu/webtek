@@ -74,7 +74,7 @@ function createEvent(eventData) {
       throw new Error(error);
     } 
     else {
-      console.log("Data inserted successfully!");
+      // console.log("Data inserted successfully!");
     }
   })
  
@@ -91,10 +91,10 @@ function getOrgNameFromId(id) {
       }
       else 
       {
-        console.log("Data fetched successfully!");
-        console.log(results);
+        // console.log("Data fetched successfully!");
+        // console.log(results);
         const orgName = results[0].OrganizationName;
-        console.log(orgName);
+        // console.log(orgName);
         return orgName;
       }
     });
@@ -113,7 +113,7 @@ function getAllEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        console.log("Data fetched successfully!");
+        // console.log("Data fetched successfully!");
         // console.log(results);
         resolve(results);
       }
@@ -173,7 +173,7 @@ function getCompletedEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        console.log("Data fetched successfully!");
+        // console.log("Data fetched successfully!");
         // console.log(results);
         resolve(results);
       }
@@ -189,7 +189,7 @@ function getUpcomingEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        console.log("Data fetched successfully!");
+        // console.log("Data fetched successfully!");
         // console.log(results);
         resolve(results);
       }
@@ -208,7 +208,7 @@ function getOrganizationMembers(orgID) {
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        console.log("Data fetched successfully!");
+        // console.log("Data fetched successfully!");
         // console.log(results);
         resolve(results);
       }
@@ -224,8 +224,9 @@ function addOrgMember(orgID, email){
       if (error) {
         console.error('Error querying database:', error);
         reject(error);
-      } else {
-        console.log("Data inserted successfully successfully!");
+      } else if (results){
+        resolve(true);
+        // console.log("Data inserted successfully successfully!");
       }
     });
   });

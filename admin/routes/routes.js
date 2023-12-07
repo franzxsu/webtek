@@ -20,8 +20,7 @@ router.get('/login', (req, res) => {
 router.get('/index', (req, res) => {
   //check if there is session
   if (req.session.userData) {
-    console.log("ALLEVENTS: "+db.getUpcomingEvents(req.session.userData.OrganizerID));
-    console.log(req.session.userData);
+    // console.log(req.session.userData);
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
     });
@@ -40,6 +39,8 @@ router.get('/profile', async (req, res) => {
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         const success = req.query.success;
+        console.log("SUCCESS");
+        console.log(success);
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
           orgEmail: req.session.userData.Email,
@@ -52,7 +53,7 @@ router.get('/profile', async (req, res) => {
         });
     
       } else {
-        console.log('redirecting to login')
+
         res.redirect('/login');
       }
 });
@@ -71,9 +72,9 @@ router.get('/logout', (req, res) => {
 
 router.post('/auth', async (req, res) => {
     const { username, password } = req.body;
-    console.log("AUTH");
-    console.log(username);
-    console.log(password);
+    // console.log("AUTH");
+    // console.log(username);
+    // console.log(password);
     try {
       const userData = await db.authLogIn(username, password);
         //check if query returned row
@@ -93,17 +94,19 @@ router.post('/auth', async (req, res) => {
 
 router.post('/addOrgMember', async (req, res) => {
   const { email, orgid } = req.body;
-  console.log(req.body);
-  console.log(email);
-  console.log(orgid);
+  // console.log(req.body);
+  // console.log(email);
+  // console.log(orgid);
   try {
       const bool = await db.addOrgMember(orgid, email);
       if (bool) {
           // Success adding member
-          res.redirect(`/profile?success=true`);
+          console.log("go to success")
+          res.redirect('/profile?success=true');
       } else {
           // Handle failure to add member
-          res.redirect(`/profile?success=false`);
+          console.log("go to failure")
+          res.redirect('/profile?success=false');
       }
   } catch (error) {
       console.error('Error adding member:', error);

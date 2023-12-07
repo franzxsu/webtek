@@ -49,6 +49,7 @@ router.get('/profile', async (req, res) => {
         const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
         const upcomingEvents = await db.getUpcomingEvents(req.session.userData.OrganizerID);
         const success = req.query.success;
+        const successRemove = req.query.successRemove;
         const emailOfAddedMember = req.query.email;
         res.render('profile.ejs',{
           orgName: req.session.userData.OrganizationName,
@@ -59,6 +60,7 @@ router.get('/profile', async (req, res) => {
           pastEvents: pastEvents,
           upcomingEvents: upcomingEvents,
           success: success,
+          successRemove: successRemove,
           addedEmail: emailOfAddedMember
         });
     
@@ -111,6 +113,28 @@ router.post('/addOrgMember', async (req, res) => {
           // Handle failure to add member
           console.log("go to failure")
           res.redirect('/profile?success=false');
+      }
+  } catch (error) {
+      console.error('Error adding member:', error);
+      res.status(500).json({ message: 'Error adding member' });
+  }
+});
+
+router.post('/removeOrgMember', async (req, res) => {
+  const { memberEmail, orgid } = req.body;
+  console.log("AAA");
+  console.log(memberEmail);
+  console.log(orgid);
+  try {
+      const bool = await db.removeOrgMember(orgid, memberEmail);
+      if (bool) {
+          // Success adding member
+          console.log("go to success")
+          res.redirect(`/profile?successRemove=true&email=${encodeURIComponent(memberEmail)}`);
+      } else {
+          // Handle failure to add member
+          console.log("go to failure")
+          res.redirect('/profile?successRemove=false');
       }
   } catch (error) {
       console.error('Error adding member:', error);

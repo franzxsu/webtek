@@ -13,6 +13,7 @@
     
 </head>
 
+
 <body id="page-top">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div id="wrapper">
@@ -194,16 +195,35 @@
                                                             </thead>
                                                             <tbody>
                                                                 <% orgMembers.forEach(member => { %>
+                                                                    <!-- MODAL FOR REMOVING USER -->
+                                                                    <div class="modal fade" id="removeMemberModal_<%= member.Email.replace(/[^a-zA-Z0-9]/g, '_') %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered">
+                                                                            <div class="modal-content">
+                                                                                <!-- Modal content here -->
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Remove <%= member.Email %></h5>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <!-- Post form create event -->
+                                                                                    <form id="removeOrgMemberForm_<%= member.Email %>" action="/removeOrgMember" method="POST">
+                                                                                        <input type="hidden" name="orgid" value="<%= orgId %>">
+                                                                                        <input type="hidden" name="memberEmail" value=<%= member.Email %>>
+                                                                                        <button type="submit" class="btn btn-primary">Remove <%= member.Email %></button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- MODAL END -->
+                                                                
+                                                                    <!-- Button that triggers the modal -->
                                                                     <tr>
                                                                         <td><%= member.Email %></td>
                                                                         <td class="text-end">
-                                                                            <div class="mb-3">
-                                                                                <a class="btn btn-danger btn-sm d-none d-sm-inline-block remove-member-btn" role="button"
-                                                                                    href="#" data-bs-toggle="modal" data-bs-target="#removeMemberModal"
-                                                                                    data-member-email="<%= member.Email %>">
-                                                                                    <i class="fas fa-sm text-white-50"></i>&nbsp;Remove member
-                                                                                </a>
-                                                                            </div>
+                                                                            <button class="btn btn-danger btn-sm d-none d-sm-inline-block remove-member-btn" data-bs-toggle="modal" data-bs-target="#removeMemberModal_<%= member.Email.replace(/[^a-zA-Z0-9]/g, '_') %>">
+                                                                                <i class="fas fa-sm text-white-50"></i>&nbsp;Remove member
+                                                                            </button>
                                                                         </td>
                                                                     </tr>
                                                                 <% }); %>
@@ -296,37 +316,27 @@
       
 
     <!-- MODAL FOR REMOVING USER -->
-<div class="modal fade" id="removeMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Remove member</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <!-- post form create event -->
-                    <form id="removeOrgMemberForm" action="/removeOrgMember" method="POST">
-                        <input type="hidden" name="orgid" value="<%= orgId %>">
-                        <input type="hidden" name="memberEmail" id="memberEmail">
-                        <button type="submit" class="btn btn-primary">Remove member</button>
-                    </form>
+    <div class="modal fade" id="removeMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Member Added!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="removeOrgMemberForm" action="/removeOrgMember" method="POST">
+                            <input type="hidden" name="orgid" value="<%= orgId %>">
+                            <input type="hidden" name="memberEmail" id="memberEmail">
+                            <button type="submit" class="btn btn-primary">Remove member</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 <!-- MODAL END -->
 
-<script>
-    const removeMemberButtons = document.querySelectorAll('.remove-member-btn');
-    removeMemberButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            const memberEmail = event.currentTarget.dataset.memberEmail;
-            document.getElementById('memberEmail').value = memberEmail;
-        });
-    });
-</script>
+
 
     <!-- MODAL TO DISPLAY SUCCESS ORG MEMBER ADDING -->
     <div class="modal fade" id="successAddingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -198,6 +198,25 @@ function addOrgMember(orgID, email){
   });
 }
 
+function removeOrgMember(orgID, email) {
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM organizationmembers WHERE organizationID = ? AND Email = ?";
+    connection.query(query, [orgID, email], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        if (results.affectedRows > 0) {
+          resolve(true);//removed
+        } else {
+          resolve(false);//member not found/ or not removed
+        }
+      }
+    });
+  });
+}
+
+
 function createEvent(orgid, eventName, eventInfo, 
   eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob) {
   return new Promise((resolve, reject) => {
@@ -222,5 +241,6 @@ module.exports = {
     getAllEvents,
     getCompletedEvents,
     getUpcomingEvents,
-    addOrgMember
+    addOrgMember,
+    removeOrgMember
 };  

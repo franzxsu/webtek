@@ -121,6 +121,7 @@ function getAllEvents(orgID){
   });
 }
 
+// Not sure if this works
 function removeEvent(eventID){
   return new Promise((resolve, reject) => {
     const query = "DELETE FROM events WHERE eventID = ?";
@@ -137,10 +138,30 @@ function removeEvent(eventID){
   });
 }
 
+// Not sure if this works
 function changeEventAttribute(eventID, headerOfTableToChange, newValue){
-  // return new Promise((resolve, reject) => {
-  //   const query = "UPDATE events SET eventID = ?, WHERE eventID = ?" //?????
-  // }
+  return new Promise((resolve, reject) => {
+    const editableColumns = ['EventName', 'EventInfo', 'EventDateStart', 'EventDateEnd', 'EventLocation', 'courseID', 'accessLevel', 'poster'];
+    if (!editableColumns.includes(headerOfTableToChange)) {
+      reject(new Error('Invalid column name'));
+      return;
+    }
+    const query = `UPDATE events SET ${headerOfTableToChange} = ? WHERE eventID = ?`;
+    connection.query(query, [newValue, eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', query);
+        reject(error);
+      } else {
+        if (results.affectedRows === 0) {
+          console.log('Event not found');
+          reject(new Error('Event not found'));
+        } else {
+          console.log(`Event ${headerOfTableToChange} updated successfully`);
+          resolve(results);
+        }
+      }
+    });
+  });
 }
 
 function getCompletedEvents(orgID){

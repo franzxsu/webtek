@@ -71,6 +71,18 @@ router.get('/events', async  (req, res) => {
   }
 });
 
+router.get('/about', async  (req, res) => {
+  //check if there is session
+  if (req.session.userData) {
+    res.render('about.ejs',{
+      orgName: req.session.userData.OrganizationName,
+      orgId: req.session.userData.OrganizerID,
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 router.get('/profile', async (req, res) => {
 
     if (req.session.userData) {

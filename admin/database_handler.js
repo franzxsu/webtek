@@ -236,6 +236,7 @@ function createEvent(orgid, eventName, eventInfo,
 module.exports = {
     authLogIn,
     createEvent,
+    removeEvent,
     getOrgNameFromId, 
     getOrganizationMembers,
     getAllEvents,

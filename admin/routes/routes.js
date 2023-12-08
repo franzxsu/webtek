@@ -61,6 +61,8 @@ router.get('/events', async  (req, res) => {
     res.render('events.ejs',{
       orgName: req.session.userData.OrganizationName,
       orgId: req.session.userData.OrganizerID,
+      orgUpcomingEvents: await db.getUpcomingEvents(req.session.userData.OrganizerID),
+      orgPastEvents: await db.getCompletedEvents(req.session.userData.OrganizerID)
     });
   //go to login if there is no session set
   } else {
@@ -150,9 +152,6 @@ router.post('/addOrgMember', async (req, res) => {
 
 router.post('/removeOrgMember', async (req, res) => {
   const { memberEmail, orgid } = req.body;
-  console.log("AAA");
-  console.log(memberEmail);
-  console.log(orgid);
   try {
       const bool = await db.removeOrgMember(orgid, memberEmail);
       if (bool) {
@@ -163,6 +162,25 @@ router.post('/removeOrgMember', async (req, res) => {
           // Handle failure to add member
           console.log("go to failure")
           res.redirect('/profile?successRemove=false');
+      }
+  } catch (error) {
+      console.error('Error adding member:', error);
+      res.status(500).json({ message: 'Error adding member' });
+  }
+});
+
+router.post('/removeEvent', async (req, res) => {
+  const { eventID } = req.body;
+  try {
+      const bool = await db.removeEvent(eventID);
+      if (bool) {
+
+          console.log("success remove event")
+          res.redirect(`/events?successRemove=true`);
+      } else {
+
+          console.log("fail")
+          res.redirect('/events?successRemove=false');
       }
   } catch (error) {
       console.error('Error adding member:', error);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<% console.log(orgPastEvents) %>
+<% console.log(orgOngoingEvents) %>
 
 <head>
     <meta charset="utf-8">
@@ -108,7 +108,7 @@
                     <h3 class="text-dark mb-4">Ongoing Events</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
+                            <p class="text-primary m-0 fw-bold">Events</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -116,6 +116,7 @@
                                     <thead>
                                         <tr>
                                             <th>Event Name</th>
+                                            <th>Info</th>
                                             <th>Date Start</th>
                                             <th>Date End</th>
                                             <th>Venue</th>
@@ -125,15 +126,41 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% orgOngoingEvents.forEach(event => { %>
+                                            <!-- MODAL FOR ATTENDANCE ON EVENT -->
+                                            <div class="modal fade" id="removeEventModal_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <!-- Modal content here -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="removeMemberModalLabel">Cancel <%= event.EventName %></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <p>this action cannot be undone</p>
+                                                            </div>
+                                                            <!-- Post form create event -->
+                                                            <form id="removeOrgMemberForm_<%= event.eventID %>" action="/removeEvent" method="POST">
+                                                                <input type="hidden" name="eventID" value="<%= event.eventID %>">
+                                                                <button type="submit" class="btn btn-primary">Cancel event</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- MODAL END -->
                                         <tr>
-                                            <td>Cell 3</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 4</td>
+                                            <td><%=event.EventName%></td>
+                                            <td><%=event.EventInfo%></td>
+                                            <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                            <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                            <td><%=event.EventLocation%></td>
+                                            <td>todo</td>
+                                            <td>todo</td>
+                                            <td>todo</td>
                                         </tr>
+                                        <% }); %>
                                     </tbody>
                                 </table>
                             </div>
@@ -145,7 +172,7 @@
                     <h3 class="text-dark mb-4">Upcoming Events</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
+                            <p class="text-primary m-0 fw-bold">Events</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -212,7 +239,7 @@
                     <h3 class="text-dark mb-4">Past Events</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Ongoing Events</p>
+                            <p class="text-primary m-0 fw-bold">Events</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

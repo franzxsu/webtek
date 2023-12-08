@@ -61,6 +61,7 @@ router.get('/events', async  (req, res) => {
     res.render('events.ejs',{
       orgName: req.session.userData.OrganizationName,
       orgId: req.session.userData.OrganizerID,
+      orgOngoingEvents: await db.getOngoingEvents(req.session.userData.OrganizerID),
       orgUpcomingEvents: await db.getUpcomingEvents(req.session.userData.OrganizerID),
       orgPastEvents: await db.getCompletedEvents(req.session.userData.OrganizerID)
     });

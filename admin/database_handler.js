@@ -162,9 +162,21 @@ function getUpcomingEvents(orgID){
     });
   });
 }
-function getOngoignEvents(){
-
+function getOngoingEvents(orgID) {
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND eventDateStart <= ? AND eventDateEnd >= ?";
+    connection.query(query, [orgID, currentDate, currentDate], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 }
+
 
 function getOrganizationMembers(orgID) {
   return new Promise((resolve, reject) => {
@@ -240,6 +252,7 @@ module.exports = {
     getOrgNameFromId, 
     getOrganizationMembers,
     getAllEvents,
+    getOngoingEvents,
     getCompletedEvents,
     getUpcomingEvents,
     addOrgMember,

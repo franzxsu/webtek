@@ -21,7 +21,7 @@
 </head>
 
 <body id="page-top">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
@@ -180,10 +180,39 @@
                                         </script>
                                         <div class="col-12">
                                             <div class="mb-3">
-                                                <label for="formFile" class="form-label">Upload Event Poster</label>
+                                                <label for="formFile" class="form-label"> Upload Event Poster </label>
+                                                <div class="mb-3" id="img-view">
+                                                    <img class="img-fluid d-none" src="" alt="Uploaded Image">
+                                                    <div class="alert alert-warning mt-2 d-none" id="img-warning">
+                                                        The uploaded image is too small (minimum of 300 x 300 pixels). Please upload a larger image.
+                                                    </div>
+                                                </div>
                                                 <input class="form-control" type="file" accept="image/*" id="eventPoster" name="eventPoster">
                                               </div>
                                         </div>
+                                        <script>
+                                            // reads file, then uploads a preview
+                                            $(document).ready(function () {
+                                                $('#eventPoster').change(function () {
+                                                    let imgLink = URL.createObjectURL(this.files[0]);
+                                                    console.log(imgLink);                                                    
+
+                                                    let img = new Image();
+                                                    img.src = imgLink;
+
+                                                    // if image is less than 300 x 300 pixels, show error and prevent submission
+                                                    img.onload = function () {
+                                                        $('#img-view img').attr('src', imgLink).removeClass('d-none');
+
+                                                        if (img.width < 300 || img.height < 300) {
+                                                            $('#img-warning').removeClass('d-none');
+                                                        } else {
+                                                            $('#img-warning').addClass('d-none');
+                                                        }
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Create event</button>
                                         </div>

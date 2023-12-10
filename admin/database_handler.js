@@ -105,7 +105,7 @@ function removeEvent(eventID){
 }
 
 //TODO!!
-function getSegments(eventID, userID, segmentID){
+function getSegments(eventID){
   return new Promise((resolve, reject) => {
     const query = "SELECT segmentNo, segmentName FROM segments WHERE eventID = ?";
     connection.query(query, [eventID], (error, results) => {
@@ -291,5 +291,7 @@ module.exports = {
     getCompletedEvents,
     getUpcomingEvents,
     addOrgMember,
-    removeOrgMember
+    removeOrgMember,
+    getSegments,
+    addAttendance
 };  

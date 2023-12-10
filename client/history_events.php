@@ -149,7 +149,16 @@ if(isset($_SESSION['user_id'])){
                                 <tbody>
                                     <?php foreach ($events as $event) : ?>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="assets/img/sample_pubmat.jpg"><?= $event['EventName'] ?></td>
+                                            <td>
+                                                <!-- FOR POSTER -->
+                                                    <?php if ($event['poster'] !== null) : ?>
+                                                        <img class="rounded-circle me-2" width="30" height="30" src="data:image/jpeg;base64,<?= base64_encode($event['poster']) ?>">
+                                                    <?php else : ?>
+                                                        <img class="rounded-circle me-2" width="30" height="30" src="assets/img/sample_pubmat.jpg">
+                                                    <?php endif; ?>
+
+
+                                            </td>
                                             <td><?= $event['EventInfo'] ?></td>
                                             <td><?= get_organization_name_from_id($event['OrganizerId']) ?></td>
                                             <td><?= $event['EventLocation'] ?></td>
@@ -162,7 +171,7 @@ if(isset($_SESSION['user_id'])){
                                                     Rate
                                                 </a>
                                                 <div class="modal fade" id="ratingModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                         <div class="modal-header">
                                                             <?php

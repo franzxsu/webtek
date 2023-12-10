@@ -113,6 +113,20 @@ router.get('/logout', (req, res) => {
       })
 });
 
+router.get('/attendance', async  (req, res) => {
+  //check if there is session
+  if (req.session.userData) {
+
+    res.render('attendance.ejs',{
+      orgName: req.session.userData.OrganizationName,
+      orgId: req.session.userData.OrganizerID,
+    });
+  //go to login if there is no session set
+  } else {
+    res.redirect('/login');
+  }
+});
+
 router.post('/auth', async (req, res) => {
     const { username, password } = req.body;
     try {

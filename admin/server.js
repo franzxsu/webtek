@@ -5,7 +5,7 @@ const session = require('express-session');
 const cookieMonster = require('cookie-parser');
 const path = require('path');
 const port = 3000
-const db = require("./database_handler.js");
+const db = require("./assets/js/database_handler.js");
 const routes = require('./routes/routes.js');
 
 const app = express()

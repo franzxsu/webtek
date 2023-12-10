@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database_handler.js');
+const db = require('../assets/js/database_handler.js');
 
 const multer = require('multer');
 

@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const util = require('util');
-
 const config = require('config');
 
 const connection = mysql.createConnection({
@@ -33,7 +32,7 @@ const connection = mysql.createConnection({
       .then((results) => {
         if (results.length > 0) {
           const userData = results[0];
-          console.log(userData)
+          // console.log(userData)
           return userData;
         } else {
           return null;

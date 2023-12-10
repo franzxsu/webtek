@@ -1,4 +1,4 @@
-import { getSegments } from '../../database_handler.js'
+import {getSegments} from './database_handler.js'
 
 var qrcode = window.qrcode;
 const video = document.createElement("video");
@@ -118,8 +118,7 @@ function getValuesFromJSONString(jsonString) {
       return null;
     }
   }
-
-function populateSegmentsInModal(eventID) {
+  function populateSegmentsInModal(eventID) {
     console.log("POPULATEMETHOD");
     getSegments(eventID)
       .then((segments) => {
@@ -140,6 +139,10 @@ function populateSegmentsInModal(eventID) {
   
           radioGroup.appendChild(segmentRadio);
         });
+  
+        // After populating the segments, open the modal
+        const modal = new bootstrap.Modal(document.getElementById('chooseSegment'));
+        modal.show();
       })
       .catch((error) => {
         console.error('err:', error);

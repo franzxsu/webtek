@@ -1,5 +1,3 @@
-import {getSegments} from './database_handler.js'
-
 var qrcode = window.qrcode;
 const video = document.createElement("video");
 const canvasElement = document.getElementById("qr-canvas");
@@ -8,46 +6,56 @@ const canvas = canvasElement.getContext("2d");
 const qrResult = document.getElementById("qr-result");
 const outputData = document.getElementById("outputData");
 const btnScanQR = document.getElementById("btn-scan-qr");
-const qrForGettingSegments = document.getElementById("btn-scan-qr");
+// const qrForGettingSegments = document.getElementById("x");
+// const express = require('express');
+// import { getSegments } from './frontenddb.js';
 
 let scanning = false;
 
 qrcode.callback = res => {
-    console.log('QR SCANNED');
+  console.log('QR SCANNED');
   if (res) {
     console.log('in');
 
-    jsonValid = isValid(res);
-
-    if(jsonValid==='true'){
-        const parsedValues = getValuesFromJSONString(res);
-        if(parsedValues){
-            const { userID, eventID } = parsedValues;
-            outputData.innerText = "is true valid";
-            populateSegmentsInModal(eventID);
-        }
-        else {
-            outputData.innerText = "ERROR IN PARSING JSON";
-        }
-        
-    }
-    else{
-        outputData.innerText = jsonValid;
-    }
-
-    //stop scanning
+    console.log('stop scan flag');
+    // Stop scanning
     scanning = false;
+
+    try {
+      const jsonValid = isValid(res);
+      console.log(jsonValid);
+
+      // Handle the logic based on jsonValid here
+      // For example:
+      if (jsonValid === 'true') {
+        console.log('JSON is valid');
+        const parsedValues = getValuesFromJSONString(res);
+        const { userID, eventID } = parsedValues;
+        console.log("EVENT ID IS:"+eventID );
+        outputData.innerText = "is true valid";
+        populateSegmentsInModal(eventID);
+
+        // Other logic based on a valid JSON
+      } else {
+        console.log('JSON is not valid');
+        // Handle the scenario where JSON is not valid
+      }
+    } catch (error) {
+      console.error('Error occurred during validation:', error);
+      // Handle the error, show a message, etc.
+    }
 
     video.srcObject.getTracks().forEach(track => {
       track.stop();
     });
 
-    //hide camera
+    // Hide camera
     qrResult.hidden = false;
     canvasElement.hidden = true;
     btnScanQR.hidden = false;
   }
 };
+
 
 btnScanQR.onclick = () => {
   navigator.mediaDevices
@@ -100,6 +108,7 @@ function isValid(str) {
   } catch (error) {
     return error.toString();
   }
+  // return 'true';
 }
 
 //get values form json
@@ -148,3 +157,24 @@ function getValuesFromJSONString(jsonString) {
         console.error('err:', error);
       });
   }
+
+  function getSegments(eventID) {
+    fetch(`/api/segments/${eventID}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(segments => {
+        // Handle the segments retrieved from the server
+        console.log('Segments:', segments);
+        // Use the segments as needed in your front-end
+      })
+      .catch(error => {
+        console.error('Error fetching segments:', error);
+        // Handle the error, show a message, etc.
+      });
+  }
+  
+//HARDCODE INTERNAL SQL BECAUSE EXPORTING DOES NOT WORK!!!!fix

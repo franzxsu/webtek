@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../assets/js/database_handler.js');
+const db = require('../database_handler.js');
 
 const multer = require('multer');
 
@@ -275,6 +275,16 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
   }
 });
 
+router.get('/api/segments/:eventID', async (req, res) => {
+  const { eventID } = req.params;
 
+  try {
+    const segments = await db.getSegments(eventID);
+    res.json(segments);
+  } catch (error) {
+    console.error('Error fetching segments:', error);
+    res.status(500).send('Error fetching segments');
+  }
+});
 
 module.exports = router;

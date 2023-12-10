@@ -1,11 +1,9 @@
-
 function createInputFields() {
     const numberOfInputs = parseInt(document.getElementById('numberOfInputs').value);
-    const inputFieldsContainer = document.getElementById('inputFieldsContainer');
-    
-
-    inputFieldsContainer.innerHTML = '';
-
+    const segmentInputsContainer = document.getElementById('segmentInputsContainer');
+  
+    segmentInputsContainer.innerHTML = '';
+  
     for (let i = 0; i < numberOfInputs; i++) {
       const inputGroup = document.createElement('div');
       inputGroup.classList.add('col-6', 'mb-3');
@@ -17,10 +15,11 @@ function createInputFields() {
       const inputField = document.createElement('input');
       inputField.classList.add('form-control');
       inputField.setAttribute('placeholder', `Segment ${i + 1} info`);
+      inputField.setAttribute('name', `segmentInfo_${i + 1}`);
   
       inputGroup.appendChild(inputLabel);
       inputGroup.appendChild(inputField);
-      inputFieldsContainer.appendChild(inputGroup);
+      segmentInputsContainer.appendChild(inputGroup);
     }
   }
   

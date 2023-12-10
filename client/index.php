@@ -5,6 +5,9 @@ include_once 'database_handler.php';
 
 session_start();
 
+$_SESSION['courseID'] = get_user_course_id($_SESSION['email']);
+$_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
+
 // echo $_SESSION['user_id'] . "<br>";
 //       echo $_SESSION['first_name'] . "<br>";
 //       echo $_SESSION['last_name'] . "<br>";

@@ -40,19 +40,7 @@ router.get('/index', async  (req, res) => {
   }
 });
 
-router.get('/attendance', async  (req, res) => {
-  //check if there is session
-  if (req.session.userData) {
 
-    res.render('attendance.ejs',{
-      orgName: req.session.userData.OrganizationName,
-      orgId: req.session.userData.OrganizerID,
-    });
-  //go to login if there is no session set
-  } else {
-    res.redirect('/login');
-  }
-});
 
 router.get('/events', async  (req, res) => {
   //check if there is session
@@ -213,26 +201,13 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       visibility,
       course } = req.body;
 
-      // const fileBuffer = req.file.buffer;
-      // console.log(fileBuffer);
 
-      // const posterBlob = new Blob([fileBuffer]);
       let posterBlob = null;
 
       if (req.file) {
         posterBlob = Buffer.from(req.file.buffer);
       }
 
-    //   const bufferToBlob = (bufferData, contentType) => {
-    //     const arrayBuffer = bufferData.buffer.slice(
-    //         bufferData.byteOffset, bufferData.byteOffset + bufferData.byteLength
-    //     );
-    
-    //     return new Blob([arrayBuffer], { type: contentType });
-    // };
-    
-    // const posterBlob = bufferToBlob(req.file.buffer, 'image/jpeg');
-    // console.log(posterBlob);
     
 
     if (visibility === 'Course') {
@@ -243,16 +218,6 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
     else{
       course = null
     }
-
-    // console.log('orgid:', orgid);
-    // console.log('eventName:', eventName);
-    // console.log('eventInfo:', eventInfo);
-    // console.log('eventDateStart:', eventDateStart);
-    // console.log('eventDateEnd:', eventDateEnd);
-    // console.log('eventLocation:', eventLocation);
-    // console.log('course:', course);
-    // console.log('visibility:', visibility);
-    // console.log('posterBlob:', posterBlob);
 
     const bool = await db.createEvent(orgid, eventName, eventInfo, 
       eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
@@ -273,6 +238,20 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
     console.error('Error creating event:', error);
     res.status(500).json({ message: 'Error creating event' });
   }
+});
+
+router.post('/attendance', async  (req, res) => {
+  const segmentNo = req.body.segmentNo;
+  const eventID = req.body.eventID;
+  const userID = req.body.userID;
+
+  const bool = await db.addAttendance(eventID, userID, segmentNo);
+
+  if (bool){
+    console.log("SUCCESS!");
+  }
+
+  res.status(200).json({ message: 'Received data successfully.' });
 });
 
 router.get('/api/segments/:eventID', async (req, res) => {

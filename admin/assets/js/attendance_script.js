@@ -11,6 +11,8 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 // import { getSegments } from './frontenddb.js';
 
 let scanning = false;
+let userIDVal;
+let eventIDVal;
 
 qrcode.callback = res => {
   console.log('QR SCANNED');
@@ -32,8 +34,12 @@ qrcode.callback = res => {
         const parsedValues = getValuesFromJSONString(res);
         const { userID, eventID } = parsedValues;
         console.log("EVENT ID IS:"+eventID );
+
+        userIDVal = userID;
+        eventIDVal = eventID;
+
         outputData.innerText = "is true valid";
-        populateSegmentsInModal(eventID);
+        getSegmentsAndOpenModal(eventID);
 
         // Other logic based on a valid JSON
       } else {
@@ -127,38 +133,9 @@ function getValuesFromJSONString(jsonString) {
       return null;
     }
   }
-  function populateSegmentsInModal(eventID) {
-    console.log("POPULATEMETHOD");
-    getSegments(eventID)
-      .then((segments) => {
-        const modalBody = document.querySelector('.modal-body');
-        const radioGroup = modalBody.querySelector('.row');
-  
-        radioGroup.innerHTML = '';
-        segments.forEach((segment) => {
-          const segmentRadio = document.createElement('div');
-          segmentRadio.classList.add('form-check');
-  
-          segmentRadio.innerHTML = `
-            <input class="form-check-input" type="radio" name="flexRadioDisabled" id="segment${segment.segmentNo}" value="${segment.segmentNo}">
-            <label class="form-check-label" for="segment${segment.segmentNo}">
-              ${segment.segmentName}
-            </label>
-          `;
-  
-          radioGroup.appendChild(segmentRadio);
-        });
-  
-        // After populating the segments, open the modal
-        const modal = new bootstrap.Modal(document.getElementById('chooseSegment'));
-        modal.show();
-      })
-      .catch((error) => {
-        console.error('err:', error);
-      });
-  }
 
-  function getSegments(eventID) {
+
+  function getSegmentsAndOpenModal(eventID) {
     fetch(`/api/segments/${eventID}`)
       .then(response => {
         if (!response.ok) {
@@ -167,14 +144,77 @@ function getValuesFromJSONString(jsonString) {
         return response.json();
       })
       .then(segments => {
-        // Handle the segments retrieved from the server
         console.log('Segments:', segments);
-        // Use the segments as needed in your front-end
+        populateModalWithSegments(segments);
       })
       .catch(error => {
         console.error('Error fetching segments:', error);
-        // Handle the error, show a message, etc.
       });
   }
   
+  function populateModalWithSegments(segments) {
+    openModal(segments);
+    segments.forEach(segment => {
+      console.log(segment.SegmentName);
+    });
+  }
+
+  function openModal(data) {
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+      keyboard: false
+    });
+
+    var modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = ''; 
+
+    //build select buttons PLS FIX
+    data.forEach(function(segment) {
+      var rowDiv = document.createElement('div');
+      rowDiv.classList.add('row', 'mb-2');
+
+      var selectButtonDiv = document.createElement('div');
+      selectButtonDiv.classList.add('col');
+
+      var selectButton = document.createElement('button');
+      selectButton.classList.add('btn', 'btn-primary', 'w-100', 'mb-2');
+      selectButton.textContent = segment.SegmentName;
+
+      selectButton.addEventListener('click', function() {
+        alert('Selected Segment: ' + segment.SegmentNo + 'of event: '+eventIDVal+' of user '+userIDVal);
+
+        var postData = {
+          segmentNo: segment.SegmentNo,
+          eventID: eventIDVal,
+          userID: userIDVal
+        };
+  
+        fetch('/attendance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        })
+        .then(response => {
+          if (response.ok) {
+            console.log("ATTEMDANCE ADDED");
+            return response.json();
+          }
+          throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+      selectButtonDiv.appendChild(selectButton);
+      rowDiv.appendChild(selectButtonDiv);
+      modalContent.appendChild(rowDiv);
+    });
+
+    // Show the modal
+    myModal.show();
+  }
 //HARDCODE INTERNAL SQL BECAUSE EXPORTING DOES NOT WORK!!!!fix

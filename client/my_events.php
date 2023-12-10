@@ -160,7 +160,9 @@ if(isset($_SESSION['user_id'])){
                                                     <img class="rounded-circle me-2" width="30" height="30" src="assets/img/sample_pubmat.jpg">
                                                 <?php endif; ?>
 
-                                            
+                                            <?php 
+                                                echo "<p>".$event['EventName']."</p>" 
+                                            ?>
                                             </td>
                                             <td><?= $event['EventInfo'] ?></td>
                                             <td><?= get_organization_name_from_id($event['OrganizerId']) ?></td>

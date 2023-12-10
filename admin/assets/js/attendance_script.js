@@ -105,17 +105,23 @@ function isValid(str) {
       Object.keys(data).length === 2 &&
       'userID' in data &&
       'eventID' in data &&
-      Number.isInteger(data.userID) &&
-      Number.isInteger(data.eventID)
+      /^\d+$/.test(data.userID) &&
+      /^\d+$/.test(data.eventID)
     ) {
-      return 'true';
+      // Convert string representations of integers to actual integers
+      const userID = parseInt(data.userID);
+      const eventID = parseInt(data.eventID);
+
+      if (!Number.isNaN(userID) && !Number.isNaN(eventID)) {
+        return 'true';
+      }
     }
-    return "error sad";
+    return 'error sad';
   } catch (error) {
     return error.toString();
   }
-  // return 'true';
 }
+
 
 //get values form json
 function getValuesFromJSONString(jsonString) {
@@ -180,7 +186,7 @@ function getValuesFromJSONString(jsonString) {
       selectButton.textContent = segment.SegmentName;
 
       selectButton.addEventListener('click', function() {
-        alert('Selected Segment: ' + segment.SegmentNo + 'of event: '+eventIDVal+' of user '+userIDVal);
+        alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
 
         var postData = {
           segmentNo: segment.SegmentNo,

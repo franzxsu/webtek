@@ -117,7 +117,7 @@
       <canvas hidden="" id="qr-canvas"></canvas>
 
       <div id="qr-result" hidden="">
-        <b>Data:</b> <span id="outputData"></span>
+        <b>ERROR:</b> <span id="outputData"></span>
       </div>
     </div>
 
@@ -136,8 +136,21 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 let scanning = false;
 
 qrcode.callback = res => {
+    console.log('QR SCANNED');
   if (res) {
-    outputData.innerText = res;
+    console.log('in');
+
+    jsonValid = isValid(res);
+
+    if(jsonValid==='true'){
+        //handle ok
+        outputData.innerText = "is true valid";
+    }
+    else{
+        outputData.innerText = jsonValid;
+    }
+
+    //outputData.innerText = res;
     scanning = false;
 
     video.srcObject.getTracks().forEach(track => {
@@ -180,6 +193,26 @@ function scan() {
     qrcode.decode();
   } catch (e) {
     setTimeout(scan, 300);
+  }
+}
+
+function isValid(str) {
+  try {
+    const data = JSON.parse(str);
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      Object.keys(data).length === 2 &&
+      'userID' in data &&
+      'eventID' in data &&
+      Number.isInteger(data.userID) &&
+      Number.isInteger(data.eventID)
+    ) {
+      return 'true';
+    }
+    return "error sad";
+  } catch (error) {
+    return error.toString();
   }
 }
 </script></div>

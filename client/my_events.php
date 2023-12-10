@@ -182,16 +182,21 @@ if(isset($_SESSION['user_id'])){
                                                             <div class="modal-body">
 
                                                             <?php
-                                                                $eventData = $event['eventID'].','.$_SESSION['user_id'];
+                                                                $eventData = array(
+                                                                    "userID" => $_SESSION['user_id'],
+                                                                    "eventID" => $event['eventID']
+                                                                );
+                                                                
+                                                                $jsonEventData = json_encode($eventData);
 
+                                                                // sample {"userID":1,"eventID":2}
                                                                 //data to url
-                                                                $encodedData = urlencode($eventData);
+                                                                $encodedData = urlencode($jsonEventData);   
 
                                                                 //url api url
                                                                 $qrCodeURL = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$encodedData}";
                                                             ?>
 
-                                                                <!-- hardcoded muna, todo implement api, id of modal contains eventID already -->
                                                                 <img src="<?= $qrCodeURL ?>" style="width: 90%; height: 90%"; alt="QR Code for <?= $event['EventName'] ?>" class="img-fluid mx-auto d-block">
                                                             </div>
                                                         </div>

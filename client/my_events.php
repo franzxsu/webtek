@@ -168,8 +168,19 @@ if(isset($_SESSION['user_id'])){
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
+
+                                                            <?php
+                                                                $eventData = $event['eventID'].','.$_SESSION['user_id'];
+
+                                                                //data to url
+                                                                $encodedData = urlencode($eventData);
+
+                                                                //url api url
+                                                                $qrCodeURL = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$encodedData}";
+                                                            ?>
+
                                                                 <!-- hardcoded muna, todo implement api, id of modal contains eventID already -->
-                                                                <img src="../client/assets/img/sample_qr.jpg" alt="QR Code for <?= $event['EventName'] ?>" class="img-fluid">
+                                                                <img src="<?= $qrCodeURL ?>" style="width: 90%; height: 90%; alt="QR Code for <?= $event['EventName'] ?>" class="img-fluid">
                                                             </div>
                                                         </div>
                                                     </div>

@@ -205,6 +205,7 @@ router.post('/removeEvent', async (req, res) => {
 
 router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
   try {
+    console.log("in"+req.body.numberOfInputs);
     for (let i = 1; i <= parseInt(req.body.numberOfInputs); i++) {
       const segmentInfo = req.body[`segmentInfo_${i}`];
       console.log(`Segment ${i}: ${segmentInfo}`);
@@ -219,18 +220,11 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       eventDateEnd,
       visibility,
       course } = req.body;
-
-      
-
-
       let posterBlob = null;
 
       if (req.file) {
         posterBlob = Buffer.from(req.file.buffer);
       }
-
-    
-
     if (visibility === 'Course') {
       console.log('course chosen');
     }

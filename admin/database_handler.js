@@ -196,6 +196,23 @@ function getUpcomingEvents(orgID){
     });
   });
 }
+
+function getRegistered(eventID) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT userId FROM registrations WHERE EventId = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+
+
 function getOngoingEvents(orgID) {
   return new Promise((resolve, reject) => {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -294,6 +311,8 @@ function addSegment(segmentNumber, eventID, segmentInfo) {
 }
 
 
+
+
 module.exports = {
     authLogIn,
     createEvent,
@@ -308,5 +327,6 @@ module.exports = {
     removeOrgMember,
     getSegments,
     addAttendance,
-    addSegment
+    addSegment,
+    getRegistered
 };  

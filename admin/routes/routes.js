@@ -233,6 +233,8 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       course = null
     }
 
+
+
     const bool = await db.createEvent(orgid, eventName, eventInfo, 
       eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
 
@@ -282,6 +284,21 @@ router.post('/attendance', async  (req, res) => {
 
   res.status(200).json({ message: 'Received data successfully.' });
 });
+
+router.get('/registeredUsers/:eventId', async (req, res) => {
+  const eventId = req.params.eventId;
+  try {
+    const rows = await db.getRegistered(eventId);
+    console.log("ROWS: ", rows);
+    const rowCount = rows && rows.length > 0 ? rows.length : 0;
+    res.send({ rowCount });
+  } catch (error) {
+    console.error('Error fetching registered users:', error);
+    res.status(500).send('Error fetching registered users');
+  }
+});
+
+
 
 router.get('/api/segments/:eventID', async (req, res) => {
   const { eventID } = req.params;

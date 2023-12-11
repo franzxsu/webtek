@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="/assets/css/modified.css">
 </head>
 
+
 <body id="page-top">
+    
     <div id="wrapper">
         <%- include('partials/sidebar.ejs') %>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -148,7 +150,7 @@
                             </div>
                         </div>
                         <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-3" aria-expanded="true" aria-controls="accordion-1 .item-3">Ongoing Events</button></h2>
+                            <h2 class="accordion-header" role="tab"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-3" aria-expanded="true" aria-controls="accordion-1 .item-3">Completed Events</button></h2>
                             <div class="accordion-collapse collapse show item-3" role="tabpanel" data-bs-parent="#accordion-1">
                                 <div class="accordion-body">
                                     <div class="table-responsive">
@@ -191,7 +193,7 @@
                                                     <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%=event.EventLocation%></td>
-                                                    <td>todo</td>
+                                                    <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
                                                     <td>todo</td>
                                                     <td><a href="#">todo</a></td>
                                                 </tr>
@@ -212,10 +214,9 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
+    <script src="assets/js/events_script.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/Card-Carousel.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/Ultimate-Event-Calendar.js"></script>
 </body>
 
 </html>

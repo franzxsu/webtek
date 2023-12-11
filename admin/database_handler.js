@@ -271,8 +271,23 @@ function createEvent(orgid, eventName, eventInfo, eventDateStart, eventDateEnd, 
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        const eventID = results.insertId; // Get the ID of the inserted event
-        resolve(eventID); // Resolve with the eventID
+        const eventID = results.insertId;
+        resolve(eventID);
+      }
+    });
+  });
+}
+
+
+function addSegment(segmentNumber, eventID, segmentInfo) {
+  return new Promise((resolve, reject) => {
+    const query = "INSERT INTO segments (SegmentNo, EventID, SegmentName) VALUES (?, ?, ?);";
+    connection.query(query, [segmentNumber, eventID, segmentInfo], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        resolve(true);
       }
     });
   });
@@ -292,5 +307,6 @@ module.exports = {
     addOrgMember,
     removeOrgMember,
     getSegments,
-    addAttendance
+    addAttendance,
+    addSegment
 };  

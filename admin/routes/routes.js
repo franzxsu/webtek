@@ -239,6 +239,7 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 
       if(bool){
         console.log('NEW EVENT ID IS: '+bool);
+        let eventID = bool;
         console.log('go success');
 
         //GET SEGMENTS SINCE SEGMENTS CAN VARY FROM 0-5
@@ -247,11 +248,13 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
             const segmentNumber = key.split('_')[1];
             const segmentInfo = req.body[key];
             console.log(`Segment ${segmentNumber}: ${segmentInfo}`);
-            // await db.addSegment(segmentNumber, eventID, segmentInfo);
+            const success = await db.addSegment(segmentNumber, eventID, segmentInfo);
+
+            if (success){
+              res.redirect('/index?eventSuccess=true');
+            }
           }
         }
-
-        res.redirect('/index?eventSuccess=true');
       } else{
         //fail
         console.log('event creation fail');

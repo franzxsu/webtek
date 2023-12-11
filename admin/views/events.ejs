@@ -194,7 +194,7 @@
                                                     <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%=event.EventLocation%></td>
                                                     <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
-                                                    <td>todo</td>
+                                                    <td class="eventAttended" id="eventAttendedFor_<%=event.eventID%>"></td>
                                                     <td><a href="#">todo</a></td>
                                                 </tr>
                                                 <% }); %>

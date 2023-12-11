@@ -6,7 +6,9 @@ session_start();
 
 if(isset($_SESSION['user_id'])){
     $x = get_registered_events_for_me($_SESSION['user_id']);
-    $events = get_upcoming_events($x);
+    if ($x !== null) {
+        $events = get_upcoming_events($x);
+    }
 }
 
 ?>
@@ -114,6 +116,7 @@ if(isset($_SESSION['user_id'])){
                             <p class="text-primary m-0 fw-bold">Upcoming events</p>
                         </div>
                         <div class="card-body">
+                        <?php if ($x !== null && !empty($x)) : ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table my-0" id="dataTable">
                                 <thead>
@@ -194,7 +197,7 @@ if(isset($_SESSION['user_id'])){
                                 </tbody>
                                 
                             </table>
-                            </div>
+                        </div>
                             <?php foreach ($events as $event) : ?>
                                 <div class="modal fade" id="cancelConfirmationModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -218,6 +221,12 @@ if(isset($_SESSION['user_id'])){
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="alert alert-info" role="alert">
+                                You have not yet registered to any events.
+                            </div>
+                        <?php endif; ?>
+                            
                         </div>
                     </div>
                 </div>

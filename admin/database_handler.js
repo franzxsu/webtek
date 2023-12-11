@@ -211,7 +211,19 @@ function getRegistered(eventID) {
   });
 }
 
-
+function getAttendance(eventID) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT DISTINCT userId FROM attendance WHERE EventId = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 function getOngoingEvents(orgID) {
   return new Promise((resolve, reject) => {
@@ -328,5 +340,6 @@ module.exports = {
     getSegments,
     addAttendance,
     addSegment,
-    getRegistered
+    getRegistered,
+    getAttendance
 };  

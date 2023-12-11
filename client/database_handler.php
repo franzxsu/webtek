@@ -190,8 +190,8 @@ function get_events_for_me($courseID, $organizations, $email) {
       $query .= " OR (accessLevel = 'SLU' OR accessLevel = 'Everyone')";
   }
 
-  if ($accessLevel === 'SLU') {
-      $query .= " OR (accessLevel = 'Course' AND courseID = $courseID)";
+  if ($courseID !== null && $accessLevel === 'SLU') {
+      $query .= " OR (accessLevel = 'Course' AND courseID = " . intval($courseID) . ")";
   }
 
   if ($accessLevel === 'SLU') {
@@ -204,6 +204,7 @@ function get_events_for_me($courseID, $organizations, $email) {
   $result = mysqli_query($conn, $query);
   return $result;
 }
+
 
 
 function get_events_given_ids($eventIDs){
@@ -228,29 +229,32 @@ function get_events_given_ids($eventIDs){
 function get_registered_events_for_me($userID){
   global $conn;
 
-  try {
-    $query = "SELECT EventId from registrations WHERE userId = ?" ;
+  $query = "SELECT EventId FROM registrations WHERE userId = ?";
+  $stmt = $conn->prepare($query);
 
-    $stmt = $conn->prepare($query);
-
-    $stmt->bind_param("i", $userID);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    $eventIDs = [];
-    while ($row = $result->fetch_assoc()) {
-        $eventIDs[] = $row['EventId'];
-    }
-
-    $result = get_events_given_ids($eventIDs);
-
-    return $result;
-  } catch (Exception $e) {
-    debug_backtrace();
-    return [];
+  if (!$stmt) {
+    return null;
   }
+
+  $stmt->bind_param("i", $userID);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  if ($result->num_rows === 0) {
+    return null; // Return null if no events found
+  }
+
+  $eventIDs = [];
+  while ($row = $result->fetch_assoc()) {
+    $eventIDs[] = $row['EventId'];
+  }
+
+  $result = get_events_given_ids($eventIDs);
+
+  return $result;
 }
+
 
 function get_registered_events_for_me_done($currentDate, $userID, $courseID, $organizations){
   global $conn;
@@ -289,17 +293,22 @@ function get_registered_events_for_me_done($currentDate, $userID, $courseID, $or
 //giveen email of the user, return his/her course id, return null if none
 function get_user_course_id($email)
 {
-  global $conn;
+    global $conn;
 
-  $stmt = $conn->prepare("SELECT courseID from enrolledcourse WHERE email = ?;");
-  $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("SELECT courseID from enrolledcourse WHERE email = ?;");
+    $stmt->bind_param("s", $email);
 
-  $stmt->execute();
-  $result = $stmt->get_result();
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-  $row = $result->fetch_assoc();
-  return $row['courseID'];
+    if ($result->num_rows === 0) {
+        return null;
+    }
+
+    $row = $result->fetch_assoc();
+    return $row['courseID'];
 }
+
 
 //giveen email of the user, return his/her organizations as list, return null if none
 function get_user_organizations($email)

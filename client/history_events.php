@@ -5,10 +5,15 @@ include 'helpers.php';
 session_start();
 
 if(isset($_SESSION['user_id'])){
-        $x = get_registered_events_for_me($_SESSION['user_id']);
+    $x = get_registered_events_for_me($_SESSION['user_id']);
+    if ($x !== null) {
         $events = get_past_events($x);
-
-        // var_dump($x);
+        
+    }
+    else{
+        
+    }
+    
 }
 
 ?>
@@ -113,6 +118,7 @@ if(isset($_SESSION['user_id'])){
                             <p class="text-primary m-0 fw-bold">Past Events</p>
                         </div>
                         <div class="card-body">
+                        <?php if ($x !== null && !empty($x)) : ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table my-0" id="dataTable">
                                 <thead>
@@ -215,6 +221,11 @@ if(isset($_SESSION['user_id'])){
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="alert alert-danger" role="alert">
+                                You have no past events.
+                            </div>
+                        <?php endif; ?>
                         </div>
                     </div>
                 </div>

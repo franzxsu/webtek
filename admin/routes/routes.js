@@ -207,10 +207,7 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
   try {
     console.log(Object.keys(req.body).length)
     console.log("in"+req.body.numberOfInputs);
-    for (let i = 1; i <= parseInt(req.body.numberOfInputs); i++) {
-      const segmentInfo = req.body[`segmentInfo_${i}`];
-      console.log(`Segment ${i}: ${segmentInfo}`);
-    }
+
     console.log('out');
     let { 
       orgid,
@@ -241,7 +238,19 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
       console.log(bool);
 
       if(bool){
+        console.log('NEW EVENT ID IS: '+bool);
         console.log('go success');
+
+        //GET SEGMENTS SINCE SEGMENTS CAN VARY FROM 0-5
+        for (const key in req.body) {
+          if (key.startsWith('segmentInfo_')) {
+            const segmentNumber = key.split('_')[1];
+            const segmentInfo = req.body[key];
+            console.log(`Segment ${segmentNumber}: ${segmentInfo}`);
+            // await db.addSegment(segmentNumber, eventID, segmentInfo);
+          }
+        }
+
         res.redirect('/index?eventSuccess=true');
       } else{
         //fail

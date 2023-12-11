@@ -263,16 +263,16 @@ function removeOrgMember(orgID, email) {
 }
 
 
-function createEvent(orgid, eventName, eventInfo, 
-  eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob) {
+function createEvent(orgid, eventName, eventInfo, eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob) {
   return new Promise((resolve, reject) => {
     const query = "INSERT INTO events (OrganizerId, EventName, EventInfo, EventDateStart, EventDateEnd, EventLocation, courseID, accessLevel, poster) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     connection.query(query, [orgid, eventName, eventInfo, eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
         reject(error);
-      } else if (results){
-        resolve(true);
+      } else {
+        const eventID = results.insertId; // Get the ID of the inserted event
+        resolve(eventID); // Resolve with the eventID
       }
     });
   });

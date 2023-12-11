@@ -113,12 +113,12 @@ if(isset($_SESSION['user_id'])){
                     <h3 class="text-dark mb-4">Registered Events</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Upcoming events</p>
+                            <p class="text-primary m-0 fw-bold">Upcoming / <mark class="bg-success text-primary m-0 fw-bold"> Ongoing events</mark></p>
                         </div>
                         <div class="card-body">
                         <?php if ($x !== null && !empty($x)) : ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
+                            <table class="table my-0 table-bordered" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Event Name</th>
@@ -133,7 +133,13 @@ if(isset($_SESSION['user_id'])){
                                 </thead>
                                 <tbody>
                                     <?php foreach ($events as $event) : ?>
-                                        <tr>
+                                        <?php
+                                            $currentDate = date('Y-m-d');
+                                            $eventStartDate = date('Y-m-d', strtotime($event['EventDateStart']));
+                                            $eventEndDate = date('Y-m-d', strtotime($event['EventDateEnd']));
+                                            $isCurrentEvent = ($currentDate >= $eventStartDate && $currentDate <= $eventEndDate);
+                                        ?>
+                                        <tr <?= $isCurrentEvent ? 'class="table-success"' : ''; ?>>
                                             <td>
                                                 <!-- FOR POSTER -->
                                                 <?php if ($event['poster'] !== null) : ?>
@@ -222,9 +228,7 @@ if(isset($_SESSION['user_id'])){
                                 </div>
                             <?php endforeach; ?>
                         <?php else : ?>
-                            <div class="alert alert-info" role="alert">
-                                You have not yet registered to any events.
-                            </div>
+                            <div class="alert alert-info" role="alert">You have not yet registered to any events. <a href="index.php">Register to an event</a></div>
                         <?php endif; ?>
                             
                         </div>

@@ -1,21 +1,17 @@
 <?php
-include_once 'database_handler.php';
-include 'helpers.php';
+include_once "database_handler.php";
+include "helpers.php";
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
-    $x = get_registered_events_for_me($_SESSION['user_id']);
+if (isset($_SESSION["user_id"])) {
+    $x = get_registered_events_for_me($_SESSION["user_id"]);
     if ($x !== null) {
         $events = get_past_events($x);
-        
+    } else {
+        $events = null;
     }
-    else{
-        
-    }
-    
 }
-
 ?>
 
 
@@ -33,9 +29,7 @@ if(isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
 </head>
 
-<?php
-    include_once 'includes/sidebar.php';
-?>
+<?php include_once "includes/sidebar.php"; ?>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
             <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
@@ -86,24 +80,27 @@ if(isset($_SESSION['user_id'])){
                                 <div class="nav-item dropdown no-arrow">
                                     <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                                         <span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php
-                                            if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
-                                                echo $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+                                            <?php if (
+                                                isset(
+                                                    $_SESSION["first_name"]
+                                                ) &&
+                                                isset($_SESSION["last_name"])
+                                            ) {
+                                                echo $_SESSION["first_name"] .
+                                                    " " .
+                                                    $_SESSION["last_name"];
                                             } else {
                                                 echo "GUEST";
-                                            }
-                                            ?>
+                                            } ?>
                                         </span>
                                         <img class="border rounded-circle img-profile" src="assets/img/avatars/default_icon.jpg">
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <?php
-                                        if (isset($_SESSION['user_id'])) {
+                                        <?php if (isset($_SESSION["user_id"])) {
                                             echo '<a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Log out</a>';
                                         } else {
                                             echo '<a class="dropdown-item" href="login.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Log in</a>';
-                                        }
-                                        ?>
+                                        } ?>
 
                                     </div>
                                 </div>
@@ -118,7 +115,7 @@ if(isset($_SESSION['user_id'])){
                             <p class="text-primary m-0 fw-bold">Past Events</p>
                         </div>
                         <div class="card-body">
-                        <?php if ($x !== null && !empty($x)) : ?>
+                        <?php if ($events !== null && !empty($events)): ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table my-0" id="dataTable">
                                 <thead>
@@ -135,71 +132,103 @@ if(isset($_SESSION['user_id'])){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($events as $event) : ?>
+                                    <?php foreach ($events as $event): ?>
                                         <tr>
                                             <td>
                                                 <!-- FOR POSTER -->
-                                                    <?php if ($event['poster'] !== null) : ?>
-                                                        <img class="rounded-circle me-2" width="30" height="30" src="data:image/jpeg;base64,<?= base64_encode($event['poster']) ?>">
-                                                    <?php else : ?>
+                                                    <?php if (
+                                                        $event["poster"] !==
+                                                        null
+                                                    ): ?>
+                                                        <img class="rounded-circle me-2" width="30" height="30" src="data:image/jpeg;base64,<?= base64_encode(
+                                                            $event["poster"]
+                                                        ) ?>">
+                                                    <?php else: ?>
                                                         <img class="rounded-circle me-2" width="30" height="30" src="assets/img/sample_pubmat.jpg">
                                                     <?php endif; ?>
 
 
                                             </td>
-                                            <td><?= $event['EventInfo'] ?></td>
-                                            <td><?= get_organization_name_from_id($event['OrganizerId']) ?></td>
-                                            <td><?= $event['EventLocation'] ?></td>
-                                            <td><?= date("F j", strtotime($event['EventDateStart'])) ?></td>
-                                            <td><?= date("F j", strtotime($event['EventDateEnd'])) ?></td>
-                                            <td style="text-align: center;"><i class="fas fa-check"></i></td>
-                                            <td>
-                                                <!-- le rating modal -->
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#ratingModal<?= $event['eventID'] ?>">
-                                                    Rate
-                                                </a>
-                                                <div class="modal fade" id="ratingModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
+                                            <td><?= $event["EventInfo"] ?></td>
+                                            <td><?= get_organization_name_from_id(
+                                                $event["OrganizerId"]
+                                            ) ?></td>
+                                            <td><?= $event[
+                                                "EventLocation"
+                                            ] ?></td>
+                                            <td><?= date(
+                                                "F j",
+                                                strtotime(
+                                                    $event["EventDateStart"]
+                                                )
+                                            ) ?></td>
+                                            <td><?= date(
+                                                "F j",
+                                                strtotime(
+                                                    $event["EventDateEnd"]
+                                                )
+                                            ) ?></td>
+                                            <?php if (
+                                                isAttended(
+                                                    $_SESSION["user_id"],
+                                                    $event["eventID"]
+                                                )
+                                            ) {
+                                                echo '<td style="text-align: center;"><i class="fas fa-check"></i></td>';
+                                                echo '<td>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#ratingModal' .
+                                                            $event["eventID"] .
+                                                            '">Rate</a>
+                                                        <!-- Rating modal -->
+                                                        <div class="modal fade" id="ratingModal' .
+                                                    $event["eventID"] .
+                                                    '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content"> 
                                                         <div class="modal-header">
-                                                            <?php
-                                                                echo '<h1 class="modal-title fs-5" id="exampleModalLabel">Rate '.$event['EventName'].'</h1>';
-                                                            ?>
-                                                            
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form>
-                                                            <div class="mb-3">
-                                                                <label for="recipient-name" class="col-form-label">Rating (star rating dapat ito):</label>
-                                                                <input type="text" class="form-control" id="recipient-name">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Rate ' .
+                                                    $event["EventName"] .
+                                                    '</h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="message-text" class="col-form-label">Message:</label>
-                                                                <textarea class="form-control" id="message-text"></textarea>
-                                                            </div>  
-                                                            <div class="form-check">
-                                                                <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Send anonymously</label>
+                                                            <div class="modal-body">
+                                                                <form>
+                                                                    <div class="mb-3">
+                                                                        <label for="recipient-name" class="col-form-label">Rating (star rating dapat ito):</label>
+                                                                        <input type="text" class="form-control" id="recipient-name">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="message-text" class="col-form-label">Message:</label>
+                                                                        <textarea class="form-control" id="message-text"></textarea>
+                                                                    </div>  
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1">
+                                                                        <label class="form-check-label custom-control-label" for="formCheck-1">Send anonymously</label>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary">Send Rating</button>
-                                                            
-                                                        </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Send Rating</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </td>';
+                                            } else {
+                                                echo '<td style="text-align: center;"></td>';
+                                                echo "<td>n/a</td>";
+                                            } ?>           
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 
                             </table>
                             </div>
-                            <?php foreach ($events as $event) : ?>
-                                <div class="modal fade" id="cancelConfirmationModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+                            <?php foreach ($events as $event): ?>
+                                <div class="modal fade" id="cancelConfirmationModal<?= $event[
+                                    "eventID"
+                                ] ?>" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -211,8 +240,12 @@ if(isset($_SESSION['user_id'])){
                                             </div>
                                             <div class="modal-footer">
                                                 <form action="database_handler.php" method="post">
-                                                    <input type="hidden" name="userID" value="<?= $_SESSION['user_id'] ?>">
-                                                    <input type="hidden" name="eventID" value="<?= $event['eventID'] ?>">
+                                                    <input type="hidden" name="userID" value="<?= $_SESSION[
+                                                        "user_id"
+                                                    ] ?>">
+                                                    <input type="hidden" name="eventID" value="<?= $event[
+                                                        "eventID"
+                                                    ] ?>">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     <button type="submit" class="btn btn-danger" name="cancel">Confirm Cancel</button>
                                                 </form>
@@ -221,7 +254,7 @@ if(isset($_SESSION['user_id'])){
                                     </div>
                                 </div>
                             <?php endforeach; ?>
-                        <?php else : ?>
+                        <?php else: ?>
                             <div class="alert alert-danger" role="alert">
                                 You have no past events.
                             </div>
@@ -230,9 +263,7 @@ if(isset($_SESSION['user_id'])){
                     </div>
                 </div>
             </div>
-            <?php
-            include_once 'includes/footer.php'
-            ?>
+            <?php include_once "includes/footer.php"; ?>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

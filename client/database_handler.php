@@ -343,6 +343,21 @@ function get_attendance_list(){
 
 }
 
+function isAttended($userID, $eventID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT * from attendance WHERE userId = ? AND EventID = ?;");
+  $stmt->bind_param("ii", $userID, $eventID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+  return count($rows) > 0;
+}
+
+
 function get_event_name_from_id($eventID){
   global $conn;
 

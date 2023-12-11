@@ -19,6 +19,11 @@ function get_upcoming_events($events) {
             }
         }
 
+        // Sort the upcoming events array by EventDateStart
+        usort($upcomingEvents, function($a, $b) {
+            return strtotime($a['EventDateStart']) - strtotime($b['EventDateStart']);
+        });
+
         return $upcomingEvents;
     } catch (Exception $e) {
         // Print the error message and stack trace
@@ -26,6 +31,7 @@ function get_upcoming_events($events) {
         echo 'Stack trace: ' . $e->getTraceAsString() . "\n";
     }
 }
+
 
 function get_past_events($events) {
     try {

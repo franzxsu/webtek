@@ -209,63 +209,81 @@ function get_events_for_me($courseID, $organizations, $email) {
 function get_events_given_ids($eventIDs){
   global $conn;
 
-  $eventIDString = implode(',', array_map('intval', $eventIDs));
-  $query = "SELECT * FROM events WHERE eventID IN ($eventIDString)";
-  
+  try {
+    if ($eventIDs === null || empty($eventIDs)) {
+      return []; // Return an empty array if eventIDs is null or empty
+    }
 
-  $result = mysqli_query($conn, $query);
-  return $result;
+    $eventIDString = implode(',', array_map('intval', $eventIDs));
+    $query = "SELECT * FROM events WHERE eventID IN ($eventIDString)";
+
+    $result = mysqli_query($conn, $query);
+    return $result;
+  } catch (Exception $e) {
+    // Log the error or handle it accordingly
+    return []; // Return an empty array in case of an exception
+  }
 }
 
 function get_registered_events_for_me($userID){
   global $conn;
 
-  $query = "SELECT EventId from registrations WHERE userId = ?" ;
+  try {
+    $query = "SELECT EventId from registrations WHERE userId = ?" ;
 
-  $stmt = $conn->prepare($query);
+    $stmt = $conn->prepare($query);
 
-  $stmt->bind_param("i", $userID);
-  $stmt->execute();
+    $stmt->bind_param("i", $userID);
+    $stmt->execute();
 
-  $result = $stmt->get_result();
+    $result = $stmt->get_result();
 
-  $eventIDs = [];
+    $eventIDs = [];
     while ($row = $result->fetch_assoc()) {
         $eventIDs[] = $row['EventId'];
     }
 
-  $result = get_events_given_ids($eventIDs);
+    $result = get_events_given_ids($eventIDs);
 
-  return $result;
-
+    return $result;
+  } catch (Exception $e) {
+    debug_backtrace();
+    return [];
+  }
 }
 
 function get_registered_events_for_me_done($currentDate, $userID, $courseID, $organizations){
   global $conn;
 
-  $orgIDs = implode(',', array_map('intval', (array)$organizations));
+  try {
+    $orgIDs = implode(',', array_map('intval', (array)$organizations));
 
-  $orgCondition = "";
-  if (!empty($orgIDs)) {
-    $orgCondition = " OR OrganizationID IN ($orgIDs)";
+    $orgCondition = "";
+    if (!empty($orgIDs)) {
+      $orgCondition = " OR OrganizationID IN ($orgIDs)";
+    }
+
+    $query = "SELECT e.* FROM events e
+              JOIN registrations r ON e.eventID = r.eventID
+              WHERE (e.eventDateStart < ?) 
+              AND ((e.courseID = ? $orgCondition) OR (e.courseID IS NULL AND e.OrganizationID IS NULL)) 
+              AND r.userID = ?
+              ORDER BY e.eventDateStart";
+
+    $stmt = $conn->prepare($query);
+
+    $stmt->bind_param("sii", $currentDate, $courseID, $userID);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result;
+  } catch (Exception $e) {
+    // Log the error or handle it accordingly
+    return []; // Return an empty array in case of an exception
   }
-
-  $query = "SELECT e.* FROM events e
-            JOIN registrations r ON e.eventID = r.eventID
-            WHERE (e.eventDateStart < ?) 
-            AND ((e.courseID = ? $orgCondition) OR (e.courseID IS NULL AND e.OrganizationID IS NULL)) 
-            AND r.userID = ?
-            ORDER BY e.eventDateStart";
-
-  $stmt = $conn->prepare($query);
-
-  $stmt->bind_param("sii", $currentDate, $courseID, $userID);
-  $stmt->execute();
-
-  $result = $stmt->get_result();
-
-  return $result;
 }
+
 
 
 //giveen email of the user, return his/her course id, return null if none

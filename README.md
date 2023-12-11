@@ -7,3 +7,5 @@
 3. `npm install ejs`
 
 4. `npm install bootstrap`
+
+5. `npm install sass`

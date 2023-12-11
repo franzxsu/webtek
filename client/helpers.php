@@ -7,34 +7,45 @@ function logme($data)
 }
 
 function get_upcoming_events($events) {
-    $currentDate = date('Y-m-d');
-    $upcomingEvents = array();
+    try {
+        $currentDate = date('Y-m-d');
+        $upcomingEvents = array();
 
-    while ($event = $events->fetch_assoc()) {
-        $eventDateStart = $event['EventDateStart'];
+        while ($event = $events->fetch_assoc()) {
+            $eventDateStart = $event['EventDateStart'];
 
-        if (strtotime($eventDateStart) >= strtotime($currentDate)) {
-            $upcomingEvents[] = $event;
+            if (strtotime($eventDateStart) >= strtotime($currentDate)) {
+                $upcomingEvents[] = $event;
+            }
         }
-    }
 
-    return $upcomingEvents;
+        return $upcomingEvents;
+    } catch (Exception $e) {
+        // Print the error message and stack trace
+        echo 'Error occurred: ' . $e->getMessage() . "\n";
+        echo 'Stack trace: ' . $e->getTraceAsString() . "\n";
+    }
 }
 
 function get_past_events($events) {
-    $currentDate = date('Y-m-d');
-    $pastEvents = array();
+    try {
+        $currentDate = date('Y-m-d');
+        $pastEvents = array();
 
-    while ($event = $events->fetch_assoc()) {
-        $eventDateStart = $event['EventDateStart'];
+        while ($event = $events->fetch_assoc()) {
+            $eventDateStart = $event['EventDateStart'];
 
-        if (strtotime($eventDateStart) < strtotime($currentDate)) {
-            $pastEvents[] = $event;
+            if (strtotime($eventDateStart) < strtotime($currentDate)) {
+                $pastEvents[] = $event;
+            }
         }
+
+        return $pastEvents;
+    } catch (Exception $e) {
+        // Print the error message and stack trace
+        echo 'Error occurred: ' . $e->getMessage() . "\n";
+        echo 'Stack trace: ' . $e->getTraceAsString() . "\n";
     }
-
-    return $pastEvents;
 }
-
 
 ?>

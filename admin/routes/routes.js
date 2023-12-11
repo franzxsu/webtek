@@ -205,6 +205,7 @@ router.post('/removeEvent', async (req, res) => {
 
 router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
   try {
+    console.log(Object.keys(req.body).length)
     console.log("in"+req.body.numberOfInputs);
     for (let i = 1; i <= parseInt(req.body.numberOfInputs); i++) {
       const segmentInfo = req.body[`segmentInfo_${i}`];

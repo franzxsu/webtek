@@ -162,8 +162,8 @@
                                                     <th>Date started</th>
                                                     <th>Date ended</th>
                                                     <th>Venue</th>
-                                                    <th>Registered</th>
                                                     <th>Attendees</th>
+                                                    <th>Attendance Report</th>
                                                     <th>View feedbacks</th>
                                                 </tr>
                                             </thead>
@@ -193,8 +193,13 @@
                                                     <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%=event.EventLocation%></td>
-                                                    <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
-                                                    <td class="eventAttended" id="eventAttendedFor_<%=event.eventID%>"></td>
+                                                    <td>
+                                                        <p class="eventReg" id="eventRegisteredFor_<%=event.eventID%>" style="display: inline;"></p>
+                                                        /
+                                                        <p class="eventAttended" id="eventAttendedFor_<%=event.eventID%>" style="display: inline;"></p>
+                                                    </td>
+                                                    
+                                                    <td><a href="#">todo</a></td>
                                                     <td><a href="#">todo</a></td>
                                                 </tr>
                                                 <% }); %>

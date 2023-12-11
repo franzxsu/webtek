@@ -38,7 +38,7 @@
                                                     <th>Date End</th>
                                                     <th>Venue</th>
                                                     <th>Registered</th>
-                                                    <th>Attendance</th>
+                                                    <th>Attendees</th>
                                                     <th>Info</th>
                                                 </tr>
                                             </thead>
@@ -73,8 +73,8 @@
                                                     <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%=event.EventLocation%></td>
-                                                    <td>todo</td>
-                                                    <td>todo</td>
+                                                    <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
+                                                    <td class="eventAttended" id="eventAttendedFor_<%=event.eventID%>"></td>
                                                     <td>todo</td>
                                                 </tr>
                                                 <% }); %>
@@ -133,7 +133,7 @@
                                                     <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                     <td><%=event.EventLocation%></td>
-                                                    <td>todo</td>
+                                                    <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
                                                     <td><a href="">edit</a></td>
                                                     <td>
                                                         <button class="btn btn-danger btn-sm d-none d-sm-inline-block remove-member-btn" data-bs-toggle="modal" data-bs-target="#removeEventModal_<%= event.eventID %>">

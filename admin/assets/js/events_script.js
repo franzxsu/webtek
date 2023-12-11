@@ -6,7 +6,7 @@ eventIDs.forEach((element) => {
   fetch(`/registeredUsers/${eventID}`)
   .then(response => response.json())
   .then(data => {
-    document.getElementById(`eventRegisteredFor_${eventID}`).innerText = data;
+    document.getElementById(`eventRegisteredFor_${eventID}`).innerText = data.rowCount;
   })
 });
 

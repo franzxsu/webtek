@@ -10,7 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $user = check_login_no_hash($email, $password);
+    //CHECK LOGIN HASHED
+    $user = check_login($email, $password);
     
     //check if may nareturn na row, then it is logged in
     if ($user) {
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_SESSION['courseID'] = get_user_course_id($user['email']);
       $_SESSION['organizations'] = get_user_organizations($user['email']);
       
-
+      //go to index
       header("Location: index.php");
     } else {
       $login_error = "Invalid login";

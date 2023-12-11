@@ -3,9 +3,13 @@
 include_once 'database_handler.php';
 include_once 'helpers.php';
 
+//check if session is set (user is logged in), then show events for user
 if (isset($_SESSION['user_id'])) {
     $x = get_events_for_me($_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
-} else {
+}
+
+//if not, show events that are marked for 'everyone'
+else {
     $x = get_everyone_events();
 }
 $result = get_upcoming_events($x);
@@ -64,7 +68,7 @@ if (is_array($result) && count($result) > 0) {
                         '.$eventInfo.'
                     </p>
                     </figcaption>
-                    <div class="image"><img src="../client/assets/img/sample_pub.jpg" alt="default-event-image" /></div>
+                    <div class="image"><img src="../client/assets/img/defaultposter.jpg" alt="default-event-image" /></div>
                     <a data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'"></a>
                 </figure>';
             }
@@ -78,7 +82,7 @@ if (is_array($result) && count($result) > 0) {
                         '.$eventInfo.'
                     </p>
                 </figcaption>
-                <div class="image"><img src="../client/assets/img/sample_pub.jpg" alt="default-event-image" /></div>
+                <div class="image"><img src="../client/assets/img/defaultposter.jpg" alt="default-event-image" /></div>
                 <a data-bs-toggle="modal" href="#exampleModalToggle_'.$eventID.'"></a>
             </figure>';
         }

@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back to Home</button>
-                                    <a type="button" class="btn btn-primary" data-bs-dismiss="modal" href="#modal2">Go to my events (andito qr)</a>
+                                    <a type="button" class="btn btn-primary" data-bs-dismiss="modal" href="#modal2">Go to my events</a>
                                 </div>
                             </div>
                         </div>

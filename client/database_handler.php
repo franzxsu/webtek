@@ -1,5 +1,7 @@
 <?php
 
+//this php module handles all communications and operations with the database
+
 global $conn;
 $conn = mysqli_connect("localhost", "root", "", "events");
 
@@ -26,6 +28,8 @@ function check_login_no_hash($email, $password) {
   return null;
 }
 
+
+//check login with hash
 function check_login($email, $password)
 {
 

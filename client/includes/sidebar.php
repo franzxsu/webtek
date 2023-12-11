@@ -1,8 +1,7 @@
 <?php
 $currentURL = $_SERVER['REQUEST_URI'];
-$activeClass = 'active'; // Class to apply to the active link
+$activeClass = 'active';
 
-// Define an array with the URL and their associated text
 $navLinks = [
     'index.php' => 'Upcoming events',
     'my_events.php' => 'My Events',
@@ -17,8 +16,8 @@ $navLinks = [
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="aboutUs.html">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fab fa-evernote"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>WEBTEK</span></div>
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="far fa-calendar"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>eventsHUB</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">

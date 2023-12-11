@@ -5,26 +5,11 @@ include_once 'database_handler.php';
 
 session_start();
 
-$_SESSION['courseID'] = get_user_course_id($_SESSION['email']);
-$_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
-
-// echo $_SESSION['user_id'] . "<br>";
-//       echo $_SESSION['first_name'] . "<br>";
-//       echo $_SESSION['last_name'] . "<br>";
-//       echo $_SESSION['email'] . "<br>";
-//       echo $_SESSION['courseID'] . "<br>";
-//       // If 'organizations' is an array, you might want to loop through it
-
-//       echo 'HERE ARE MY ORGS:';
-
-//       if (is_array($_SESSION['organizations'])) {
-//           foreach ($_SESSION['organizations'] as $organization) {
-//               echo $organization . "<br>";
-//           }
-//       } else {
-//           echo $_SESSION['organizations'] . "<br>";
-//       }
-
+if(isset($_SESSION['user_id'])){
+    //refresh get in realtime course and org of user
+    $_SESSION['courseID'] = get_user_course_id($_SESSION['email']);
+    $_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
+}
 ?>
 
 
@@ -35,7 +20,7 @@ $_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Upcoming Events</title>
+    <title>E-HUB | Dashboard</title>
     <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -70,28 +55,28 @@ $_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                        <h6 class="dropdown-header">Notifications</h6><a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                             </div>
                                             <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
+                                                <p>Upcoming event at date</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
                                             </div>
                                             <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
+                                                <p>Upcoming event at date</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="me-3">
                                                 <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
                                             </div>
                                             <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                                <p>Upcoming event at date</p>
                                             </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                        </a>
                                     </div>
                                 </div>
                             </li>
@@ -102,20 +87,15 @@ $_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
                                         <span class="d-none d-lg-inline me-2 text-gray-600 small">
                                             <?php
                                             if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
-                                                // echo $_SESSION['last_name'] . ", " . $_SESSION['first_name'];
                                                 echo $_SESSION['first_name'] . " " . $_SESSION['last_name'];
                                             } else {
                                                 echo "GUEST";
                                             }
                                             ?>
                                         </span>
-                                        <img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg">
+                                        <img class="border rounded-circle img-profile" src="assets/img/avatars/default_icon.jpg">
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider"></div>
                                         <?php
                                         if (isset($_SESSION['user_id'])) {
                                             echo '<a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Log out</a>';
@@ -159,7 +139,7 @@ $_SESSION['organizations'] = get_user_organizations($_SESSION['email']);
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <a href="my_events.php" class="btn btn-primary">Go to My events (andito qr mo)</a>
+                            <a href="my_events.php" class="btn btn-primary">My Events</a>
                         </div>
                     </div>
                 </div>

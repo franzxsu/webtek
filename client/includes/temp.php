@@ -3,19 +3,19 @@
 include_once 'database_handler.php';
 include_once 'helpers.php';
 
-// $result = get_all_events();
-
-
+//check if user is logged in, if user is logged in, get events for the user
 if(isset($_SESSION['user_id'])){
     $x = get_events_for_me($_SESSION['courseID'], $_SESSION['organizations'], $_SESSION['email']);
 }
+
+//if not, get events that are marked as "for Everyone"
 else{
     $x = get_everyone_events();
 }
 $result = get_upcoming_events($x);
 
-echo '
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
+echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>';
+
 
 if (is_array($result) && count($result) > 0) {
     foreach ($result as $row) {

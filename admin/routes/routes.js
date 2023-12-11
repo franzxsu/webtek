@@ -32,7 +32,8 @@ router.get('/index', async  (req, res) => {
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
       orgId: req.session.userData.OrganizerID,
-      success: success
+      success: success,
+      currentPath: req.path
     });
   //go to login if there is no session set
   } else {

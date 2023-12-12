@@ -6,6 +6,7 @@ $navLinks = [
     'index.php' => 'Upcoming events',
     'my_events.php' => 'My Events',
     'history_events.php' => 'Past Events',
+    'profile.php' => 'Profile',
     'logout.php' => 'Log out',
 ];
 

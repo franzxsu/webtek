@@ -16,8 +16,6 @@ eventIDs.forEach((element) => {
 		})
 });
 
-
-
 eventIDsAtt.forEach((element) => {
 	const eventID = element.id.split('_')[1];
 	console.log(eventID);

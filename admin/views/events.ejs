@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Admin | Events</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i">
@@ -186,6 +186,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <!-- MODAL END -->
                                                 <tr>
                                                     <td><%=event.EventName%></td>
@@ -199,11 +200,38 @@
                                                         <p class="eventAttended" id="eventAttendedFor_<%=event.eventID%>" style="display: inline;"></p>
                                                     </td>
                                                     
-                                                    <td><a href="#">todo</a></td>
-                                                    <td><a href="#">todo</a></td>
-                                                </tr>
+                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">view attended</a></td>
+                                                        <!-- MODAL FOR checking feedbacks -->
+                                                        <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <!-- Modal content here -->
+
+                                                                    <!-- 
+
+                                                                        ATTENDEES HERE
+
+                                                                     -->
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <!-- Post form create event -->
+                                                                            <input type="hidden" name="eventID" value="<%= event.eventID %>">
+                                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- MODAL END -->
+
+                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#feedbacks_<%= event.eventID %>">todo</a></td>
+
                                                 <% }); %>
                                             </tbody>
+                                            
                                         </table>
                                     </div>
                                 </div>
@@ -212,11 +240,7 @@
                     </div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © Brand 2023</span></div>
-                </div>
-            </footer>
+            <%- include('partials/footer.ejs') %>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets/js/events_script.js"></script>

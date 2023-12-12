@@ -9,6 +9,8 @@ if(isset($_SESSION['user_id'])){
     if ($x !== null) {
         $events = get_upcoming_events($x);
     }
+    else{
+    }
 }
 
 ?>
@@ -116,7 +118,7 @@ if(isset($_SESSION['user_id'])){
                             <p class="text-primary m-0 fw-bold">Upcoming / <mark class="bg-success text-primary m-0 fw-bold"> Ongoing events</mark></p>
                         </div>
                         <div class="card-body">
-                        <?php if ($x !== null && !empty($x)) : ?>
+                        <?php if (!empty($x)) : ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table my-0 table-bordered" id="dataTable">
                                 <thead>
@@ -201,7 +203,6 @@ if(isset($_SESSION['user_id'])){
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
-                                
                             </table>
                         </div>
                             <?php foreach ($events as $event) : ?>

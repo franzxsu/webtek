@@ -1,3 +1,4 @@
+
 const eventIDs = document.querySelectorAll('.eventReg');
 
 eventIDs.forEach((element) => {
@@ -20,6 +21,18 @@ eventIDsAtt.forEach((element) => {
   .then(data => {
     document.getElementById(`eventAttendedFor_${eventID}`).innerText = data.rowCount;
   })
+
+  fetch(`/attendanceList/${eventID}`)
+  .then(response => response.json())
+  .then(response => {
+    console.log(response);
+
+    console.log(response.rows); // This should print the array of emails
+    for(let i = 0; i<response.rows.length; i++){
+      console.log(response.rows[i].email);
+    }
+  });
 });
+
 
 

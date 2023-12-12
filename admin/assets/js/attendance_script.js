@@ -186,7 +186,7 @@ function getValuesFromJSONString(jsonString) {
       selectButton.textContent = segment.SegmentName;
 
       selectButton.addEventListener('click', function() {
-        alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
+
 
         var postData = {
           segmentNo: segment.SegmentNo,
@@ -203,6 +203,8 @@ function getValuesFromJSONString(jsonString) {
         })
         .then(response => {
           if (response.ok) {
+            alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
+            
             console.log("ATTEMDANCE ADDED");
             return response.json();
           }
@@ -212,7 +214,7 @@ function getValuesFromJSONString(jsonString) {
           console.log(data);
         })
         .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
+          outputData.innerHTML = "Attendance already checked"
         });
     });
       selectButtonDiv.appendChild(selectButton);

@@ -32,7 +32,7 @@ const connection = mysql.createConnection({
       .then((results) => {
         if (results.length > 0) {
           const userData = results[0];
-          // console.log(userData)
+          // console.log(userData) 
           return userData;
         } else {
           return null;
@@ -56,10 +56,8 @@ function getOrgNameFromId(id) {
       }
       else 
       {
-        // console.log("Data fetched successfully!");
-        // console.log(results);
         const orgName = results[0].OrganizationName;
-        // console.log(orgName);
+
         return orgName;
       }
     });
@@ -78,8 +76,6 @@ function getAllEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        // console.log("Data fetched successfully!");
-        // console.log(results);
         resolve(results);
       }
     });
@@ -96,7 +92,6 @@ function removeEvent(eventID){
         console.error('Error:', error);
         reject(error);
       } else {
-        console.log("Event deleted successfully!");
         resolve(results);
       }
     });
@@ -113,7 +108,6 @@ function getSegments(eventID){
         console.error('Error:', error);
         reject(error);
       } else {
-        console.log("Returned something");
         resolve(results);
       }
     });
@@ -130,7 +124,6 @@ function addAttendance(eventID, userID, segmentID){
         console.error('Error:', error);
         reject(error);
       } else {
-        console.log("Attendance added");
         resolve(results);
       }
     });
@@ -173,8 +166,6 @@ function getCompletedEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        // console.log("Data fetched successfully!");
-        // console.log(results);
         resolve(results);
       }
     });
@@ -189,8 +180,6 @@ function getUpcomingEvents(orgID){
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        // console.log("Data fetched successfully!");
-        // console.log(results);
         resolve(results);
       }
     });
@@ -214,6 +203,25 @@ function getRegistered(eventID) {
 function getAttendance(eventID) {
   return new Promise((resolve, reject) => {
     const query = "SELECT DISTINCT userId FROM attendance WHERE EventId = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+function getAttendanceEmails(eventID){
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT DISTINCT u.email 
+      FROM attendance AS a
+      INNER JOIN users AS u ON a.userId = u.userId 
+      WHERE a.EventId = ?;
+    `;
     connection.query(query, [eventID], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
@@ -249,8 +257,6 @@ function getOrganizationMembers(orgID) {
         console.error('Error querying database:', error);
         reject(error);
       } else {
-        // console.log("Data fetched successfully!");
-        // console.log(results);
         resolve(results);
       }
     });
@@ -267,7 +273,6 @@ function addOrgMember(orgID, email){
         reject(error);
       } else if (results){
         resolve(true);
-        // console.log("Data inserted successfully successfully!");
       }
     });
   });
@@ -341,5 +346,6 @@ module.exports = {
     addAttendance,
     addSegment,
     getRegistered,
-    getAttendance
+    getAttendance,
+    getAttendanceEmails
 };  

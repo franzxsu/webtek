@@ -315,7 +315,6 @@ router.get('/registeredUsers/:eventId', async (req, res) => {
 	const eventId = req.params.eventId;
 	try {
 		const rows = await db.getRegistered(eventId);
-		console.log("ROWS: ", rows);
 		const rowCount = rows && rows.length > 0 ? rows.length : 0;
 		res.send({
 			rowCount
@@ -330,7 +329,6 @@ router.get('/attendedUsers/:eventId', async (req, res) => {
 	const eventId = req.params.eventId;
 	try {
 		const rows = await db.getAttendance(eventId);
-		console.log("ROWS: ", rows);
 		const rowCount = rows && rows.length > 0 ? rows.length : 0;
 		res.send({
 			rowCount
@@ -341,6 +339,18 @@ router.get('/attendedUsers/:eventId', async (req, res) => {
 	}
 });
 
+router.get('/attendanceList/:eventId', async (req, res) => {
+	const eventId = req.params.eventId;
+	try {
+		const rows = await db.getAttendanceEmails(eventId);
+		res.send({
+			rows
+		});
+	} catch (error) {
+		console.error('Error fetching registered users:', error);
+		res.status(500).send('Error fetching registered users');
+	}
+});
 
 
 router.get('/api/segments/:eventID', async (req, res) => {

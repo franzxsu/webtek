@@ -16,7 +16,6 @@
 
 
 <body id="page-top">
-    
     <div id="wrapper">
         <%- include('partials/sidebar.ejs') %>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -25,7 +24,7 @@
                 <div class="container">
                     <div class="accordion" role="tablist" id="accordion-1">
                         <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="false" aria-controls="accordion-1 .item-1">Ongoing Events</button></h2>
+                            <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">Ongoing Events</button></h2>
                             <div class="accordion-collapse collapse item-1" role="tabpanel" data-bs-parent="#accordion-1">
                                 <div class="accordion-body">
                                     <div class="table-responsive">
@@ -48,7 +47,7 @@
                                                     <div class="modal fade" id="removeEventModal_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
-                                                                <!-- Modal content here -->
+                                                                <!-- Modal content here , populated via js (events_script.js)-->
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="removeMemberModalLabel">Cancel <%= event.EventName %></h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -58,9 +57,9 @@
                                                                         <p>this action cannot be undone</p>
                                                                     </div>
                                                                     <!-- Post form create event -->
-                                                                    <form id="removeOrgMemberForm_<%= event.eventID %>" action="/removeEvent" method="POST">
+                                                                    <form id="removeEvent_<%= event.eventID %>" action="/removeEvent" method="POST">
                                                                         <input type="hidden" name="eventID" value="<%= event.eventID %>">
-                                                                        <button type="submit" class="btn btn-primary">Cancel event</button>
+                                                                        <button type="submit" class="btn btn-danger">Cancel event</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -94,8 +93,7 @@
                                                 <tr>
                                                     <th>Event Name</th>
                                                     <th>Event Info</th>
-                                                    <th>Date Start</th>
-                                                    <th>Date End</th>
+                                                    <th>Date</th>
                                                     <th>Venue</th>
                                                     <th>Registered</th>
                                                     <th>Edit Event</th>
@@ -104,34 +102,34 @@
                                             </thead>
                                             <tbody>
                                                 <% orgUpcomingEvents.forEach(event => { %>
+
                                                     <!-- MODAL FOR REMOVING EVENT -->
                                                     <div class="modal fade" id="removeEventModal_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <!-- Modal content here -->
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Cancel <%= event.EventName %></h5>
+                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Cancel event: <%= event.EventName %></h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <p>this action cannot be undone</p>
+                                                                        <p>This action cannot be undone</p>
                                                                     </div>
-                                                                    <!-- Post form create event -->
                                                                     <form id="removeOrgMemberForm_<%= event.eventID %>" action="/removeEvent" method="POST">
                                                                         <input type="hidden" name="eventID" value="<%= event.eventID %>">
-                                                                        <button type="submit" class="btn btn-primary">Cancel event</button>
+                                                                        <button type="submit" class="btn btn-danger">Cancel event</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <!-- MODAL END -->
+
                                                 <tr>
                                                     <td><%=event.EventName%></td>
                                                     <td><%=event.EventInfo%></td>
-                                                    <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
-                                                    <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                                    <td><p><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) %> - <%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) %></p></td>
                                                     <td><%=event.EventLocation%></td>
                                                     <td class="eventReg" id="eventRegisteredFor_<%=event.eventID%>"></td>
                                                     <td><a href="">edit</a></td>
@@ -150,7 +148,7 @@
                             </div>
                         </div>
                         <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-3" aria-expanded="true" aria-controls="accordion-1 .item-3">Completed Events</button></h2>
+                            <h2 class="accordion-header" role="tab"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-3" aria-expanded="false" aria-controls="accordion-1 .item-3">Completed Events</button></h2>
                             <div class="accordion-collapse collapse show item-3" role="tabpanel" data-bs-parent="#accordion-1">
                                 <div class="accordion-body">
                                     <div class="table-responsive">
@@ -204,22 +202,15 @@
                                                         <!-- MODAL FOR checking feedbacks -->
                                                         <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content" id="attendedEmailContainer">
-                                                                    <!-- Modal content here -->
-
-                                                                    <!-- 
-
-                                                                        ATTENDEES HERE
-
-                                                                     -->
+                                                                <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">
+                                                                    
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- Post form create event -->
-                                                                            <input type="hidden" name="eventID" value="<%= event.eventID %>">
+                                                                    <div class="modal-body" id="putEmailsHere">
                                                                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">download .csv</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

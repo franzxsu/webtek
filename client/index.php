@@ -32,9 +32,7 @@ if(isset($_SESSION['user_id'])){
 </head>
 <body id="page-top">
     <div id="wrapper">
-<?php
-    include_once 'includes/sidebar.php';
-?>
+<?php include_once 'includes/sidebar.php'; ?>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
             <?php include_once "includes/header.php"; ?>

@@ -2,7 +2,7 @@
 const eventIDs = document.querySelectorAll('.eventReg');
 const eventIDsAtt = document.querySelectorAll('.eventAttended');
 const eventAttendEmail = document.querySelectorAll('.viewAttendedEmails');
-const emailContainer = document.getElementById("putEmailsHere");
+const emailContainer = document.getElementById(`putEmailsHere_<%= event.eventID %>`);
 
 eventIDs.forEach((element) => {
 	const eventID = element.id.split('_')[1];
@@ -40,7 +40,7 @@ eventAttendEmail.forEach((element) => {
 				// console.log("FOR EVENT ID: "+eventID);
 				// console.log("ATTENDED: "+response.rows[i].email)
 				elementEmail.innerText = response.rows[i].email;
-				emailContainer.insertBefore(elementEmail, emailContainer.firstChild);
+				document.getElementById(`putEmailsHere_${eventID}`).insertBefore(elementEmail, this.firstChild);
 			}
 		});
 });

@@ -205,10 +205,13 @@
                                                                         <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                    <div class="modal-body" id="putEmailsHere">
-                                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
-                                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">download .csv</button>
+                                                                    <div class="modal-body" id="putEmailsHere_<%= event.eventID %>">
+                                                                            
                                                                     </div>
+                                                                    <div class="modal-footer" id="putEmailsHereFooter_<%= event.eventID %>">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">download .csv</button>
+                                                                </div>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -12,6 +12,7 @@ eventIDs.forEach((element) => {
 });
 
 const eventIDsAtt = document.querySelectorAll('.eventAttended');
+const emailContainer = document.getElementById("attendedEmailContainer");
 
 eventIDsAtt.forEach((element) => {
   const eventID = element.id.split('_')[1];
@@ -27,9 +28,11 @@ eventIDsAtt.forEach((element) => {
   .then(response => {
     console.log(response);
 
-    console.log(response.rows); // This should print the array of emails
-    for(let i = 0; i<response.rows.length; i++){
-      console.log(response.rows[i].email);
+    console.log(response.rows);
+    for (let i = 0; i < response.rows.length; i++) {
+      const elementEmail = document.createElement("p");
+      elementEmail.innerText = response.rows[i].email;
+      emailContainer.appendChild(elementEmail);
     }
   });
 });

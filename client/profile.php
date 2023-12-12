@@ -36,19 +36,67 @@ if(isset($_SESSION['user_id'])){
                     <div class="row mb-3">
                         <div class="col-lg-4">
                             <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
+                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/avatars/default_icon.jpg" width="160" height="160">
                                     <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
                                 </div>
                             </div>
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="text-primary fw-bold m-0">statz</h6>
+                                    <h6 class="text-primary fw-bold m-0">User stats</h6>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="small fw-bold">Registered events<span class="float-end">0</span></h4>
-                                    <h4 class="small fw-bold">Attended Events<span class="float-end">0</span></h4>
-                                    <h4 class="small fw-bold">Course<span class="float-end">N/A</span></h4>
-                                    <h4 class="small fw-bold"># of organizations<span class="float-end">3</span></h4>
+                                    <h4 class="small fw-bold">Registered events<span class="float-end">
+                                        <?php
+                                            $userData = get_registered_events_for_me($_SESSION['user_id']);
+                                            if ($userData !== null) {
+                                                echo $userData->num_rows;
+                                            } else {
+                                                echo "0";
+                                            }
+                                        ?>
+                                    </span></h4>
+                                    <h4 class="small fw-bold">Attended Events<span class="float-end">
+
+                                    <?php
+                                            $userData = get_number_of_attended_events($_SESSION['user_id']);
+                                            if ($userData !== null) {
+                                                echo $userData;
+                                            } else {
+                                                echo "0";
+                                            }
+                                        ?>
+
+                                    </span></h4>
+                                    <h4 class="small fw-bold">Course<span class="float-end">
+                                        
+                                    <?php
+                                        $userData = get_course_name_from_id(get_user_course_id($_SESSION['email']));
+                                        if ($userData !== null){
+                                            echo $userData;
+                                        }
+                                        else{
+                                            echo "N/A";
+                                        }
+                                            
+                                    ?>
+
+                                    </span></h4>
+
+
+                                    <h4 class="small fw-bold"># of organizations<span class="float-end">
+                                        
+                                    <?php
+                                        $userData = get_user_organizations($_SESSION['email']);
+                                        if ($userData !== null) {
+                                            $numberOfRows = count($userData);
+                                            echo $numberOfRows;
+                                        } else {
+                                            echo "0";
+                                        }
+                                    ?>
+
+
+                                    </span></h4>
                                 </div>
                             </div>
                         </div>

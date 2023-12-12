@@ -335,12 +335,24 @@ function get_user_organizations($email)
   if (empty($orgs)) {
     return null;
   }
-
   return $orgs;
 }
 
 function get_attendance_list(){
+}
 
+function get_number_of_attended_events($userID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT COUNT(DISTINCT ?) AS uniqueUsers, COUNT(DISTINCT EventID) AS uniqueEvents FROM attendance");
+  $stmt->bind_param("i", $userID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+  return count($rows);
 }
 
 function isAttended($userID, $eventID){
@@ -369,8 +381,28 @@ function get_event_name_from_id($eventID){
 
   $row = $result->fetch_assoc();
   return $row['eventName'];
-
 }
+
+function get_course_name_from_id($courseID){
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT CourseName from courses WHERE courseID = ?;");
+  $stmt->bind_param("i", $courseID);
+
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+
+  if ($row){
+    return $row['CourseName'];
+  }
+  else{
+    return null;
+  }
+  
+}
+
 function get_organization_name_from_id($orgID){
   global $conn;
 

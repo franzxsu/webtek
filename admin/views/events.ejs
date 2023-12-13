@@ -177,7 +177,7 @@
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body feedbacksForEvent" id="modalFeedback_<%= event.eventID %>">
-                                                                    
+                                                                    <h3 id="removeIfMeron_<%= event.eventID %>">No feedbacks for this event yet...</h3>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
@@ -198,7 +198,7 @@
                                                         <p class="eventAttended" id="eventAttendedFor_<%=event.eventID%>" style="display: inline;"></p>
                                                     </td>
                                                     
-                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">view attended</a></td>
+                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">attended</a></td>
                                                         <!-- MODAL FOR checking ATTENDEES -->
                                                         <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
@@ -222,7 +222,7 @@
                                                         
                                                         <!-- MODAL END -->
 
-                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#feedbacks_<%= event.eventID %>">todo</a></td>
+                                                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#feedbacks_<%= event.eventID %>">feedbacks</a></td>
 
                                                 <% }); %>
                                             </tbody>

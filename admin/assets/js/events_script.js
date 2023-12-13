@@ -54,10 +54,15 @@ eventAttendEmail.forEach((element) => {
 	  .then(response => {
 		console.log(response);
   
-		console.log("ROWS: " + response.rows.length + " FOR EVENT ID: " + eventID);
 		for (let i = 0; i < response.rows.length; i++) {
+			//remove no feedback tag
+			const removeIfExists = document.getElementById(`removeIfMeron_${eventID}`);
+			//check if already removed, remove if not
+			if (removeIfExists) {
+				removeIfExists.remove();
+			}
 		  const elementMsg = document.createElement("p");
-		  elementMsg.innerText = response.rows[i].message;renderSync
+		  elementMsg.innerText = response.rows[i].message;
 		  document.getElementById(`modalFeedback_${eventID}`).appendChild(elementMsg);
 		}
 	  });

@@ -121,8 +121,6 @@ if (isset($_SESSION["user_id"])) {
                                                                 <form action="send_feedback.php" method="post">
                                                                     <div class="mb-3">
                                                                         <input type="hidden" name="eventId" value='.$event["eventID"].'>
-                                                                        <label for="recipient-name" class="col-form-label">Rating (star rating dapat ito):</label>
-                                                                        <input type="text" class="form-control" id="recipient-name">
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label for="message-text" class="col-form-label">Message:</label>
@@ -132,12 +130,13 @@ if (isset($_SESSION["user_id"])) {
                                                                         <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1">
                                                                         <label class="form-check-label custom-control-label" for="formCheck-1">Send anonymously</label>
                                                                     </div>
-                                                                </form>
+                                                                
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Send Rating</button>
+                                                                <button type="submit" class="btn btn-primary">Send Rating</button>
                                                             </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

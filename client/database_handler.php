@@ -108,7 +108,7 @@ function add_feedback($eventId, $email, $msg) {
   global $conn;
 
   // Check if the registration already exists
-  $checkStmt = $conn->prepare("INSERT INTO feedback (eventID, email, message) VALUES = (?, ?, ?)");
+  $checkStmt = $conn->prepare("INSERT INTO feedback (eventID, email, message) VALUES (?, ?, ?)");
   $checkStmt->bind_param("iss", $eventId, $email, $msg);
 
   if (!$checkStmt->execute()) {

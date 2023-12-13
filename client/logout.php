@@ -1,5 +1,5 @@
 <?php
-//clear session road :D
+//clear session
    session_start();
    session_unset();
 

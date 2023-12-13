@@ -290,7 +290,7 @@ function get_registered_events_for_me_done($currentDate, $userID, $courseID, $or
 
 
 
-//giveen email of the user, return his/her course id, return null if none
+//given email of the user, return his/her course id, return null if none
 function get_user_course_id($email)
 {
     global $conn;
@@ -330,7 +330,7 @@ function get_user_organizations_all_name($email)
 }
 
 
-//giveen email of the user, return his/her organizations as list, return null if none
+//given email of the user, return his/her organizations as list, return null if none
 function get_user_organizations($email)
 {
 

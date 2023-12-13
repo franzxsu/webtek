@@ -13,8 +13,8 @@ $(document).on('change', '.file-input', function() {
     }
   });
 
-// DITO KO MUNA ILALAGAY ETO
-// KASI D KO SURE IF IRERENAME KO NALANG TONG FILE NA TO OR BAHALA KAYO AHHAHAHAHAHHA
+// Not yet implemented and in the wrong file
+// or just rename the file
 function changeProfilePicture() {
   const input = document.getElementById('profilePicture');
   const file = input.files[0];

@@ -1,11 +1,31 @@
-# webtek
+# EVENTS HUB, A web application for managing events
 
-1. install node 20.9.0 `https://nodejs.org/en/`
 
-2. `npm install nodemon`
 
-3. `npm install ejs`
+## Table of Contents
 
-4. `npm install bootstrap`
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
 
-5. `npm install sass`
+## Introduction
+
+Describe the project's purpose, scope, and any essential background information.
+
+## Features
+
+List and describe the key features of the project.
+
+## Installation
+
+Include step-by-step instructions on how to install and set up the project locally.
+
+```bash
+# Example installation steps
+git clone <repository-url>
+cd project-directory
+npm install

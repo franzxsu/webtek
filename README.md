@@ -1,6 +1,6 @@
 # EVENTS HUB, A web application for managing events
 
-![logo](client\assets\img\subwaylogor.png)
+![logo](./client/assets/img/subwaylogor.png)
 
 ## Table of Contents
 

@@ -309,6 +309,26 @@ function get_user_course_id($email)
     return $row['courseID'];
 }
 
+function get_user_organizations_all_name($email)
+{
+  global $conn;
+  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE email = ?");
+  $stmt->bind_param("s", $email);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $orgs = [];
+  
+  while ($row = $result->fetch_assoc()) {
+    $orgID = $row['organizationID'];
+    $orgName = get_organization_name_from_id($orgID); //get names of org
+    if ($orgName) {
+      $orgs[] = $orgName;
+    }
+  }
+  
+  return $orgs;
+}
+
 
 //giveen email of the user, return his/her organizations as list, return null if none
 function get_user_organizations($email)

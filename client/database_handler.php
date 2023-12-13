@@ -104,6 +104,20 @@ function register_to_event($userID, $eventID) {
   return true;
 }
 
+function add_feedback($eventId, $email, $msg) {
+  global $conn;
+
+  // Check if the registration already exists
+  $checkStmt = $conn->prepare("INSERT INTO feedback (eventID, email, message) VALUES = (?, ?, ?)");
+  $checkStmt->bind_param("iss", $eventId, $email, $msg);
+
+  if (!$checkStmt->execute()) {
+    return $checkStmt->error;
+  }
+
+  return true;
+}
+
 
 if (isset($_POST['cancel'])) {
   $userID = $_POST['userID'];

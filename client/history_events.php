@@ -118,14 +118,15 @@ if (isset($_SESSION["user_id"])) {
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form>
+                                                                <form action="send_feedback.php" method="post">
                                                                     <div class="mb-3">
+                                                                        <input type="hidden" name="eventId" value='.$event["eventID"].'>
                                                                         <label for="recipient-name" class="col-form-label">Rating (star rating dapat ito):</label>
                                                                         <input type="text" class="form-control" id="recipient-name">
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label for="message-text" class="col-form-label">Message:</label>
-                                                                        <textarea class="form-control" id="message-text"></textarea>
+                                                                        <textarea class="form-control" name="message" id="message-text"></textarea>
                                                                     </div>  
                                                                     <div class="form-check">
                                                                         <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1">

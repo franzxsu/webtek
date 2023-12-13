@@ -173,10 +173,13 @@
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="removeMemberModalLabel">todo table content of feedbacks</h5>
+                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Feedbacks for <%= event.EventName %></h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
-                                                                <div class="modal-body">
+                                                                <div class="modal-body feedbacksForEvent" id="modalFeedback_<%= event.eventID %>">
+                                                                    
+                                                                </div>
+                                                                <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
                                                                 </div>
                                                             </div>
@@ -196,7 +199,7 @@
                                                     </td>
                                                     
                                                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">view attended</a></td>
-                                                        <!-- MODAL FOR checking feedbacks -->
+                                                        <!-- MODAL FOR checking ATTENDEES -->
                                                         <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">

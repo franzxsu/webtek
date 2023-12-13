@@ -339,6 +339,19 @@ router.get('/attendedUsers/:eventId', async (req, res) => {
 	}
 });
 
+router.get('/getFeedback/:eventId', async (req, res) => {
+	const eventId = req.params.eventId;
+	try {
+		const rows = await db.getFeedbacks(eventId);
+		res.send({
+			rows
+		});
+	} catch (error) {
+		console.error('Error fetching FEEDBACKS:', error);
+		res.status(500).send('Error fetching FEEDB');
+	}
+});
+
 router.get('/attendanceList/:eventId', async (req, res) => {
 	const eventId = req.params.eventId;
 	try {

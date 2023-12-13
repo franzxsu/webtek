@@ -112,8 +112,8 @@ if (is_array($result) && count($result) > 0) {
                         if(isset($_SESSION['user_id'])){
                         echo '
                         <form action="register_event.php" method="post">
-                        <input type="hidden" name="event_id" value="' . $eventID . '">
-                        <button type="submit" class="btn btn-primary">Register to event</button>
+                            <input type="hidden" name="event_id" value="' . $eventID . '">
+                            <button type="submit" class="btn btn-primary">Register to event</button>
                         </form>
                         </form>';
                         }

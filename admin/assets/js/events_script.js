@@ -2,6 +2,8 @@
 const eventIDs = document.querySelectorAll('.eventReg');
 const eventIDsAtt = document.querySelectorAll('.eventAttended');
 const eventAttendEmail = document.querySelectorAll('.viewAttendedEmails');
+const feedbacks = document.querySelectorAll('.feedbacksForEvent');
+
 const emailContainer = document.getElementById(`putEmailsHere_<%= event.eventID %>`);
 
 const downloadButtons = document.querySelectorAll('.downloadEmailButton');
@@ -40,6 +42,23 @@ eventAttendEmail.forEach((element) => {
 		  elementEmail.innerText = response.rows[i].email;
 		  elementEmail.classList.add(`emailAttended_${eventID}`);
 		  document.getElementById(`putEmailsHere_${eventID}`).insertBefore(elementEmail, this.firstChild);
+		}
+	  });
+  });
+
+  feedbacks.forEach((element) => {
+	const eventID = element.id.split('_')[1];
+	console.log(eventID);
+	fetch(`/getFeedback/${eventID}`)
+	  .then(response => response.json())
+	  .then(response => {
+		console.log(response);
+  
+		console.log("ROWS: " + response.rows.length + " FOR EVENT ID: " + eventID);
+		for (let i = 0; i < response.rows.length; i++) {
+		  const elementMsg = document.createElement("p");
+		  elementMsg.innerText = response.rows[i].message;renderSync
+		  document.getElementById(`modalFeedback_${eventID}`).appendChild(elementMsg);
 		}
 	  });
   });

@@ -72,7 +72,7 @@ if (isset($_SESSION["user_id"])) {
                                                     <?php else: ?>
                                                         <img class="rounded-circle me-2" width="30" height="30" src="assets/img/sample_pubmat.jpg">
                                                     <?php endif; ?>
-
+                                                <?php echo $event["EventName"] ?>
 
                                             </td>
                                             <td><?= $event["EventInfo"] ?></td>

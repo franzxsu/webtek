@@ -3,7 +3,7 @@
 //this php module handles all communications and operations with the database
 
 global $conn;
-$conn = mysqli_connect("localhost", "root", "", "events");
+$conn = mysqli_connect("localhost", "root", "", "sampe_no_data");
 
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
@@ -384,9 +384,10 @@ function get_number_of_attended_events($userID){
   $stmt->execute();
   $result = $stmt->get_result();
 
-  $rows = $result->fetch_all(MYSQLI_ASSOC);
+  $rows = $result->fetch_assoc();
 
-  return count($rows);
+  //return value of unique users, not COUNT, because 0 will return 1
+  return $rows['uniqueUsers'];
 }
 
 function isAttended($userID, $eventID){

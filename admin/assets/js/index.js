@@ -7,7 +7,7 @@ function createInputFields() {
     if (numberOfInputs > currentInputs) {
       for (let i = currentInputs; i < numberOfInputs; i++) {
         const inputGroup = document.createElement('div');
-        inputGroup.classList.add('col-6', 'mb-3');
+        inputGroup.classList.add('col-12', 'mb-3');
   
         const inputLabel = document.createElement('label');
         inputLabel.classList.add('form-label');
@@ -17,6 +17,7 @@ function createInputFields() {
         inputField.classList.add('form-control');
         inputField.setAttribute('placeholder', `Segment ${i + 1} info`);
         inputField.setAttribute('name', `segmentInfo_${i + 1}`);
+        inputField.setAttribute('rows', '4');
   
         inputGroup.appendChild(inputLabel);
         inputGroup.appendChild(inputField);

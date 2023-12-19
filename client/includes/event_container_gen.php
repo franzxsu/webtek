@@ -129,4 +129,15 @@ if (is_array($result) && count($result) > 0) {
         ';
     }
 }
+else{
+    echo '<div class="container-fluid">
+        <div class="text-center">
+            <div class="">
+                <p class="display-2">No upcoming events</p>
+            </div>
+            <p class="text-dark mb-5 lead">Try again some other time</p>
+            
+        </div>
+    </div>';
+}
 ?>

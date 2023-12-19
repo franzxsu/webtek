@@ -46,6 +46,7 @@ eventAttendEmail.forEach((element) => {
 	  });
   });
 
+  
   feedbacks.forEach((element) => {
 	const eventID = element.id.split('_')[1];
 	console.log(eventID);
@@ -68,6 +69,7 @@ eventAttendEmail.forEach((element) => {
 	  });
   });
   
+  //download files given the event id
   function initiateDownload(eventID) {
 	const emails = gatherEmails(eventID);
 	const csvContent = convertToCSV(emails);
@@ -81,7 +83,7 @@ eventAttendEmail.forEach((element) => {
   }
   
 
-  
+  //make a download function for each download button
   downloadButtons.forEach((button) => {
 	button.addEventListener('click', (event) => {
 	  const clickedButtonID = event.target.id;

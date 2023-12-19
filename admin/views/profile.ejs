@@ -116,18 +116,24 @@
                                                                         <div class="modal-dialog modal-dialog-centered">
                                                                             <div class="modal-content">
                                                                                 <!-- Modal content here -->
+                                                                                <form id="removeOrgMemberForm_<%= member.Email %>" action="/removeOrgMember" method="POST">
                                                                                 <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Remove <%= member.Email %></h5>
+                                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Remove member from organization</h5>
                                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <!-- Post form create event -->
-                                                                                    <form id="removeOrgMemberForm_<%= member.Email %>" action="/removeOrgMember" method="POST">
+                                                                                        <p>Remove <%= member.Email %>?</p>
                                                                                         <input type="hidden" name="orgid" value="<%= orgId %>">
                                                                                         <input type="hidden" name="memberEmail" value=<%= member.Email %>>
-                                                                                        <button type="submit" class="btn btn-primary">Remove <%= member.Email %></button>
-                                                                                    </form>
+                                                                                        
+                                                                                    
                                                                                 </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                </div>
+                                                                            </form>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -193,31 +199,33 @@
     <% } %>
 
     <!-- MODAL FOR ADDING USER -->
-    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add member to <%= orgName %></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="addOrgMemberForm" action="/addOrgMember" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add member to <%= orgName %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
                     <!-- post form add member -->
-                        <form id="addOrgMemberForm" action="/addOrgMember" method="POST">
-                            <div class="col ms-auto">
-                                <label for="email" class="form-label">Enter email</label>
-                                <input type="text" name="email" class="form-control" id="emailOrg" placeholder="example@slu.edu.ph">
-                                <input type="hidden" name="orgid" value="<%= orgId %>">
-                            </div>
-                            <div class="col md-3">
-                                <button type="submit" class="btn btn-primary">Add member</button>
-                            </div>
-                        </form>
+                    <div class="col ms-auto">
+                        <label for="email" class="form-label">Enter email</label>
+                        <input type="text" name="email" class="form-control" id="emailOrg" placeholder="example@slu.edu.ph">
+                        <input type="hidden" name="orgid" value="<%= orgId %>">
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Add member</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">back</button>
+            </div>
+        </form>
         </div>
     </div>
+</div>
+
     
     <script>
         function displayRemoveMemberModal(email) {

@@ -55,7 +55,7 @@
                             }
                             ?>
                        </span>
-                        <img class="border rounded-circle img-profile" src="assets/img/avatars/default_icon.jpg">
+                        <img class="border rounded-circle img-profile" src="assets/img/avatars/default_icon2.jpg">
                     </a>
                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                         <?php

@@ -1,4 +1,3 @@
-
 const eventIDs = document.querySelectorAll('.eventReg');
 const eventIDsAtt = document.querySelectorAll('.eventAttended');
 const eventAttendEmail = document.querySelectorAll('.viewAttendedEmails');
@@ -9,13 +8,15 @@ const emailContainer = document.getElementById(`putEmailsHere_<%= event.eventID 
 const downloadButtons = document.querySelectorAll('.downloadEmailButton');
 
 eventIDs.forEach((element) => {
-	const eventID = element.id.split('_')[1];
-	console.log(eventID);
-	fetch(`/registeredUsers/${eventID}`)
-		.then(response => response.json())
-		.then(data => {
-			document.getElementById(`eventRegisteredFor_${eventID}`).innerText = data.rowCount;
-		})
+    const eventID = element.id.split('_')[1];
+    console.log(eventID);
+    axios.get(`/registeredUsers/${eventID}`)
+        .then(response => {
+            document.getElementById(`eventRegisteredFor_${eventID}`).innerText = response.data.rowCount;
+        })
+        .catch(error => {
+            console.error('Error fetching registered users:', error);
+        });
 });
 
 eventIDsAtt.forEach((element) => {

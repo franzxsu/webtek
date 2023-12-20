@@ -13,11 +13,11 @@ function createInputFields() {
         inputLabel.classList.add('form-label');
         inputLabel.textContent = `Segment ${i + 1}:`;
   
-        const inputField = document.createElement('input');
+        const inputField = document.createElement('textarea');
         inputField.classList.add('form-control');
         inputField.setAttribute('placeholder', `Segment ${i + 1} info`);
         inputField.setAttribute('name', `segmentInfo_${i + 1}`);
-        inputField.setAttribute('rows', '4');
+        inputField.setAttribute('rows', '2');
   
         inputGroup.appendChild(inputLabel);
         inputGroup.appendChild(inputField);

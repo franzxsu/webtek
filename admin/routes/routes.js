@@ -261,7 +261,7 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 			eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
 
 		console.log(bool);
-
+		let success = true;
 		if (bool) {
 			console.log('NEW EVENT ID IS: ' + bool);
 			let eventID = bool;
@@ -273,27 +273,29 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 					const segmentNumber = key.split('_')[1];
 					const segmentInfo = req.body[key];
 					console.log(`Segment ${segmentNumber}: ${segmentInfo}`);
-					const success = await db.addSegment(segmentNumber, eventID, segmentInfo);
-
-					if (success) {
-						res.redirect('/index?eventSuccess=true');
+					const segmentSuccess = await db.addSegment(segmentNumber, eventID, segmentInfo);
+					
+					// Set success to false if any segment fails to add for some reason
+					if (!segmentSuccess) {
+						success = false;
+						break;
 					}
 				}
 			}
-		} else {
-			//fail
-			console.log('event creation fail');
-			res.redirect('/index?eventSuccess=false');
+			if (success) {
+				res.redirect('/index?eventSuccess=true');
+			} else {
+				console.log('event creation fail');
+				res.redirect('/index?eventSuccess=false');
+			}
+		} 
+	}catch (error) {
+			console.error('Error creating event:', error);
+			res.status(500).json({
+				message: 'Error creating event'
+			});
 		}
-
-		// res.status(200).json({ message: 'Event created successfully!' });
-	} catch (error) {
-		console.error('Error creating event:', error);
-		res.status(500).json({
-			message: 'Error creating event'
-		});
-	}
-});
+	});
 
 router.post('/attendance', async (req, res) => {
 	const segmentNo = req.body.segmentNo;

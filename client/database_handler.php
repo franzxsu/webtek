@@ -79,29 +79,45 @@ function email_exists($email)
   // $stmt = $conn->prepare("SELECT * FROM ");
 }
 
-//return true if successful, k
 function register_to_event($userID, $eventID) {
   global $conn;
 
-  // Check if the registration already exists
-  $checkStmt = $conn->prepare("SELECT * FROM registrations WHERE userId = ? AND eventId = ?");
-  $checkStmt->bind_param("ii", $userID, $eventID);
-  $checkStmt->execute();
-  $existingRegistration = $checkStmt->get_result()->fetch_assoc();
+  try {
+      // Check if the event ID exists
+      $checkEventStmt = $conn->prepare("SELECT * FROM events WHERE eventID = ?");
+      $checkEventStmt->bind_param("i", $eventID);
+      $checkEventStmt->execute();
+      $existingEvent = $checkEventStmt->get_result()->fetch_assoc();
 
-  if ($existingRegistration) {
-      return "You are already registered for this event.";
+      if (!$existingEvent) {
+          return "Event not found, Please try again.";
+      }
+
+      //check if the user is aleardy registered to the event
+      $checkStmt = $conn->prepare("SELECT * FROM registrations WHERE userId = ? AND eventId = ?");
+      $checkStmt->bind_param("ii", $userID, $eventID);
+      $checkStmt->execute();
+      $existingRegistration = $checkStmt->get_result()->fetch_assoc();
+
+      if ($existingRegistration) {
+          return "You are already registered to this event.";
+      }
+
+      //if not yet, create the registration
+      $insertStmt = $conn->prepare("INSERT INTO registrations (userId, eventId) VALUES (?, ?)");
+      $insertStmt->bind_param("ii", $userID, $eventID);
+
+      if (!$insertStmt->execute()) {
+          throw new Exception($insertStmt->error);
+      }
+
+      //if registration is ok, return the registrationid
+      $registrationId = $conn->insert_id;
+      return $registrationId;
+
+  } catch (Exception $e) {
+      return $e->getMessage();//remove this
   }
-
-  // If not, proceed with inserting the new registration
-  $insertStmt = $conn->prepare("INSERT INTO registrations (userId, eventId) VALUES (?, ?)");
-  $insertStmt->bind_param("ii", $userID, $eventID);
-
-  if (!$insertStmt->execute()) {
-      return $insertStmt->error;
-  }
-
-  return true;
 }
 
 function add_feedback($eventId, $email, $msg) {

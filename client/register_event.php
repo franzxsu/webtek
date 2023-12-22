@@ -12,13 +12,10 @@ include 'database_handler.php';
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
     
-            $reg_success = register_to_event($userId, $eventId);
+            $reg_status = register_to_event($userId, $eventId);
     
-            if ($reg_success === true) {
-                $_SESSION['reg_success'] = $eventId; 
-                header('Location: index.php');
-            } else {
-                $_SESSION['reg_fail'] = $reg_success;
+            if ($reg_status) {
+                $_SESSION['reg_status'] = $reg_status; 
                 header('Location: index.php');
             }
         } else {

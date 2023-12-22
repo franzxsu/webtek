@@ -101,9 +101,11 @@ if(isset($_SESSION['user_id'])){
                                                             <div class="modal-body">
 
                                                             <?php
+                                                            // to do remove userID and eventID (might not be needed anymore, especially event id)
                                                                 $eventData = array(
                                                                     "userID" => $_SESSION['user_id'],
-                                                                    "eventID" => $event['eventID']
+                                                                    "eventID" => $event['eventID'],
+                                                                    "registrationID" => "asd"
                                                                 );
                                                                 
                                                                 $jsonEventData = json_encode($eventData);

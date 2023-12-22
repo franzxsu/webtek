@@ -116,7 +116,8 @@ function register_to_event($userID, $eventID) {
       return $registrationId;
 
   } catch (Exception $e) {
-      return $e->getMessage();//remove this
+      // return $e->getMessage();//remove this
+      return "An unexpected error occurred.";
   }
 }
 

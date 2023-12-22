@@ -29,15 +29,22 @@ router.get('/index', async (req, res) => {
     // Check if there is a session
     if (req.session.userData) {
         const success = req.session.eventSuccess || false; // Retrieve the success flag from the session
+		let newEventId = null;
+		if (success===true){
+			newEventId = req.session.successEventId //eventId Flag
+		}
 
 		console.log("SUCCESS STATUS "+success);
-        
-        //clear the success flag after using it
+        console.log("new event id "+newEventId);
+        //clear flags after using it
+
         req.session.eventSuccess = false;
+		req.session.successEventId = null;
 
         res.render('index.ejs', {
             orgName: req.session.userData.OrganizationName,
             orgId: req.session.userData.OrganizerID,
+			newEventId: newEventId,
             success: success,
             currentPath: req.path
         });
@@ -283,10 +290,10 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 			if (success) {
 				//success flag
 				req.session.eventSuccess = true;
+				req.session.successEventId = eventID;
 				res.redirect('/index');
 			} else {
 				req.session.eventSuccess = false;
-				
 				req.session.errorMessage = "wrong"; //placeholder
 				res.redirect('/index');
 			}

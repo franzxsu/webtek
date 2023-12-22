@@ -36,8 +36,8 @@ router.get('/index', async (req, res) => {
 
 		console.log("SUCCESS STATUS "+success);
         console.log("new event id "+newEventId);
-        //clear flags after using it
-
+    
+		//clear flags after using it
         req.session.eventSuccess = false;
 		req.session.successEventId = null;
 

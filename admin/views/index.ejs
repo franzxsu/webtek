@@ -181,7 +181,7 @@
     </div>
     <script type="module" src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <% if (success === 'true') { %>
+    <% if (success === true) { %>
         <script>
             console.log('triggered');
             // Display the modal using its ID
@@ -189,7 +189,10 @@
                 $('#successAddingEventModal').modal('show');
             });
         </script>
-    <% } else if (success === 'false'){ %>
+    <% } else if (success === false) { %>
+        <script></script>
+        <!-- do absolutely nothing -->
+    <% } else { %>
         <script>
             console.log('else');
             // Display a different modal using its ID

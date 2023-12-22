@@ -26,21 +26,24 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/index', async (req, res) => {
-	//check if there is session
-	if (req.session.userData) {
-		// console.log(req.session.userData);
-		const success = req.query.eventSuccess
+    // Check if there is a session
+    if (req.session.userData) {
+        const success = req.session.eventSuccess || false; // Retrieve the success flag from the session
 
-		res.render('index.ejs', {
-			orgName: req.session.userData.OrganizationName,
-			orgId: req.session.userData.OrganizerID,
-			success: success,
-			currentPath: req.path
-		});
-		//go to login if there is no session set
-	} else {
-		res.redirect('/login');
-	}
+		console.log("SUCCESS STATUS "+success);
+        
+        //clear the success flag after using it
+        req.session.eventSuccess = false;
+
+        res.render('index.ejs', {
+            orgName: req.session.userData.OrganizationName,
+            orgId: req.session.userData.OrganizerID,
+            success: success,
+            currentPath: req.path
+        });
+    } else {
+        res.redirect('/login');
+    }
 });
 
 
@@ -234,17 +237,12 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 
 		console.log('out');
 		let {
-			orgid,
-			eventName,
-			eventLocation,
-			eventInfo,
-			eventDateStart,
-			eventDateEnd,
-			visibility,
-			course
+			orgid, eventName, eventLocation, eventInfo, 
+			eventDateStart, eventDateEnd, visibility, course
 		} = req.body;
 		let posterBlob = null;
 
+		//if there is poster uploaded
 		if (req.file) {
 			posterBlob = Buffer.from(req.file.buffer);
 		}
@@ -257,14 +255,14 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 			course = null
 		}
 
-		const bool = await db.createEvent(orgid, eventName, eventInfo,
+		const newEventId = await db.createEvent(orgid, eventName, eventInfo,
 			eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
 
-		console.log(bool);
+		console.log(newEventId);
 		let success = true;
-		if (bool) {
-			console.log('NEW EVENT ID IS: ' + bool);
-			let eventID = bool;
+		if (newEventId) {
+			console.log('NEW EVENT ID IS: ' + newEventId);
+			let eventID = newEventId;
 			console.log('go success');
 
 			//GET SEGMENTS SINCE SEGMENTS CAN VARY FROM 0-5
@@ -283,10 +281,14 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 				}
 			}
 			if (success) {
-				res.redirect('/index?eventSuccess=true');
+				//success flag
+				req.session.eventSuccess = true;
+				res.redirect('/index');
 			} else {
-				console.log('event creation fail');
-				res.redirect('/index?eventSuccess=false');
+				req.session.eventSuccess = false;
+				
+				req.session.errorMessage = "wrong"; //placeholder
+				res.redirect('/index');
 			}
 		} 
 	}catch (error) {

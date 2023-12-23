@@ -48,28 +48,28 @@
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                                 <div class="modal-body">
-                                    <!-- post form create event -->
+                                    <!-- post form to create event -->
                                     <form class="row g-3" id="eventCreationForm" action="createEvent" method="post" enctype="multipart/form-data">
                                         <div class="col-12">
                                             <input type="hidden" name="orgid" value="<%= orgId %>">
                                             <label for="eventName" class="form-label">Event Name</label>
-                                            <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name">
+                                            <input type="text" name="eventName" class="form-control" id="eventName" placeholder="Enter event name" required>
                                         </div>
                                         <div class="col-12">
                                             <label for="eventLocation" class="form-label">Venue</label>
-                                            <input type="text" name="eventLocation" class="form-control" id="venue" placeholder="Enter event venue">
+                                            <input type="text" name="eventLocation" class="form-control" id="venue" placeholder="Enter event venue" required>
                                         </div>
                                         <div class="col-12">
                                             <label for="eventInfo" class="form-label">Description</label>
-                                            <textarea class="form-control" name="eventInfo" id="description" placeholder="Enter description" rows="5"></textarea>
+                                            <input type="text" class="form-control" name="eventInfo" id="description" minlength="40"  placeholder="Enter description" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="startDate">Start date </label>
-                                            <input name="eventDateStart" id="startDate" class="form-control" type="date" />
+                                            <input name="eventDateStart" id="startDate" class="form-control" type="date" required/>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="endDate">End date </label>
-                                            <input name="eventDateEnd" id="endDate" class="form-control" type="date" />
+                                            <input name="eventDateEnd" id="endDate" class="form-control" type="date" required/>
                                         </div>
                                         <div class="col-md-6">
                                         <label class="" for="visibilitySelection">Event Visibility</label>

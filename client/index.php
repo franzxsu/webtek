@@ -49,44 +49,39 @@ if(isset($_SESSION['user_id'])){
                     
                 </div>
             </div>
+            
+            <?php
+                if(isset($_SESSION['reg_status'])){
+                    //this code will just check if reg_status returned a registration id (registration is ok)
+                    if (is_numeric($_SESSION['reg_status'])) {
+                        $registration_status = <<<EOT
+                        You have successfully registered to the event
+                        ID: {$_SESSION['reg_status']}
+                        EOT;
+                        $status = "successful";
+                    } else {
+                        $registration_status = $_SESSION['reg_status'];
+                        $status = "failed";
+                    }
+                } 
+            ?>
 
-            <!-- SUCCESS MODAL (WILL REFACTOR) -->
+            <!-- MODAL REGISTRATION STATUS -->
             <div class="modal fade" id="eventRegistrationStatusModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="successModalLabel">Registration</h5>
+                            <h5 class="modal-title" id="successModalLabel">Registration <?php echo $status?></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <?php
-                                // echo '<p>You have successfully registered to ' . "blank placeholder muna" . '</p>';
-                                echo '<p>'. $_SESSION['reg_status'] .'</p>';
+                                echo '<p>'. $registration_status .'</p>';
                             ?>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <a href="my_events.php" class="btn btn-primary">My Events</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FAIL MODAL -->
-            <div class="modal fade" id="failModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="successModalLabel">Registration Failed!</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <?php
-                                echo '<p>ERROR: ' . $_SESSION['reg_fail'] . '</p>'
-                            ?>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -101,16 +96,6 @@ if(isset($_SESSION['user_id'])){
                 myModal.show();
                     //unset after showing modal
                 <?php unset($_SESSION['reg_status']); ?>
-            <?php endif; ?>
-
-            <?php 
-            if (isset($_SESSION['reg_fail'])): ?>
-                var myModal = new bootstrap.Modal(document.getElementById('failModal'), {
-                    keyboard: false
-                });
-                myModal.show();
-                    //unset after showing modal
-                <?php unset($_SESSION['reg_fail']); ?>
             <?php endif; ?>
 
         </script>

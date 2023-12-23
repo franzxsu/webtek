@@ -3,7 +3,7 @@
 //this php module handles all communications and operations with the database
 
 global $conn;
-$conn = mysqli_connect("localhost", "root", "", "sampe_no_data");
+$conn = mysqli_connect("localhost", "root", "", "sample");
 
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);

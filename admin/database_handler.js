@@ -117,18 +117,25 @@ function getSegments(eventID){
 
 function addAttendance(eventID, userID, segmentID){
   return new Promise((resolve, reject) => {
-    const query = "INSERT INTO attendance (userID, segmentID, eventID) VALUES (?, ?, ?)";
+    const query = "INSERT INTO attendance (userID, SegmentID, EventID) VALUES (?, ?, ?)";
     connection.query(query, [userID, segmentID, eventID], (error, results) => {
       if (error) {
-        console.error('Error querying database:', query);
-        console.error('Error:', error);
-        reject(error);
+        if (error.code === 'ER_DUP_ENTRY') {
+          const duplicateError = new Error('Duplicate entry error');
+          duplicateError.sqlMessage = error.sqlMessage;
+          reject(duplicateError);
+        } else {
+          console.error('Error querying database:', query);
+          console.error('Error:', error);
+          reject(error);
+        }
       } else {
         resolve(results);
       }
     });
   });
 }
+
 
 
 // Not sure if this works

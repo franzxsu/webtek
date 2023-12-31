@@ -1,3 +1,5 @@
+
+
 var SESSION_EVENTID = null;
 var SESSION_SEGMENTNO = null;
 
@@ -21,6 +23,8 @@ const myModal = new bootstrap.Modal(document.getElementById('myModal'), {
 let scanning = false;
 let userIDVal;
 let eventIDVal;
+let regIDVal;
+let emailVal;
 
 
 
@@ -42,16 +46,24 @@ qrcode.callback = res => {
       if (jsonValid === 'true') {
         console.log('JSON is valid');
         const parsedValues = getValuesFromJSONString(res);
-        const { userID, eventID } = parsedValues;
+        const { userID, eventID, registrationID, userEmail } = parsedValues;
         console.log("EVENT ID IS:"+eventID );
+        console.log("user ID IS:"+userID );
+        console.log("registrationID ID IS:"+registrationID );
+        console.log("userEmail IS:"+userEmail );
 
         userIDVal = userID;
         eventIDVal = eventID;
+        regIDVal = registrationID;
+        emailVal = userEmail;
+
+        //TODO ADD VALIDATIONS!!!
+        
+        //ADD ATTENDANCE IF ALL GOOD
+        postAttendance(SESSION_SEGMENTNO, SESSION_EVENTID, userID, userEmail);
 
         outputData.innerText = "is true valid";
-        getSegmentsAndOpenModal(eventID);
 
-        // Other logic based on a valid JSON
       } else {
         console.log('JSON is not valid');
         // Handle the scenario where JSON is not valid
@@ -113,17 +125,21 @@ function isValid(str) {
     if (
       typeof data === 'object' &&
       data !== null &&
-      Object.keys(data).length === 3 &&
+      Object.keys(data).length === 4 &&
       'userID' in data &&
       'eventID' in data &&
+      'registrationID' in data &&
+      'userEmail' in data &&
       /^\d+$/.test(data.userID) &&
-      /^\d+$/.test(data.eventID)
+      /^\d+$/.test(data.eventID) &&
+      /^\d+$/.test(data.registrationID)
     ) {
-      // Convert string representations of integers to actual integers
+      //convert string representations of integers to actual int
       const userID = parseInt(data.userID);
       const eventID = parseInt(data.eventID);
+      const registrationID = parseInt(data.registrationID);
 
-      if (!Number.isNaN(userID) && !Number.isNaN(eventID)) {
+      if (!Number.isNaN(userID) && !Number.isNaN(eventID) && !Number.isNaN(registrationID)) {
         return 'true';
       }
     }
@@ -134,14 +150,15 @@ function isValid(str) {
 }
 
 
+
 //get values form json
 function getValuesFromJSONString(jsonString) {
     try {
       const jsonObject = JSON.parse(jsonString);
   
       if (jsonObject && typeof jsonObject === 'object') {
-        const { userID, eventID } = jsonObject;
-        return { userID, eventID };
+        const { userID, eventID, registrationID, userEmail } = jsonObject;
+        return { userID, eventID, registrationID, userEmail };
       } else {
         throw new Error('invalid json');
       }
@@ -288,7 +305,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
 //set session variables via a POST request
 function setSessionVariables(eventID, segmentNo) {
   fetch('/setSessionVariables', {
@@ -331,12 +347,45 @@ function showAnAlert(message) {
     alertElement.classList.remove('show');
     alertElement.classList.add('hide');
     setTimeout(() => {
-      alertElement.remove(); // Remove the alert from the DOM after it's hidden
-    }, 500); // Optional: Remove after transition duration
+      alertElement.remove();
+    }, 500);
   }, 3000);
 }
 
 function startChecking(){
   showAnAlert(`Checking attendance for Event:${SESSION_EVENTID} segment ${SESSION_SEGMENTNO}`);
   showAnAlert('click on the QR code to scan QR');
+}
+
+function postAttendance(segment, event, user, email){
+    var postData = {
+      segmentNo: segment,
+      eventID: event,
+      userID: user
+    };
+
+    fetch('/attendance', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    })
+    .then(response => {
+      if (response.ok) {
+        showAnAlert(`${email} has attended the event!`);
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      outputData.innerHTML = "Attendance already checked"
+    });
+    
+    
+    
+    
 }

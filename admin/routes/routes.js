@@ -310,17 +310,27 @@ router.post('/attendance', async (req, res) => {
 	const segmentNo = req.body.segmentNo;
 	const eventID = req.body.eventID;
 	const userID = req.body.userID;
-
-	const bool = await db.addAttendance(eventID, userID, segmentNo);
-
-	if (bool) {
-		console.log("SUCCESS!");
+  
+	try {
+	  const isSuccess = await db.addAttendance(eventID, userID, segmentNo);
+	  if (isSuccess) {
+		console.log('Attendance added successfully!');
+		res.status(200).json({ message: 'Attendance added successfully!' });
+	  } else {
+		throw new Error('Failed to add attendance.');
+	  }
+	} catch (error) {
+	  if (error.code === 'ER_DUP_ENTRY' || error.sqlState === '23000') {
+		console.error('Duplicate entry error:', error);
+		res.status(400).json({ error: 'Duplicate entry error. Attendance already exists.' });
+	  } else {
+		console.error('Error:', error);
+		res.status(500).json({ error: 'An error occurred while processing your request.' });
+	  }
 	}
-
-	res.status(200).json({
-		message: 'Received data successfully.'
-	});
-});
+  });
+  
+  
 
 router.get('/registeredUsers/:eventId', async (req, res) => {
 	const eventId = req.params.eventId;

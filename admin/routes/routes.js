@@ -398,8 +398,6 @@ router.get('/api/events/:OrganizerID', async (req, res) => {
 
 	try {
 		const events = await db.getUpcomingEvents(OrganizerID);
-		console.log("orgid  ",OrganizerID);
-		console.log(events);
 		res.json(events);
 	} catch (error) {
 		console.error('Error fetching segments:', error);

@@ -10,7 +10,7 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 // const express = require('express');
 // import { getSegments } from './frontenddb.js';
 
-
+const eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
 
 let scanning = false;
 let userIDVal;
@@ -161,6 +161,8 @@ function getValuesFromJSONString(jsonString) {
   }
   
   function populateModalWithSegments(segments) {
+    console.log('asd');
+    console.log(segments);
     openModal(segments);
     segments.forEach(segment => {
       console.log(segment.SegmentName);
@@ -230,7 +232,7 @@ function getValuesFromJSONString(jsonString) {
 
 
 function populateEvents(OrganizerID){
-  const eventModal = document.getElementById('selectEventModal');
+  const eventModalBody = document.getElementById('modalContentEvent');
   fetch(`/api/events/${OrganizerID}`)
   .then(response => {
     if (!response.ok) {
@@ -240,18 +242,33 @@ function populateEvents(OrganizerID){
   })
   .then(events => {
     console.log('events:', events);
-    // populateModalsEvents(events);
-    console.log('asd: ',orgId);
+    events.forEach(event => {
+      // Create a button element for each event
+      const button = document.createElement('button');
+      button.textContent = event.EventName; // Set the button text to event name
+      button.classList.add('btn', 'btn-primary', 'w-100', 'mb-2'); // Optionally add a class for styling
+      
+      button.addEventListener('click', () => {
+        console.log(`Button clicked for event ${event.eventID}`);
+        // openModalSegments(event.eventID);
+        getSegmentsAndOpenModal(event.eventID);
+        eventModal.hide() 
+      });
+
+      // Append the button to the modal
+      eventModalBody.appendChild(button);
+    });
   })
   .catch(error => {
     console.error('Error fetching segments:', error);
   });
 }
 
+
 // WHEN EJS IS OPENED SHOW BEGINNING MODAL
 document.addEventListener('DOMContentLoaded', function() {
   populateEvents(orgId);
   // Show the selectEventModal
-  var eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
+
   eventModal.show();
 });

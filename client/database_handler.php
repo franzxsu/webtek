@@ -340,10 +340,29 @@ function get_user_course_id($email)
     return $row['courseID'];
 }
 
+//given user id and event id, return his/her registraiton id, return null if none
+function get_registration_id($userID, $eventID)
+{
+    global $conn;
+
+    $stmt = $conn->prepare("SELECT RegistrationId from registrations WHERE userId = ? AND EventId = ?;");
+    $stmt->bind_param("ii", $userID, $eventID);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return null;
+    }
+
+    $row = $result->fetch_assoc();
+    return $row['RegistrationId'];
+}
+
 function get_user_organizations_all_name($email)
 {
   global $conn;
-  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE email = ?");
+  $stmt = $conn->prepare("SELECT organizationID FROM organizationmembers WHERE email = ? ");
   $stmt->bind_param("s", $email);
   $stmt->execute();
   $result = $stmt->get_result();

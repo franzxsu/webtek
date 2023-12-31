@@ -105,7 +105,8 @@ if(isset($_SESSION['user_id'])){
                                                                 $eventData = array(
                                                                     "userID" => $_SESSION['user_id'],
                                                                     "eventID" => $event['eventID'],
-                                                                    "registrationID" => "asd"
+                                                                    "registrationID" =>(string)get_registration_id($_SESSION['user_id'], $event['eventID']),
+                                                                    "userEmail" => $_SESSION['email']
                                                                 );
                                                                 
                                                                 $jsonEventData = json_encode($eventData);

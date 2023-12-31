@@ -26,6 +26,11 @@
 			<div class="d-flex flex-column" id="content-wrapper">
 				<div id="content">
 
+					<!-- NOTIFICATION -->
+					<div style="position: fixed; top: 20px; right: 20px; z-index: 999;" id="alertContainer">
+					</div>
+					<!-- end NOTIFICATION -->
+
 					<!-- MODAL FOR ASKINg WHAT EVENT -->
 					<div class="modal fade" id="selectEventModal" tabindex="-1" aria-labelledby="selectEvent" aria-hidden="true">
 						<div class="modal-dialog">
@@ -81,26 +86,16 @@
 					<div class="container">
 						<div class="col-xl-12">
 							<section class="contact-clean">
-								<!-- <form> -->
-									<h4 class="text-center">or input attendance manually</h4>
+								<form>
+									<h4 class="text-center">or input attendance manually by inputting email</h4>
 									<div class="mb-3">
-										<select class="form-select" name="name">
-											<option selected disabled>Select Registree</option>
-											<option value="Registree 1">darr@slu.edu.ph</option>
-											<option value="Registree 2">der@slu.edu.ph</option>
-										</select>
+										<input type="email" class="form-control" id="emailInput" placeholder="Enter email" required>
 									</div>
+								
 									<div class="mb-3">
-										<select class="form-select" name="event">
-											<option selected disabled>Select Event</option>
-											<option value="Event 1">Event name 1</option>
-											<option value="Event 2">another event</option>
-										</select>
+										<button class="btn btn-primary" type="submit">Submit</button>
 									</div>
-									<div class="mb-3">
-										<button class="btn btn-primary" type="">Attendance</button>
-									</div>
-								<!-- </form> -->
+								</form>
 								
 							</section>
 						</div>

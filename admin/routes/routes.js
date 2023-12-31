@@ -411,10 +411,21 @@ router.post('/setSessionVariables', (req, res) => {
 
 	req.session.eventID = eventID;
 	req.session.segmentNo = segmentNo;
+
+	console.log("EVENT ID SESSION: ",req.session.eventID );
+	console.log("SEGMENT  SESSION: ",req.session.segmentNo);
   
 	res.sendStatus(200); 
   });
   
+  router.get('/getAttendanceInfo', (req, res) => {
+	//check if the session variables are set
+	const eventID = req.session && req.session.eventID;
+	const segmentNo = req.session && req.session.segmentNo;
+  
+	// Send the information to the client-side JavaScript
+	res.json({ eventID, segmentNo });
+  });
 
 
 module.exports = router;

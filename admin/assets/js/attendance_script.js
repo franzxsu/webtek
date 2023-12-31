@@ -1,3 +1,6 @@
+var SESSION_EVENTID = null;
+var SESSION_SEGMENTNO = null;
+
 var qrcode = window.qrcode;
 const video = document.createElement("video");
 const canvasElement = document.getElementById("qr-canvas");
@@ -11,10 +14,15 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 // import { getSegments } from './frontenddb.js';
 
 const eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
+const myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+  keyboard: false
+});
 
 let scanning = false;
 let userIDVal;
 let eventIDVal;
+
+
 
 qrcode.callback = res => {
   console.log('QR SCANNED');
@@ -172,9 +180,7 @@ function getValuesFromJSONString(jsonString) {
   }
 
   function openModal(data, eventID) {
-    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-      keyboard: false
-    });
+    
 
     var modalContent = document.getElementById('modalContent');
     modalContent.innerHTML = ''; 
@@ -191,45 +197,17 @@ function getValuesFromJSONString(jsonString) {
       selectButton.classList.add('btn', 'btn-primary', 'w-100', 'mb-2');
       selectButton.textContent = segment.SegmentName;
 
-    //   selectButton.addEventListener('click', function() {
-
-
-    //     var postData = {
-    //       segmentNo: segment.SegmentNo,
-    //       eventID: eventIDVal,
-    //       userID: userIDVal
-    //     };
-  
-    //     fetch('/attendance', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify(postData)
-    //     })
-    //     .then(response => {
-    //       if (response.ok) {
-    //         alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
-            
-    //         console.log("ATTEMDANCE ADDED");
-    //         return response.json();
-    //       }
-    //       throw new Error('Network response was not ok.');
-    //     })
-    //     .then(data => {
-    //       console.log(data);
-    //     })
-    //     .catch(error => {
-    //       outputData.innerHTML = "Attendance already checked"
-    //     });
-    // });
-
 
     selectButton.addEventListener('click', function() {
       console.log("BTN CLICK");
       console.log(segment.SegmentNo);
       console.log(eventID);
       setSessionVariables(eventID, segment.SegmentNo);
+      myModal.hide();
+      SESSION_EVENTID = eventID;
+      SESSION_SEGMENTNO = segment.SegmentNo;
+      startChecking();
+      
     });
 
     //add buttons to the modal
@@ -277,16 +255,41 @@ function populateEvents(OrganizerID){
 }
 
 
-// WHEN EJS IS OPENED SHOW BEGINNING MODAL
+// WHEN EJS IS OPENED SHOW BEGINNING MODAL IF NO SESSION  
 document.addEventListener('DOMContentLoaded', function() {
-  populateEvents(orgId);
-  // Show the selectEventModal
+  fetch('/getAttendanceInfo')
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok');
+    })
+    .then(data => {
+      const { eventID, segmentNo } = data || {};
 
-  eventModal.show();
+      if (eventID && segmentNo) {
+        //do nothing
+        //if session already set
+
+        SESSION_EVENTID = eventID;
+        SESSION_SEGMENTNO = segmentNo;
+
+        startChecking();
+        console.log('attendance session info already exists');
+      } else {
+        populateEvents(orgId);
+        // Show the selectEventModal
+        eventModal.show();
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 });
 
 
-// Function to set multiple session variables via a POST request
+
+//set session variables via a POST request
 function setSessionVariables(eventID, segmentNo) {
   fetch('/setSessionVariables', {
     method: 'POST',
@@ -305,4 +308,35 @@ function setSessionVariables(eventID, segmentNo) {
     .catch(error => {
       console.error('Error:', error);
     });
+}
+
+function showAnAlert(message) {
+  // Create the alert element dynamically
+  const alertElement = document.createElement('div');
+  alertElement.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
+  alertElement.setAttribute('role', 'alert');
+  alertElement.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+
+  // Append the alert to a container in the DOM
+  const alertContainer = document.getElementById('alertContainer');
+  if (alertContainer) {
+    alertContainer.appendChild(alertElement);
+  }
+
+  // Close the alert after 3 seconds
+  setTimeout(() => {
+    alertElement.classList.remove('show');
+    alertElement.classList.add('hide');
+    setTimeout(() => {
+      alertElement.remove(); // Remove the alert from the DOM after it's hidden
+    }, 500); // Optional: Remove after transition duration
+  }, 3000);
+}
+
+function startChecking(){
+  showAnAlert(`Checking attendance for Event:${SESSION_EVENTID} segment ${SESSION_SEGMENTNO}`);
+  showAnAlert('click on the QR code to scan QR');
 }

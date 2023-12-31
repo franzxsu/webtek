@@ -402,6 +402,18 @@ router.get('/api/segments/:eventID', async (req, res) => {
 	}
 });
 
+router.get('/api/getUserId/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const userId = await db.getUserIdFromEmail(email);
+        res.json({ userId });
+    } catch (error) {
+        console.error('Error fetching uid:', error);
+        res.status(500).send('Error fetching uid');
+    }
+});
+
 router.get('/api/events/:OrganizerID', async (req, res) => {
 	const {
 		OrganizerID

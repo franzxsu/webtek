@@ -8,12 +8,12 @@ const video = document.createElement("video");
 const canvasElement = document.getElementById("qr-canvas");
 const canvas = canvasElement.getContext("2d");
 
+const attendanceForm = document.getElementById('attendanceForm');
 const qrResult = document.getElementById("qr-result");
 const outputData = document.getElementById("outputData");
 const btnScanQR = document.getElementById("btn-scan-qr");
 // const qrForGettingSegments = document.getElementById("x");
 // const express = require('express');
-// import { getSegments } from './frontenddb.js';
 
 const eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
 const myModal = new bootstrap.Modal(document.getElementById('myModal'), {
@@ -326,9 +326,17 @@ function setSessionVariables(eventID, segmentNo) {
     });
 }
 
-function showAnAlert(message) {
+function showAnAlert(message, type) {
   // Create the alert element dynamically
   const alertElement = document.createElement('div');
+
+if(type=='info'){
+  alertElement.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+}
+else if (type=='error'){
+  alertElement.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show');
+}
+
   alertElement.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
   alertElement.setAttribute('role', 'alert');
   alertElement.innerHTML = `
@@ -349,15 +357,17 @@ function showAnAlert(message) {
     setTimeout(() => {
       alertElement.remove();
     }, 500);
-  }, 3000);
+  }, 6000);
 }
 
 function startChecking(){
-  showAnAlert(`Checking attendance for Event:${SESSION_EVENTID} segment ${SESSION_SEGMENTNO}`);
-  showAnAlert('click on the QR code to scan QR');
+  showAnAlert(`Checking attendance for Event:${SESSION_EVENTID} segment ${SESSION_SEGMENTNO}`, 'info');
+  showAnAlert('click on the QR code to scan QR', 'info');
 }
 
 function postAttendance(segment, event, user, email){
+
+  
     var postData = {
       segmentNo: segment,
       eventID: event,
@@ -365,6 +375,22 @@ function postAttendance(segment, event, user, email){
       userEmail: email
     };
 
+    fetch(`/api/isRegistered/?email=${email}&user=${user}`,{
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+    .then(response=>{
+      if (response.ok) {
+        return response.json();
+      }
+      showAnAlert(`user ${email} is not registered to the event`, 'error');
+      return;
+    })
+  
+  
     fetch('/attendance', {
       method: 'POST',
       headers: {
@@ -376,17 +402,47 @@ function postAttendance(segment, event, user, email){
       if (response.ok) {
         return response.json();
       }
-      showAnAlert("Attendance has already been added!");
+      showAnAlert("Attendance has already been added!", 'error');
     })
     .then(data => {
       console.log("ze data "+data);
-      showAnAlert(data.message);
+      showAnAlert(data.message, 'info');
     })
     .catch(error => {
       console.error('ASJ Error occurred:', error);
     });
-    
-    
-    
-    
 }
+
+attendanceForm.addEventListener('submit', function(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    var uid = null;
+
+    fetch(`/api/getUserId/${email}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const userId = data.userId;
+        console.log(userId[0].userId);
+        uid = userId[0].userId
+        postAttendance(SESSION_SEGMENTNO, SESSION_EVENTID, uid, email);
+    })
+    .catch(error => {
+      if (error.message === "Cannot read properties of undefined (reading 'userId')") {
+            showAnAlert('User does not exist!', 'error');
+            // Additional actions...
+        } else {
+            // Handle other errors
+            console.error('Error:', error);
+        }
+    });
+
+
+
+    
+});

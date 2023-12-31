@@ -129,6 +129,21 @@ function addAttendance(eventID, userID, segmentID){
   });
 }
 
+function getUserIdFromEmail(email){
+  return new Promise((resolve, reject) => {
+    const query = "SELECT userId FROM users WHERE email = ?";
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', query);
+        console.error('Error:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
 
 
 // Not sure if this works
@@ -363,5 +378,6 @@ module.exports = {
     getRegistered,
     getAttendance,
     getAttendanceEmails,
-    getFeedbacks
+    getFeedbacks,
+    getUserIdFromEmail
 };  

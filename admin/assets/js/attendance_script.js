@@ -98,13 +98,14 @@ function scan() {
   }
 }
 
+//NOT WORKING
 function isValid(str) {
   try {
     const data = JSON.parse(str);
     if (
       typeof data === 'object' &&
       data !== null &&
-      Object.keys(data).length === 2 &&
+      Object.keys(data).length === 3 &&
       'userID' in data &&
       'eventID' in data &&
       /^\d+$/.test(data.userID) &&
@@ -153,23 +154,24 @@ function getValuesFromJSONString(jsonString) {
       })
       .then(segments => {
         console.log('Segments:', segments);
-        populateModalWithSegments(segments);
+        populateModalWithSegments(segments, eventID);
       })
       .catch(error => {
         console.error('Error fetching segments:', error);
       });
   }
   
-  function populateModalWithSegments(segments) {
+  function populateModalWithSegments(segments, eventID) {
     console.log('asd');
     console.log(segments);
-    openModal(segments);
+
     segments.forEach(segment => {
       console.log(segment.SegmentName);
+      openModal(segments, eventID);
     });
   }
 
-  function openModal(data) {
+  function openModal(data, eventID) {
     var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
       keyboard: false
     });
@@ -189,38 +191,48 @@ function getValuesFromJSONString(jsonString) {
       selectButton.classList.add('btn', 'btn-primary', 'w-100', 'mb-2');
       selectButton.textContent = segment.SegmentName;
 
-      selectButton.addEventListener('click', function() {
+    //   selectButton.addEventListener('click', function() {
 
 
-        var postData = {
-          segmentNo: segment.SegmentNo,
-          eventID: eventIDVal,
-          userID: userIDVal
-        };
+    //     var postData = {
+    //       segmentNo: segment.SegmentNo,
+    //       eventID: eventIDVal,
+    //       userID: userIDVal
+    //     };
   
-        fetch('/attendance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postData)
-        })
-        .then(response => {
-          if (response.ok) {
-            alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
+    //     fetch('/attendance', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(postData)
+    //     })
+    //     .then(response => {
+    //       if (response.ok) {
+    //         alert('ATTENDANCE FOR SEGMENT: ' + segment.SegmentNo + 'OF EVENTID: '+eventIDVal+' OF USER '+userIDVal+'ADDED TO DATABASE');
             
-            console.log("ATTEMDANCE ADDED");
-            return response.json();
-          }
-          throw new Error('Network response was not ok.');
-        })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          outputData.innerHTML = "Attendance already checked"
-        });
+    //         console.log("ATTEMDANCE ADDED");
+    //         return response.json();
+    //       }
+    //       throw new Error('Network response was not ok.');
+    //     })
+    //     .then(data => {
+    //       console.log(data);
+    //     })
+    //     .catch(error => {
+    //       outputData.innerHTML = "Attendance already checked"
+    //     });
+    // });
+
+
+    selectButton.addEventListener('click', function() {
+      console.log("BTN CLICK");
+      console.log(segment.SegmentNo);
+      console.log(eventID);
+      setSessionVariables(eventID, segment.SegmentNo);
     });
+
+    //add buttons to the modal
       selectButtonDiv.appendChild(selectButton);
       rowDiv.appendChild(selectButtonDiv);
       modalContent.appendChild(rowDiv);
@@ -272,3 +284,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
   eventModal.show();
 });
+
+
+// Function to set multiple session variables via a POST request
+function setSessionVariables(eventID, segmentNo) {
+  fetch('/setSessionVariables', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ eventID, segmentNo }),
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Session variables updated successfully!');
+      } else {
+        console.error('Failed to update session variables.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}

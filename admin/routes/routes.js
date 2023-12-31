@@ -405,4 +405,16 @@ router.get('/api/events/:OrganizerID', async (req, res) => {
 	}
 });
 
+//SET SESSION VARIABLES ENDPOINT
+router.post('/setSessionVariables', (req, res) => {
+	const { eventID, segmentNo } = req.body;
+
+	req.session.eventID = eventID;
+	req.session.segmentNo = segmentNo;
+  
+	res.sendStatus(200); 
+  });
+  
+
+
 module.exports = router;

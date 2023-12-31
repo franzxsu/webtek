@@ -361,7 +361,8 @@ function postAttendance(segment, event, user, email){
     var postData = {
       segmentNo: segment,
       eventID: event,
-      userID: user
+      userID: user,
+      userEmail: email
     };
 
     fetch('/attendance', {
@@ -373,16 +374,16 @@ function postAttendance(segment, event, user, email){
     })
     .then(response => {
       if (response.ok) {
-        showAnAlert(`${email} has attended the event!`);
         return response.json();
       }
-      throw new Error('Network response was not ok.');
+      showAnAlert("Attendance has already been added!");
     })
     .then(data => {
-      console.log(data);
+      console.log("ze data "+data);
+      showAnAlert(data.message);
     })
     .catch(error => {
-      outputData.innerHTML = "Attendance already checked"
+      console.error('ASJ Error occurred:', error);
     });
     
     

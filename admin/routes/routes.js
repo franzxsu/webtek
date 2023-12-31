@@ -310,12 +310,13 @@ router.post('/attendance', async (req, res) => {
 	const segmentNo = req.body.segmentNo;
 	const eventID = req.body.eventID;
 	const userID = req.body.userID;
+	const email = req.body.userEmail;
   
 	try {
 	  const isSuccess = await db.addAttendance(eventID, userID, segmentNo);
 	  if (isSuccess) {
 		console.log('Attendance added successfully!');
-		res.status(200).json({ message: 'Attendance added successfully!' });
+		res.status(200).json({ message: `${email} has attended the event!`});
 	  } else {
 		throw new Error('Failed to add attendance.');
 	  }

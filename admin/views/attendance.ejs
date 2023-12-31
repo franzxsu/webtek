@@ -13,6 +13,11 @@
 		<link rel="stylesheet" href="/assets/css/modified.css">
 	</head>
 	<!-- QR CODE SCANNER -->
+	
+<script>
+	// pass session org id to javascript
+    const orgId = '<%= orgId %>';
+  </script>
     <script type="module" src="assets/js/database_handler.js"></script>
 	<script type="module" src="assets/js/attendance_script.js"></script>
 	<body id="page-top">
@@ -20,6 +25,41 @@
 			<%- include('partials/sidebar.ejs') %>
 			<div class="d-flex flex-column" id="content-wrapper">
 				<div id="content">
+
+					<!-- MODAL FOR ASKINg WHAT EVENT -->
+					<div class="modal fade" id="selectEventModal" tabindex="-1" aria-labelledby="selectEvent" aria-hidden="true">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h5 class="modal-title" id="exampleModalLabel">Select Event</h5>
+							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+							  <div id="modalContent">
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <!-- END MODAL -->
+
+					  <!-- MODAL FOR ASKINg WHAT SEGMENT -->
+					<div class="modal fade" id="selectSegmentModal" tabindex="-1" aria-labelledby="selectSegment" aria-hidden="true">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h5 class="modal-title" id="exampleModalLabel">Select Segment</h5>
+							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+							  <div id="modalContent">
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <!-- END MODAL -->
+
 					<%- include('partials/header.ejs') %>
 					<div class="container-fluid">
 						<h3 class="text-dark mb-1"></h3>

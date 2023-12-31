@@ -10,6 +10,8 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 // const express = require('express');
 // import { getSegments } from './frontenddb.js';
 
+
+
 let scanning = false;
 let userIDVal;
 let eventIDVal;
@@ -225,4 +227,31 @@ function getValuesFromJSONString(jsonString) {
     // Show the modal
     myModal.show();
   }
-//HARDCODE INTERNAL SQL BECAUSE EXPORTING DOES NOT WORK!!!!fix
+
+
+function populateEvents(OrganizerID){
+  const eventModal = document.getElementById('selectEventModal');
+  fetch(`/api/events/${OrganizerID}`)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(events => {
+    console.log('events:', events);
+    // populateModalsEvents(events);
+    console.log('asd: ',orgId);
+  })
+  .catch(error => {
+    console.error('Error fetching segments:', error);
+  });
+}
+
+// WHEN EJS IS OPENED SHOW BEGINNING MODAL
+document.addEventListener('DOMContentLoaded', function() {
+  populateEvents(orgId);
+  // Show the selectEventModal
+  var eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
+  eventModal.show();
+});

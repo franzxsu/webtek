@@ -160,7 +160,7 @@ function changeEventAttribute(eventID, headerOfTableToChange, newValue){
 function getCompletedEvents(orgID){
   return new Promise((resolve, reject) => {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Get current date in MySQL datetime format
-    const query = "SELECT * FROM events WHERE OrganizerId = ? AND eventDateEnd < ?";
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND EventDateEnd < ?";
     connection.query(query, [orgID, currentDate], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
@@ -174,7 +174,7 @@ function getCompletedEvents(orgID){
 function getUpcomingEvents(orgID){
   return new Promise((resolve, reject) => {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const query = "SELECT * FROM events WHERE OrganizerId = ? AND eventDateStart > ?";
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND EventDateStart > ?";
     connection.query(query, [orgID, currentDate], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
@@ -318,6 +318,7 @@ function createEvent(orgid, eventName, eventInfo, eventDateStart, eventDateEnd, 
       if (error) {
         console.error('Error querying database:', error);
         reject(error);
+        return;
       } else {
         const eventID = results.insertId;
         resolve(eventID);

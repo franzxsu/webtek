@@ -299,12 +299,12 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 			}
 		} 
 	}catch (error) {
-			console.error('Error creating event:', error);
-			res.status(500).json({
-				message: 'Error creating event'
-			});
-		}
-	});
+		console.error('Error in route handler:', error);
+		req.session.eventSuccess = false;
+		req.session.errorMessage = "An error occurred while creating the event"; // Update error message
+		res.redirect('/index');
+	}
+});
 
 router.post('/attendance', async (req, res) => {
 	const segmentNo = req.body.segmentNo;
@@ -385,6 +385,22 @@ router.get('/api/segments/:eventID', async (req, res) => {
 	try {
 		const segments = await db.getSegments(eventID);
 		res.json(segments);
+	} catch (error) {
+		console.error('Error fetching segments:', error);
+		res.status(500).send('Error fetching segments');
+	}
+});
+
+router.get('/api/events/:OrganizerID', async (req, res) => {
+	const {
+		OrganizerID
+	} = req.params;
+
+	try {
+		const events = await db.getUpcomingEvents(OrganizerID);
+		console.log("orgid  ",OrganizerID);
+		console.log(events);
+		res.json(events);
 	} catch (error) {
 		console.error('Error fetching segments:', error);
 		res.status(500).send('Error fetching segments');

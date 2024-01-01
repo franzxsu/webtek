@@ -414,6 +414,29 @@ router.get('/api/getUserId/:email', async (req, res) => {
     }
 });
 
+router.post('/api/isRegistered', async (req, res) => {
+    const { event, user } = req.query;
+
+	console.log("HEY");
+	console.log(event);
+	console.log(user);
+
+    try {
+        const isRegistered = await db.checkRegistration(event, user);
+
+        if (isRegistered) {
+            // If registered, send a success response
+            res.status(200).json({ message: 'User is registered' });
+        } else {
+            // If not registered, send a failure response
+            res.status(404).json({ error: 'User is not registered' });
+        }
+    } catch (error) {
+        console.error('Error checking registration:', error);
+        res.status(500).json({ error: 'Error checking registration' });
+    }
+});
+
 router.get('/api/events/:OrganizerID', async (req, res) => {
 	const {
 		OrganizerID

@@ -365,53 +365,58 @@ function startChecking(){
   showAnAlert('click on the QR code to scan QR', 'info');
 }
 
-function postAttendance(segment, event, user, email){
-
-  
-    var postData = {
+function postAttendance(segment, event, user, email) {
+  var postData = {
       segmentNo: segment,
       eventID: event,
       userID: user,
       userEmail: email
-    };
+  };
 
-    fetch(`/api/isRegistered/?email=${email}&user=${user}`,{
-      method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-    })
-    .then(response=>{
-      if (response.ok) {
-        return response.json();
-      }
-      showAnAlert(`user ${email} is not registered to the event`, 'error');
-      return;
-    })
-  
-  
-    fetch('/attendance', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(postData)
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      showAnAlert("Attendance has already been added!", 'error');
-    })
-    .then(data => {
-      console.log("ze data "+data);
-      showAnAlert(data.message, 'info');
-    })
-    .catch(error => {
-      console.error('ASJ Error occurred:', error);
-    });
+  fetch(`/api/isRegistered/?event=${event}&user=${user}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+      })
+      .then(response => {
+          if (!response.ok) {
+              showAnAlert(`User ${email} is not registered to the event`, 'error');
+              throw new Error('User not registered');
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log(data);
+          //proceed with the next fetch or other actions
+          fetch('/attendance', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(postData)
+              })
+              .then(response => {
+                  if (!response.ok) {
+                      showAnAlert('Attendance has already been added!', 'error');
+                      throw new Error('Attendance already added');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  console.log(data);
+                  showAnAlert(data.message, 'info');
+              })
+              .catch(error => {
+                  console.error('Attendance error:', error);
+              });
+      })
+      .catch(error => {
+          console.error('Error occurred:', error);
+      });
 }
+
 
 attendanceForm.addEventListener('submit', function(event) {
     // Prevent the default form submission behavior

@@ -144,6 +144,25 @@ function getUserIdFromEmail(email){
   });
 }
 
+function checkRegistration(event, user) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT RegistrationId FROM registrations WHERE EventId = ? AND userId = ?";
+    connection.query(query, [event, user], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', query);
+        console.error('Error:', error);
+        reject(error);
+      } else {
+        if (results && results.length > 0) {
+          resolve(results);
+        } else {
+          reject(new Error('No registration found'));
+        }
+      }
+    });
+  });
+}
+
 
 
 // Not sure if this works
@@ -379,5 +398,6 @@ module.exports = {
     getAttendance,
     getAttendanceEmails,
     getFeedbacks,
-    getUserIdFromEmail
+    getUserIdFromEmail,
+    checkRegistration
 };  

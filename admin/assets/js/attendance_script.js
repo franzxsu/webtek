@@ -15,6 +15,8 @@ const btnScanQR = document.getElementById("btn-scan-qr");
 // const qrForGettingSegments = document.getElementById("x");
 // const express = require('express');
 
+const changeEventBtn = document.getElementById('changeEventBtn');
+
 const eventModal = new bootstrap.Modal(document.getElementById('selectEventModal'));
 const myModal = new bootstrap.Modal(document.getElementById('myModal'), {
   keyboard: false
@@ -446,8 +448,13 @@ attendanceForm.addEventListener('submit', function(event) {
             console.error('Error:', error);
         }
     });
-
-
-
-    
+});
+changeEventBtn.addEventListener('click', () => {
+  fetch('/clearEvent', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+  })
+  location.reload();
 });

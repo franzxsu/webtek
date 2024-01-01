@@ -464,6 +464,17 @@ router.post('/setSessionVariables', (req, res) => {
 	res.sendStatus(200); 
   });
   
+  router.post('/clearEvent', (req, res) => {
+    delete req.session.eventID;
+    delete req.session.segmentNo;
+
+    console.log("EVENT ID SESSION: ", req.session.eventID);
+    console.log("SEGMENT  SESSION: ", req.session.segmentNo);
+
+    res.sendStatus(200);
+});
+
+
   router.get('/getAttendanceInfo', (req, res) => {
 	//check if the session variables are set
 	const eventID = req.session && req.session.eventID;

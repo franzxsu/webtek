@@ -46,7 +46,10 @@ router.get('/index', async (req, res) => {
             orgId: req.session.userData.OrganizerID,
 			newEventId: newEventId,
             success: success,
-            currentPath: req.path
+            currentPath: req.path,
+			orgOngoingEvents: await db.getOngoingEvents(req.session.userData.OrganizerID),
+			orgUpcomingEvents: await db.getUpcomingEvents(req.session.userData.OrganizerID),
+			orgPastEvents: await db.getCompletedEvents(req.session.userData.OrganizerID)
         });
     } else {
         res.redirect('/login');

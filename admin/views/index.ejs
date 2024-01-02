@@ -96,7 +96,6 @@
                                               <div class="col-sm-3">
                                                 <label for="numberOfInputs" class="form-label">Segments:</label>
                                                 <select class="form-select" id="numberOfInputs">
-                                                  <option value="0">0</option>
                                                   <option value="1">1</option>
                                                   <option value="2">2</option>
                                                   <option value="3">3</option>
@@ -175,7 +174,238 @@
                     </div>
 
                     <!-- END OF MODAL -->
-                    <%- include('partials/samplecalendar.ejs') %> 
+                    
+
+                    <div class="accordion" role="tablist" id="accordion-1">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" role="tab">
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">Ongoing Events</button>
+                            </h2>
+                            <div class="accordion-collapse collapse item-1" role="tabpanel" data-bs-parent="#accordion-1">
+                                <div class="accordion-body">
+                                    <% if (orgOngoingEvents.length === 0) { %>
+                                        <div class="alert alert-warning mt-2" id="noOrgEventsAlert">
+                                            There are no current ongoing events.
+                                        </div>
+                                    <% } else { %>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <!-- Table headers -->
+                                                <thead>
+                                                    <tr>
+                                                        <!-- Header cells -->
+                                                        <th>Event Name</th>
+                                                        <th>Info</th>
+                                                        <th>Date Start</th>
+                                                        <th>Date End</th>
+                                                        <th>Venue</th>
+                                                        <th>Registered</th>
+                                                        <th>Attendees</th>
+                                                        <th>Info</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Loop through events -->
+                                                    <% orgOngoingEvents.forEach(event => { %>
+                                                        <!-- MODAL FOR ATTENDANCE ON EVENT -->
+                                                        <div class="modal fade" id="removeEventModal_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+                                                            <!-- Modal content here , populated via js (events_script.js)-->
+                                                            <!-- Modal content -->
+                                                        </div>
+                                                        <!-- MODAL END -->
+                                                        <tr>
+                                                            <!-- Data cells -->
+                                                            <td><%= event.EventName %></td>
+                                                            <td><%= event.EventInfo %></td>
+                                                            <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                                            <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                                            <td><%= event.EventLocation %></td>
+                                                            <td class="eventReg" id="eventRegisteredFor_<%= event.eventID %>"></td>
+                                                            <td class="eventAttended" id="eventAttendedFor_<%= event.eventID %>"></td>
+                                                            <td>todo</td>
+                                                        </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" role="tab">
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-2" aria-expanded="false" aria-controls="accordion-1 .item-2">Upcoming Events</button>
+                            </h2>
+                            <div class="accordion-collapse collapse item-2" role="tabpanel" data-bs-parent="#accordion-1">
+                                <div class="accordion-body">
+                                    <% if (orgUpcomingEvents.length === 0) { %>
+                                        <div class="alert alert-warning mt-2" id="noUpcomingEventsAlert">
+                                            There are no upcoming events.
+                                        </div>
+                                    <% } else { %>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <!-- Table headers -->
+                                                <thead>
+                                                    <tr>
+                                                        <!-- Header cells -->
+                                                        <th>Event Name</th>
+                                                        <th>Event Info</th>
+                                                        <th>Date</th>
+                                                        <th>Venue</th>
+                                                        <th>Registered</th>
+                                                        <th>Edit Event</th>
+                                                        <th>Cancel</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Loop through events -->
+                                                    <% orgUpcomingEvents.forEach(event => { %>
+                                                         <!-- MODAL FOR REMOVING EVENT -->
+                                                    <div class="modal fade" id="removeEventModal_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <!-- Modal content here -->
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Cancel event: <%= event.EventName %></h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <p>This action cannot be undone</p>
+                                                                    </div>
+                                                                    <form id="removeOrgMemberForm_<%= event.eventID %>" action="/removeEvent" method="POST">
+                                                                        <input type="hidden" name="eventID" value="<%= event.eventID %>">
+                                                                        <button type="submit" class="btn btn-danger">Cancel event</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- MODAL END -->
+                                                        <tr>
+                                                            <!-- Data cells -->
+                                                            <td><%= event.EventName %></td>
+                                                            <td><%= event.EventInfo %></td>
+                                                            <td><p><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) %> - <%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) %></p></td>
+                                                            <td><%= event.EventLocation %></td>
+                                                            <td class="eventReg" id="eventRegisteredFor_<%= event.eventID %>"></td>
+                                                            <td><a href="">edit</a></td>
+                                                            <td>
+                                                                <button class="btn btn-danger btn-sm d-none d-sm-inline-block remove-member-btn" data-bs-toggle="modal" data-bs-target="#removeEventModal_<%= event.eventID %>">
+                                                                    <i class="fas fa-sm text-white-50"></i>&nbsp;Cancel
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" role="tab">
+                                <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-3" aria-expanded="false" aria-controls="accordion-1 .item-3">Completed Events</button>
+                            </h2>
+                            <div class="accordion-collapse collapse show item-3" role="tabpanel" data-bs-parent="#accordion-1">
+                                <div class="accordion-body">
+                                    <% if (orgPastEvents.length === 0) { %>
+                                        <div class="alert alert-warning mt-2" id="noPastEventsAlert">
+                                            There are no completed events.
+                                        </div>
+                                    <% } else { %>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <!-- Table headers -->
+                                                <thead>
+                                                    <tr>
+                                                        <!-- Header cells -->
+                                                        <th>Event Name</th>
+                                                        <th>Info</th>
+                                                        <th>Date started</th>
+                                                        <th>Date ended</th>
+                                                        <th>Venue</th>
+                                                        <th>Attendees</th>
+                                                        <th>Attendance Report</th>
+                                                        <th>View feedbacks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Loop through events -->
+                                                    <% orgPastEvents.forEach(event => { %>
+                                                        <!-- MODAL FOR checking feedbacks -->
+                                                    <div class="modal fade" id="feedbacks_<%= event.eventID %>" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Feedbacks for <%= event.EventName %></h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body feedbacksForEvent" id="modalFeedback_<%= event.eventID %>">
+                                                                    <h3 id="removeIfMeron_<%= event.eventID %>">No feedbacks for this event yet...</h3>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- MODAL END -->
+                                                        <tr>
+                                                            <!-- Data cells -->
+                                                            <td><%= event.EventName %></td>
+                                                            <td><%= event.EventInfo %></td>
+                                                            <td><%= new Date(event.EventDateStart).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                                            <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
+                                                            <td><%= event.EventLocation %></td>
+                                                            <td>
+                                                                <p class="eventReg" id="eventRegisteredFor_<%= event.eventID %>" style="display: inline;"></p>
+                                                                /
+                                                                <p class="eventAttended" id="eventAttendedFor_<%= event.eventID %>" style="display: inline;"></p>
+                                                            </td>
+                                                            <td>
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">attended</a>
+                                                                <!-- MODAL FOR checking ATTENDEES -->
+                                                        <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">
+                                                                    
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body" id="putEmailsHere_<%= event.eventID %>">
+                                                                            <!-- emails dynamically generated by javascript  -->
+                                                                            <!-- example: <p class="emailAttended_<%= event.eventID %>">email@slu.edu.ph</p> -->
+                                                                    </div>
+                                                                    <div class="modal-footer" id="putEmailsHereFooter_<%= event.eventID %>">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                        <button type="button" class="btn btn-dark downloadEmailButton" data-bs-dismiss="modal" id="downloadBtn_<%= event.eventID %>">download .csv</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- MODAL END -->
+                                                            </td>
+                                                            <td>
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#feedbacks_<%= event.eventID %>">feedbacks</a>
+                                                            </td>
+                                                        </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <%- include('partials/footer.ejs') %>

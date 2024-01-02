@@ -10,7 +10,7 @@ const canvas = canvasElement.getContext("2d");
 
 const attendanceForm = document.getElementById('attendanceForm');
 const qrResult = document.getElementById("qr-result");
-const outputData = document.getElementById("outputData");
+
 const btnScanQR = document.getElementById("btn-scan-qr");
 // const qrForGettingSegments = document.getElementById("x");
 // const express = require('express');
@@ -63,8 +63,6 @@ qrcode.callback = res => {
         
         //ADD ATTENDANCE IF ALL GOOD
         postAttendance(SESSION_SEGMENTNO, SESSION_EVENTID, userID, userEmail);
-
-        outputData.innerText = "is true valid";
 
       } else {
         

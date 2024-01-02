@@ -24,6 +24,7 @@
     <!-- <script src="/scripts/drag_and_drop.js"></script> -->
 </head>
 
+<script type="module" src="assets/js/events_script.js"></script>
 
 
 <body id="page-top">
@@ -222,7 +223,32 @@
                                                             <td><%= event.EventLocation %></td>
                                                             <td class="eventReg" id="eventRegisteredFor_<%= event.eventID %>"></td>
                                                             <td class="eventAttended" id="eventAttendedFor_<%= event.eventID %>"></td>
-                                                            <td>todo</td>
+                                                            <td>
+
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#info_<%= event.eventID %>">view</a>
+                                                                <!-- MODAL FOR event info -->
+                                                                    <div class="modal fade" id="info_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered">
+                                                                            <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">
+                                                                                
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="removeMemberModalLabel">Event info</h5>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body" id="putEmailsHereOngoing_<%= event.eventID %>">
+                                                                                    <h2 class="registeredEmails" id="putRegisteredEmailsHere_<%= event.eventID %>">REGISTERED:</h2>
+                                                                                        
+                                                                                    <h2 class="attendedEmails" id="putAttendedEmailsHere_<%= event.eventID %>">ATTENDED:</h2>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                            </td>
                                                         </tr>
                                                     <% }); %>
                                                 </tbody>
@@ -363,32 +389,31 @@
                                                             <td><%= new Date(event.EventDateEnd).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) %></td>
                                                             <td><%= event.EventLocation %></td>
                                                             <td>
-                                                                <p class="eventReg" id="eventRegisteredFor_<%= event.eventID %>" style="display: inline;"></p>
-                                                                /
                                                                 <p class="eventAttended" id="eventAttendedFor_<%= event.eventID %>" style="display: inline;"></p>
+                                                                /
+                                                                <p class="eventReg" id="eventRegisteredFor_<%= event.eventID %>" style="display: inline;"></p>
                                                             </td>
                                                             <td>
                                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#attendees_<%= event.eventID %>">attended</a>
                                                                 <!-- MODAL FOR checking ATTENDEES -->
-                                                        <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">
-                                                                    
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    <div class="modal fade" id="attendees_<%= event.eventID %>" tabindex="-1" aria-labelledby="attendees" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered">
+                                                                            <div class="modal-content viewAttendedEmails" id="attendedEmailContainerFor_<%=event.eventID%>">
+                                                                                
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="removeMemberModalLabel">List of attendees</h5>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body" id="putEmailsHere_<%= event.eventID %>">
+                                                                                </div>
+                                                                                <div class="modal-footer" id="putEmailsHereFooter_<%= event.eventID %>">
+                                                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+                                                                                    <button type="button" class="btn btn-dark downloadEmailButton" data-bs-dismiss="modal" id="downloadBtn_<%= event.eventID %>">download .csv</button>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="modal-body" id="putEmailsHere_<%= event.eventID %>">
-                                                                            <!-- emails dynamically generated by javascript  -->
-                                                                            <!-- example: <p class="emailAttended_<%= event.eventID %>">email@slu.edu.ph</p> -->
-                                                                    </div>
-                                                                    <div class="modal-footer" id="putEmailsHereFooter_<%= event.eventID %>">
-                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
-                                                                        <button type="button" class="btn btn-dark downloadEmailButton" data-bs-dismiss="modal" id="downloadBtn_<%= event.eventID %>">download .csv</button>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                         
                                                         <!-- MODAL END -->
                                                             </td>

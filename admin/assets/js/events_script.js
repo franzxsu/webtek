@@ -1,5 +1,8 @@
 const eventIDs = document.querySelectorAll('.eventReg');
 const eventIDsAtt = document.querySelectorAll('.eventAttended');
+
+const emails = document.querySelectorAll('.registeredEmails')
+
 const eventAttendEmail = document.querySelectorAll('.viewAttendedEmails');
 const feedbacks = document.querySelectorAll('.feedbacksForEvent');
 
@@ -18,6 +21,47 @@ eventIDs.forEach((element) => {
             console.error('Error fetching registered users:', error);
         });
 });
+
+emails.forEach((element) => {
+	const eventID = element.id.split('_')[1];
+	console.log(eventID);
+	fetch(`/registeredUsersEmails/${eventID}`)
+	  .then(response => response.json())
+	  .then(data => {
+		const eventElement = document.getElementById(`putRegisteredEmailsHere_${eventID}`);
+		if (eventElement) {
+		  for (let i = 0; i < data.rows.length; i++) {
+			const email = data.rows[i];
+			const pElement = document.createElement('p');
+			pElement.textContent = email;
+			eventElement.appendChild(pElement);
+		  }
+		}
+	  })
+	  .catch(error => {
+		console.error('Error fetching registered emails:', error);
+	  });
+
+	  fetch(`/attendedUsersEmails/${eventID}`)
+	  .then(response => response.json())
+	  .then(data => {
+		const eventElement = document.getElementById(`putAttendedEmailsHere_${eventID}`);
+		console.log(data)
+		if (eventElement) {
+		  for (let i = 0; i < data.rows.length; i++) {
+			console.log(data)
+			const email = data.rows[i].email;
+			const pElement = document.createElement('p');
+			pElement.textContent = email;
+			eventElement.appendChild(pElement);
+		  }
+		}
+	  })
+	  .catch(error => {
+		console.error('Error fetching registered emails:', error);
+	  });
+  });
+  
 
 eventIDsAtt.forEach((element) => {
 	const eventID = element.id.split('_')[1];
@@ -38,14 +82,25 @@ eventAttendEmail.forEach((element) => {
 		console.log(response);
   
 		console.log("ROWS: " + response.rows.length + " FOR EVENT ID: " + eventID);
+		const emailsContainer = document.getElementById(`putEmailsHere_${eventID}`);
+  
 		for (let i = 0; i < response.rows.length; i++) {
 		  const elementEmail = document.createElement("p");
 		  elementEmail.innerText = response.rows[i].email;
 		  elementEmail.classList.add(`emailAttended_${eventID}`);
-		  document.getElementById(`putEmailsHere_${eventID}`).insertBefore(elementEmail, this.firstChild);
+  
+		  //append each email element to the emailsContainer
+		  emailsContainer.appendChild(elementEmail);
+  
+		  const removeMeElement = document.getElementById('removeMeIfMeronEmail');
+		  if (removeMeElement) {
+			removeMeElement.remove(); //remove the element if it exists
+		  }
 		}
 	  });
   });
+  
+  
 
   
   feedbacks.forEach((element) => {

@@ -342,7 +342,34 @@ router.get('/registeredUsers/:eventId', async (req, res) => {
 		const rows = await db.getRegistered(eventId);
 		const rowCount = rows && rows.length > 0 ? rows.length : 0;
 		res.send({
-			rowCount
+			rowCount,
+			rows
+		});
+	} catch (error) {
+		console.error('Error fetching registered users:', error);
+		res.status(500).send('Error fetching registered users');
+	}
+});
+
+router.get('/registeredUsersEmails/:eventId', async (req, res) => {
+	const eventId = req.params.eventId;
+	try {
+		const rows = await db.getRegisteredEmails(eventId);
+		res.send({
+			rows
+		});
+	} catch (error) {
+		console.error('Error fetching registered users:', error);
+		res.status(500).send('Error fetching registered users');
+	}
+});
+
+router.get('/attendedUsersEmails/:eventId', async (req, res) => {
+	const eventId = req.params.eventId;
+	try {
+		const rows = await db.getAttendanceEmails(eventId);
+		res.send({
+			rows
 		});
 	} catch (error) {
 		console.error('Error fetching registered users:', error);

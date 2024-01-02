@@ -205,11 +205,11 @@ function getCompletedEvents(orgID){
     });
   });
 }
-function getUpcomingEvents(orgID){
+function getUpcomingEvents(orgID) {
   return new Promise((resolve, reject) => {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const query = "SELECT * FROM events WHERE OrganizerId = ? AND EventDateStart > ?";
-    connection.query(query, [orgID, currentDate], (error, results) => {
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND (EventDateStart >= ? OR (EventDateStart < ? AND EventDateEnd >= ?))";
+    connection.query(query, [orgID, currentDate, currentDate, currentDate], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
         reject(error);
@@ -219,6 +219,7 @@ function getUpcomingEvents(orgID){
     });
   });
 }
+
 
 function getRegistered(eventID) {
   return new Promise((resolve, reject) => {
@@ -233,6 +234,37 @@ function getRegistered(eventID) {
     });
   });
 }
+
+function getRegisteredEmails(eventID) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT u.email FROM registrations r JOIN users u ON r.userId = u.userId WHERE r.EventId = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        const emails = results.map(row => row.email);
+        resolve(emails);
+      }
+    });
+  });
+}
+
+function getAttendedEmails(eventID) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT u.email FROM registrations r JOIN users u ON r.userId = u.userId WHERE r.EventId = ?";
+    connection.query(query, [eventID], (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        reject(error);
+      } else {
+        const emails = results.map(row => row.email);
+        resolve(emails);
+      }
+    });
+  });
+}
+
 
 function getAttendance(eventID) {
   return new Promise((resolve, reject) => {
@@ -399,5 +431,7 @@ module.exports = {
     getAttendanceEmails,
     getFeedbacks,
     getUserIdFromEmail,
-    checkRegistration
+    checkRegistration,
+    getRegisteredEmails,
+    getAttendedEmails
 };  

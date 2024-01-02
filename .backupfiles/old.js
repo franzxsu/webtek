@@ -10,8 +10,8 @@ const db = require("../admin/database_handler.js");
 const app = express()
 
 app.listen(port, () => {
-  console.log(`Admin / EO application listening on port ${port}`)
-  console.log(`http://localhost:${port}/`)
+  
+  
 });
 
 app.set('views', path.join(__dirname, 'views'));
@@ -55,7 +55,7 @@ app.get('/login', (req, res) => {
 app.get('/index', (req, res) => { 
   //check if there is session
   if (req.session.userData) {
-    console.log(req.session.userData);
+    
     res.render('index.ejs',{
       orgName: req.session.userData.OrganizationName,
     });
@@ -73,7 +73,7 @@ app.get('/profile', (req, res) => {
     });
 
   } else {
-    console.log('redirecting to login')
+    
     res.redirect('/login');
     
   }
@@ -94,7 +94,7 @@ app.get('/viewEvents', (req, res) => {
 
     // executeQuery(req, res, queryString);
   } else {
-    console.log('Unauthorized access: Redirecting to login');
+    
     res.status(401).redirect('/login');
   }
 });
@@ -115,7 +115,7 @@ app.get('/viewOrgEvents', (req, res) => {
 
     // executeQuery(req, res, queryString);
   } else {
-    console.log('Unauthorized access: Redirecting to login');
+    
     res.status(401).redirect('/login');
   }
 });
@@ -138,7 +138,7 @@ app.post('/auth', async (req, res) => {
 
   try {
     const userData = await db.authLogIn(username, password);
-    console.log(userData)
+    
     if (userData !== null) {
       req.session.userData = userData;
       res.redirect('/index');
@@ -158,7 +158,7 @@ app.post('/createEvent', (req, res) => {
 
   if (req.session.eventOrgId) {
     const eventData = req.body;
-    console.log(req.body);
+    
 
     // sakaling may nakapasa sa client-side alert somehow na invalid date
     if (!(eventData.eventDateEnd >= eventData.eventDateStart)) {
@@ -174,7 +174,7 @@ app.post('/createEvent', (req, res) => {
       }
     }
   } else {
-    console.log('Unauthorized access: Redirecting to login');
+    
     res.status(401).redirect('/login');
   }
 });

@@ -34,8 +34,8 @@ router.get('/index', async (req, res) => {
 			newEventId = req.session.successEventId //eventId Flag
 		}
 
-		console.log("SUCCESS STATUS "+success);
-        console.log("new event id "+newEventId);
+		
+        
     
 		//clear flags after using it
         req.session.eventSuccess = false;
@@ -90,7 +90,7 @@ router.get('/about', async (req, res) => {
 router.get('/profile', async (req, res) => {
 
 	if (req.session.userData) {
-		// console.log("ID"+req.session.userData.OrganizerID)
+		// 
 		const orgMembers = await db.getOrganizationMembers(req.session.userData.OrganizerID);
 		const allEvents = await db.getAllEvents(req.session.userData.OrganizerID);
 		const pastEvents = await db.getCompletedEvents(req.session.userData.OrganizerID);
@@ -178,11 +178,11 @@ router.post('/addOrgMember', async (req, res) => {
 		const bool = await db.addOrgMember(orgid, email);
 		if (bool) {
 			// Success adding member
-			console.log("go to success")
+			
 			res.redirect(`/profile?success=true&email=${encodeURIComponent(email)}`);
 		} else {
 			// Handle failure to add member
-			console.log("go to failure")
+			
 			res.redirect('/profile?success=false');
 		}
 	} catch (error) {
@@ -202,11 +202,11 @@ router.post('/removeOrgMember', async (req, res) => {
 		const bool = await db.removeOrgMember(orgid, memberEmail);
 		if (bool) {
 			// Success adding member
-			console.log("go to success")
+			
 			res.redirect(`/profile?successRemove=true&email=${encodeURIComponent(memberEmail)}`);
 		} else {
 			// Handle failure to add member
-			console.log("go to failure")
+			
 			res.redirect('/profile?successRemove=false');
 		}
 	} catch (error) {
@@ -225,11 +225,11 @@ router.post('/removeEvent', async (req, res) => {
 		const bool = await db.removeEvent(eventID);
 		if (bool) {
 
-			console.log("success remove event")
+			
 			res.redirect(`/events?successRemove=true`);
 		} else {
 
-			console.log("fail")
+			
 			res.redirect('/events?successRemove=false');
 		}
 	} catch (error) {
@@ -242,10 +242,10 @@ router.post('/removeEvent', async (req, res) => {
 
 router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 	try {
-		console.log(Object.keys(req.body).length)
-		console.log("in" + req.body.numberOfInputs);
+		
+		
 
-		console.log('out');
+		
 		let {
 			orgid, eventName, eventLocation, eventInfo, 
 			eventDateStart, eventDateEnd, visibility, course
@@ -257,7 +257,7 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 			posterBlob = Buffer.from(req.file.buffer);
 		}
 		if (visibility === 'Course') {
-			console.log('course chosen');
+			
 		}
 
 		//for good measure
@@ -268,19 +268,19 @@ router.post('/createEvent', upload.single('eventPoster'), async (req, res) => {
 		const newEventId = await db.createEvent(orgid, eventName, eventInfo,
 			eventDateStart, eventDateEnd, eventLocation, course, visibility, posterBlob);
 
-		console.log(newEventId);
+		
 		let success = true;
 		if (newEventId) {
-			console.log('NEW EVENT ID IS: ' + newEventId);
+			
 			let eventID = newEventId;
-			console.log('go success');
+			
 
 			//GET SEGMENTS SINCE SEGMENTS CAN VARY FROM 0-5
 			for (const key in req.body) {
 				if (key.startsWith('segmentInfo_')) {
 					const segmentNumber = key.split('_')[1];
 					const segmentInfo = req.body[key];
-					console.log(`Segment ${segmentNumber}: ${segmentInfo}`);
+					
 					const segmentSuccess = await db.addSegment(segmentNumber, eventID, segmentInfo);
 					
 					// Set success to false if any segment fails to add for some reason
@@ -318,7 +318,7 @@ router.post('/attendance', async (req, res) => {
 	try {
 	  const isSuccess = await db.addAttendance(eventID, userID, segmentNo);
 	  if (isSuccess) {
-		console.log('Attendance added successfully!');
+		
 		res.status(200).json({ message: `${email} has attended the event!`});
 	  } else {
 		throw new Error('Failed to add attendance.');
@@ -447,9 +447,9 @@ router.get('/api/getUserId/:email', async (req, res) => {
 router.post('/api/isRegistered', async (req, res) => {
     const { event, user } = req.query;
 
-	console.log("HEY");
-	console.log(event);
-	console.log(user);
+	
+	
+	
 
     try {
         const isRegistered = await db.checkRegistration(event, user);
@@ -488,8 +488,8 @@ router.post('/setSessionVariables', (req, res) => {
 	req.session.eventID = eventID;
 	req.session.segmentNo = segmentNo;
 
-	console.log("EVENT ID SESSION: ",req.session.eventID );
-	console.log("SEGMENT  SESSION: ",req.session.segmentNo);
+	
+	
   
 	res.sendStatus(200); 
   });
@@ -498,8 +498,8 @@ router.post('/setSessionVariables', (req, res) => {
     delete req.session.eventID;
     delete req.session.segmentNo;
 
-    console.log("EVENT ID SESSION: ", req.session.eventID);
-    console.log("SEGMENT  SESSION: ", req.session.segmentNo);
+    
+    
 
     res.sendStatus(200);
 });

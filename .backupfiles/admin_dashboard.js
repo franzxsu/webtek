@@ -14,7 +14,7 @@ function getDeets() {
     })
     .then(data => {
 
-        console.log('Received data:', data);
+        
         id = data.id;
         adminName = data.username;
 

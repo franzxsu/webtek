@@ -27,7 +27,7 @@ function filePicked(oEvent) {
             var oJS = XLS.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
 
             $("#my_file_output").html(sCSV);
-            console.log(oJS)
+            
         });
     };
 

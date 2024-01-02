@@ -31,28 +31,28 @@ let emailVal;
 
 
 qrcode.callback = res => {
-  console.log('QR SCANNED');
+  
   if (res) {
-    console.log('in');
+    
 
-    console.log('stop scan flag');
+    
     // Stop scanning
     scanning = false;
 
     try {
       const jsonValid = isValid(res);
-      console.log(jsonValid);
+      
 
       // Handle the logic based on jsonValid here
       // For example:
       if (jsonValid === 'true') {
-        console.log('JSON is valid');
+        
         const parsedValues = getValuesFromJSONString(res);
         const { userID, eventID, registrationID, userEmail } = parsedValues;
-        console.log("EVENT ID IS:"+eventID );
-        console.log("user ID IS:"+userID );
-        console.log("registrationID ID IS:"+registrationID );
-        console.log("userEmail IS:"+userEmail );
+        
+        
+        
+        
 
         userIDVal = userID;
         eventIDVal = eventID;
@@ -67,7 +67,7 @@ qrcode.callback = res => {
         outputData.innerText = "is true valid";
 
       } else {
-        console.log('JSON is not valid');
+        
         // Handle the scenario where JSON is not valid
       }
     } catch (error) {
@@ -180,7 +180,7 @@ function getValuesFromJSONString(jsonString) {
         return response.json();
       })
       .then(segments => {
-        console.log('Segments:', segments);
+        
         populateModalWithSegments(segments, eventID);
       })
       .catch(error => {
@@ -189,11 +189,11 @@ function getValuesFromJSONString(jsonString) {
   }
   
   function populateModalWithSegments(segments, eventID) {
-    console.log('asd');
-    console.log(segments);
+    
+    
 
     segments.forEach(segment => {
-      console.log(segment.SegmentName);
+      
       openModal(segments, eventID);
     });
   }
@@ -218,9 +218,9 @@ function getValuesFromJSONString(jsonString) {
 
 
     selectButton.addEventListener('click', function() {
-      console.log("BTN CLICK");
-      console.log(segment.SegmentNo);
-      console.log(eventID);
+      
+      
+      
       setSessionVariables(eventID, segment.SegmentNo);
       myModal.hide();
       SESSION_EVENTID = eventID;
@@ -250,7 +250,7 @@ function populateEvents(OrganizerID){
     return response.json();
   })
   .then(events => {
-    console.log('events:', events);
+    
     events.forEach(event => {
       // Create a button element for each event
       const button = document.createElement('button');
@@ -258,7 +258,7 @@ function populateEvents(OrganizerID){
       button.classList.add('btn', 'btn-primary', 'w-100', 'mb-2'); // Optionally add a class for styling
       
       button.addEventListener('click', () => {
-        console.log(`Button clicked for event ${event.eventID}`);
+        
         // openModalSegments(event.eventID);
         getSegmentsAndOpenModal(event.eventID);
         eventModal.hide() 
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         SESSION_SEGMENTNO = segmentNo;
 
         startChecking();
-        console.log('attendance session info already exists');
+        
       } else {
         populateEvents(orgId);
         // Show the selectEventModal
@@ -318,7 +318,7 @@ function setSessionVariables(eventID, segmentNo) {
   })
     .then(response => {
       if (response.ok) {
-        console.log('Session variables updated successfully!');
+        
       } else {
         console.error('Failed to update session variables.');
       }
@@ -390,7 +390,7 @@ function postAttendance(segment, event, user, email) {
           return response.json();
       })
       .then(data => {
-          console.log(data);
+          
           //proceed with the next fetch or other actions
           fetch('/attendance', {
                   method: 'POST',
@@ -407,7 +407,7 @@ function postAttendance(segment, event, user, email) {
                   return response.json();
               })
               .then(data => {
-                  console.log(data);
+                  
                   showAnAlert(data.message, 'info');
               })
               .catch(error => {
@@ -435,7 +435,7 @@ attendanceForm.addEventListener('submit', function(event) {
     })
     .then(data => {
         const userId = data.userId;
-        console.log(userId[0].userId);
+        
         uid = userId[0].userId
         postAttendance(SESSION_SEGMENTNO, SESSION_EVENTID, uid, email);
     })

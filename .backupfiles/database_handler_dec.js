@@ -17,7 +17,7 @@ connection.connect((err) => {
     console.error('Error connecting to the database:', err);
     return;
   }
-  console.log('Connected to MySQL database');
+  
 });
 
 // Middleware to parse JSON requests
@@ -96,5 +96,5 @@ app.delete('/users/:userId', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  
 });

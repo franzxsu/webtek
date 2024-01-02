@@ -15,7 +15,7 @@ const scriptsPath = path.join(__dirname, '..', '.backupfiles', 'scripts');
 const assetsPath = path.join(__dirname, 'assets');
 
 app.listen(port, () => {
-  console.log(`http://localhost:${port}/`)
+  
 });
 
 app.set('views', path.join(__dirname, 'views'));

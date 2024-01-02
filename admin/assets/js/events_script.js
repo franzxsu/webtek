@@ -12,7 +12,7 @@ const downloadButtons = document.querySelectorAll('.downloadEmailButton');
 
 eventIDs.forEach((element) => {
     const eventID = element.id.split('_')[1];
-    console.log(eventID);
+    
     axios.get(`/registeredUsers/${eventID}`)
         .then(response => {
             document.getElementById(`eventRegisteredFor_${eventID}`).innerText = response.data.rowCount;
@@ -24,7 +24,7 @@ eventIDs.forEach((element) => {
 
 emails.forEach((element) => {
 	const eventID = element.id.split('_')[1];
-	console.log(eventID);
+	
 	fetch(`/registeredUsersEmails/${eventID}`)
 	  .then(response => response.json())
 	  .then(data => {
@@ -46,10 +46,10 @@ emails.forEach((element) => {
 	  .then(response => response.json())
 	  .then(data => {
 		const eventElement = document.getElementById(`putAttendedEmailsHere_${eventID}`);
-		console.log(data)
+		
 		if (eventElement) {
 		  for (let i = 0; i < data.rows.length; i++) {
-			console.log(data)
+			
 			const email = data.rows[i].email;
 			const pElement = document.createElement('p');
 			pElement.textContent = email;
@@ -65,7 +65,7 @@ emails.forEach((element) => {
 
 eventIDsAtt.forEach((element) => {
 	const eventID = element.id.split('_')[1];
-	console.log(eventID);
+	
 	fetch(`/attendedUsers/${eventID}`)
 		.then(response => response.json())
 		.then(data => {
@@ -75,13 +75,13 @@ eventIDsAtt.forEach((element) => {
 
 eventAttendEmail.forEach((element) => {
 	const eventID = element.id.split('_')[1];
-	console.log(eventID);
+	
 	fetch(`/attendanceList/${eventID}`)
 	  .then(response => response.json())
 	  .then(response => {
-		console.log(response);
+		
   
-		console.log("ROWS: " + response.rows.length + " FOR EVENT ID: " + eventID);
+		
 		const emailsContainer = document.getElementById(`putEmailsHere_${eventID}`);
   
 		for (let i = 0; i < response.rows.length; i++) {
@@ -105,11 +105,11 @@ eventAttendEmail.forEach((element) => {
   
   feedbacks.forEach((element) => {
 	const eventID = element.id.split('_')[1];
-	console.log(eventID);
+	
 	fetch(`/getFeedback/${eventID}`)
 	  .then(response => response.json())
 	  .then(response => {
-		console.log(response);
+		
   
 		for (let i = 0; i < response.rows.length; i++) {
 			//remove no feedback tag

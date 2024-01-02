@@ -17,7 +17,7 @@ async function getDeets() {
         const data = await response.json();
         id = data.id;
         orgName = data.username;
-        console.log(id + " " + orgName);
+        
         // Additional logic if needed
         return data;
     } catch (error) {
@@ -47,7 +47,7 @@ async function getAllEvents() {
     try {
         const data = await getEvents('/viewEvents');
         allEvents = data; // Assigning fetched data to global variable
-        console.log(allEvents);
+        
     } catch (error) {
         console.error('Error:', error.message);
     }
@@ -57,7 +57,7 @@ async function getOrgEvents(id) {
     try {
         const data = await getEvents(`/viewOrgEvents?eventOrgId=${id}`);
         orgEvents = data; // Assigning fetched data to global variable
-        console.log(orgEvents);
+        
     } catch (error) {
         console.error('Error:', error.message);
     }
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             }
 
-            console.log(eventData);
+            
 
             // saveEventData(eventData);
             

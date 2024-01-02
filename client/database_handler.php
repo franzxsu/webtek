@@ -390,7 +390,7 @@ function get_user_organizations($email)
   $stmt->bind_param("s", $email);
 
   // echo "<script>";
-  // echo "console.log('SQL Query: " . $stmt->queryString . "')";
+  // echo "
   // echo "</script>";
 
   $stmt->execute();

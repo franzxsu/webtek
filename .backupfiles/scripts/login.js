@@ -47,14 +47,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // var btnCheck = false;
 
     // eyeBtn.addEventListener("mousedown", function() {``
-    //     console.log("button held!")
+    //     
     //     passwordInput.type = "text";
     //     btnCheck = true;
     // });
 
     // window.addEventListener("mouseup", function() {
     //     if (btnCheck) {
-    //         console.log("button not held!")
+    //         
     //         passwordInput.type = "password";
     //         btnCheck = false;
     //     }

@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
       console.error('Error connecting to database:', err);
       return;
     }
-    console.log('Connected to MySQL database successfully!')
+    
   });
 
   const query = util.promisify(connection.query).bind(connection);
@@ -32,7 +32,7 @@ const connection = mysql.createConnection({
       .then((results) => {
         if (results.length > 0) {
           const userData = results[0];
-          // console.log(userData) 
+          // 
           return userData;
         } else {
           return null;
@@ -120,7 +120,7 @@ function addAttendance(eventID, userID, segmentID){
     const query = "INSERT INTO attendance (userID, SegmentID, EventID) VALUES (?, ?, ?)";
     connection.query(query, [userID, segmentID, eventID], (error, results) => {
       if (error) {
-        console.log("DBH ERROR: ",error);
+        
         reject(error);
       } else {
         resolve(results);
@@ -180,10 +180,10 @@ function changeEventAttribute(eventID, headerOfTableToChange, newValue){
         reject(error);
       } else {
         if (results.affectedRows === 0) {
-          console.log('Event not found');
+          
           reject(new Error('Event not found'));
         } else {
-          console.log(`Event ${headerOfTableToChange} updated successfully`);
+          
           resolve(results);
         }
       }

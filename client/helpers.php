@@ -1,10 +1,4 @@
 <?php
-function logme($data)
-{
-    echo '<script>';
-    echo '
-    echo '</script>';
-}
 
 function get_upcoming_events($events) {
     try {

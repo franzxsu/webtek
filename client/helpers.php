@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Manila');
 function c_log($data) {
     if ($data instanceof mysqli_result) {
         $resultArray = [];

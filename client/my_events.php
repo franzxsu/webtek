@@ -81,7 +81,13 @@ if(isset($_SESSION['user_id'])){
                                             $currentDate = date('Y-m-d');
                                             $eventstartDate = date('Y-m-d', strtotime($event['EventDateStart']));
                                             $eventEndDate = date('Y-m-d', strtotime($event['EventDateEnd']));
+                                            c_log($currentDate);
+                                            c_log($eventstartDate);
+                                            c_log($eventEndDate);
                                             $isCurrentEvent = ($currentDate >= $eventstartDate && $currentDate <= $eventEndDate);
+                                            if ($currentDate > $eventEndDate) {
+                                                continue; // Move to the next iteration
+                                            }
                                         ?>
                                         <tr <?= $isCurrentEvent ? 'class="table-success"' : ''; ?>>
                                             <td>

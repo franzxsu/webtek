@@ -208,9 +208,10 @@ function getCompletedEvents(orgID){
 }
 function getUpcomingEvents(orgID) {
   return new Promise((resolve, reject) => {
-    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const query = "SELECT * FROM events WHERE OrganizerId = ? AND (EventDateStart >= ? OR (EventDateStart < ? AND EventDateEnd >= ?))";
-    connection.query(query, [orgID, currentDate, currentDate, currentDate], (error, results) => {
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const query = "SELECT * FROM events WHERE OrganizerId = ? AND DATE(EventDateStart) > CURDATE()";
+    console.log(currentDate)
+    connection.query(query, [orgID], (error, results) => {
       if (error) {
         console.error('Error querying database:', error);
         reject(error);
@@ -221,6 +222,21 @@ function getUpcomingEvents(orgID) {
   });
 }
 
+// function getUpcomingEvents(orgID) {
+//   return new Promise((resolve, reject) => {
+//     const currentDate = new Date().toISOString().slice(0, 10);
+//     const query = "SELECT * FROM events WHERE OrganizerId = ? AND (DATE(EventDateStart) >= ? OR (DATE(EventDateStart) < ? AND DATE(EventDateEnd) >= ?))";
+//     console.log(currentDate)
+//     connection.query(query, [orgID, currentDate, currentDate, currentDate], (error, results) => {
+//       if (error) {
+//         console.error('Error querying database:', error);
+//         reject(error);
+//       } else {
+//         resolve(results);
+//       }
+//     });
+//   });
+// }
 
 function getRegistered(eventID) {
   return new Promise((resolve, reject) => {

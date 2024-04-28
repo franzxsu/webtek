@@ -5,11 +5,23 @@ include_once 'helpers.php';
 session_start();
 
 if(isset($_SESSION['user_id'])){
-    $x = get_registered_events_for_me($_SESSION['user_id']);
-    if ($x !== null) {
-        $events = get_upcoming_events($x);
+    // get my registered events
+    $my_registered_events = get_registered_events_for_me($_SESSION['user_id']);
+    c_log($my_registered_events);
+
+    if ($my_registered_events !== null) {
+
+        //get upcoming events
+        $my_upcoming_events = get_upcoming_events($my_registered_events);
+        c_log($my_registered_events);
+
+        //get ONGOING events
+        $my_ongoing_events = get_ongoing_events($my_registered_events);
+        c_log($my_ongoing_events);
     }
+
     else{
+
     }
 }
 
@@ -40,12 +52,15 @@ if(isset($_SESSION['user_id'])){
             <?php include_once "includes/header.php"; ?>
                 <div class="container-fluid">
                     <h3 class="text-dark mb-4">Registered Events</h3>
+
+                    <!-- CARD START UPCOMING -->
+
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Upcoming / <mark class="bg-success text-primary m-0 fw-bold"> Ongoing events</mark></p>
                         </div>
                         <div class="card-body">
-                        <?php if (!empty($x)) : ?>
+                        <?php if (!empty($my_registered_events)) : ?>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                             <table class="table my-0 table-bordered" id="dataTable">
                                 <thead>
@@ -61,12 +76,12 @@ if(isset($_SESSION['user_id'])){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($events as $event) : ?>
+                                    <?php foreach ($my_registered_events as $event) : ?>
                                         <?php
                                             $currentDate = date('Y-m-d');
-                                            $eventStartDate = date('Y-m-d', strtotime($event['EventDateStart']));
+                                            $eventstartDate = date('Y-m-d', strtotime($event['EventDateStart']));
                                             $eventEndDate = date('Y-m-d', strtotime($event['EventDateEnd']));
-                                            $isCurrentEvent = ($currentDate >= $eventStartDate && $currentDate <= $eventEndDate);
+                                            $isCurrentEvent = ($currentDate >= $eventstartDate && $currentDate <= $eventEndDate);
                                         ?>
                                         <tr <?= $isCurrentEvent ? 'class="table-success"' : ''; ?>>
                                             <td>
@@ -135,7 +150,8 @@ if(isset($_SESSION['user_id'])){
                                 </tbody>
                             </table>
                         </div>
-                            <?php foreach ($events as $event) : ?>
+                        <!-- MODAL FOR CANCELLING EVENT -->
+                        <?php foreach ($my_registered_events as $event) : ?>
                                 <div class="modal fade" id="cancelConfirmationModal<?= $event['eventID'] ?>" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -158,12 +174,16 @@ if(isset($_SESSION['user_id'])){
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+                        <!-- END OF MODAL FOR CANCELLING EVENT -->
                         <?php else : ?>
                             <div class="alert alert-info" role="alert">You have not yet registered to any events. <a href="index.php">Register to an event</a></div>
                         <?php endif; ?>
                             
                         </div>
                     </div>
+
+                    <!-- CARD END -->
+
                 </div>
             </div>
             <?php

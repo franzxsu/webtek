@@ -34,9 +34,6 @@ router.get('/index', async (req, res) => {
 			newEventId = req.session.successEventId //eventId Flag
 		}
 
-		
-        
-    
 		//clear flags after using it
         req.session.eventSuccess = false;
 		req.session.successEventId = null;

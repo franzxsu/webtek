@@ -1,4 +1,5 @@
-# EVENTS HUB, A web application for managing events
+# EVENTS HUB
+A web application for managing events
 
 ![logo](./client/assets/img/subwaylogor.png)
 
@@ -6,6 +7,9 @@
 
 - [Features](#features)
 - [Installation](#installation)
+- [Admin](#admin)
+- [Client](#client)
+- [Contact](#contact)
 
 
 ## Features
@@ -13,11 +17,18 @@
 - Event Registration
 - Event Cancellation
 - Organization member management
-- user registration
+- User registration
+- Attendance tracking via QR
+- Feedback management
 
 ## Installation
 
-XAMPP is needed!
+**Prerequisites:** 
+- XAMPP: [Download](https://www.apachefriends.org/download.html)
+- Git: [Download](https://git-scm.com/downloads)
+- Node.js: [Download](https://nodejs.org/en/download/)
+
+
 
 #### 1. Navigate to your XAMPP installation directory, then go to the htdocs folder
 ```bash
@@ -38,7 +49,7 @@ git clone https://github.com/franzxsu/webtek.git
 
 #### 4. Open the XAMPP control panel and start the Apache and MySQL servers.
 
-## ADMIN
+### ADMIN
 
 - to run the admin module, go to the the project directory and go to the admin directory
 ```bash
@@ -54,8 +65,16 @@ npm start
 http://127.0.0.1:3000/index
 ```
 
-## CLIENT
+### CLIENT
 - to run the client module, open the client module in your web browser, ensure that the Apache server is runnning
 ```bash
 http://127.0.0.1/webtek/client/index.php
 ```
+
+## Contact
+
+For any questions, feedback, or support, feel free to reach out:
+
+- Email: [2225292@slu.edu.ph](mailto:2225292@slu.edu.ph)
+- Contact No: +63 926 699 5418
+

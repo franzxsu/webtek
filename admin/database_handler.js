@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
     user: config.get('database.username'),
     password: config.get('database.password'),
     database: config.get('database.name')
+    
   });
   
   connection.connect((err) => {
@@ -15,7 +16,7 @@ const connection = mysql.createConnection({
       console.error('Error connecting to database:', err);
       return;
     }
-    
+    console.log("Connection to database successful.")
   });
 
   const query = util.promisify(connection.query).bind(connection);

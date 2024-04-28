@@ -53,24 +53,22 @@ router.get('/index', async (req, res) => {
     }
 });
 
+// router.get('/events', async (req, res) => {
+// 	//check if there is session
+// 	if (req.session.userData) {
 
-
-router.get('/events', async (req, res) => {
-	//check if there is session
-	if (req.session.userData) {
-
-		res.render('events.ejs', {
-			orgName: req.session.userData.OrganizationName,
-			orgId: req.session.userData.OrganizerID,
-			orgOngoingEvents: await db.getOngoingEvents(req.session.userData.OrganizerID),
-			orgUpcomingEvents: await db.getUpcomingEvents(req.session.userData.OrganizerID),
-			orgPastEvents: await db.getCompletedEvents(req.session.userData.OrganizerID)
-		});
-		//go to login if there is no session set
-	} else {
-		res.redirect('/login');
-	}
-});
+// 		res.render('events.ejs', {
+// 			orgName: req.session.userData.OrganizationName,
+// 			orgId: req.session.userData.OrganizerID,
+// 			orgOngoingEvents: await db.getOngoingEvents(req.session.userData.OrganizerID),
+// 			orgUpcomingEvents: await db.getUpcomingEvents(req.session.userData.OrganizerID),
+// 			orgPastEvents: await db.getCompletedEvents(req.session.userData.OrganizerID)
+// 		});
+// 		//go to login if there is no session set
+// 	} else {
+// 		res.redirect('/login');
+// 	}
+// });
 
 router.get('/about', async (req, res) => {
 	//check if there is session
@@ -470,7 +468,7 @@ router.get('/api/events/:OrganizerID', async (req, res) => {
 	} = req.params;
 
 	try {
-		const events = await db.getUpcomingEvents(OrganizerID);
+		const events = await db.getOngoingEvents(OrganizerID);
 		res.json(events);
 	} catch (error) {
 		console.error('Error fetching segments:', error);
